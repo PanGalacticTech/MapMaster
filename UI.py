@@ -9,11 +9,19 @@ Using Tkinter
 import tkinter as tk
 from tkinter import ttk
 import tkinter.font as TkFont
+
+from tkinter import filedialog
+#import Pillow
+from PIL import ImageTk, Image
+
+
 import UI_elements as UE
 
 
+
+
 #USER VARIABLES:
-MAIN_WINDOW_TITLE = "MapMaster - Dungeon Master Manager"
+MAIN_WINDOW_TITLE = "MapMaster - Dungeon Master's Game Management System"
 
 MAIN_WINDOW_WIDTH = "1400"
 MAIN_WINDOW_HEIGHT = "800"
@@ -51,9 +59,30 @@ class UI_main_window():
 
         ## Set out Frames First
 
-        self.top_frame = tk.LabelFrame(self.root, font=self.title_font, bg=UE.DARK_GREY, fg=UE.TEXT_GREY, relief="ridge", bd=2,
-                                       height=100, text="MapMaster DMs Map & Resource Manager")
-        self.top_frame.grid()
+        self.top_frame = UE.darkLabel(self.root, height=500, text="MapMaster DMs Map & Resource Manager")
+        self.top_frame.grid(padx=5, pady=5,sticky="NSEW")
 
+        self.file_dialog_box = UE.darkFrame(self.top_frame)
+        self.file_dialog_box.grid(sticky="SE")
+
+        # Return the name and location of the file.
+        #self.file_dialog = filedialog.askopenfilename(initialdir="/Pictures", title="select a file",
+        #                                       filetypes=(("png files", "*.jpg"), ("all file", "*.*")))
+
+        # Display dir of file selected
+        #my_lbl = Label(self.file_dialog_box, text=filedialog.filename).grid()
+
+        # Display image
+        #my_img = ImageTk.PhotoImage(Image.open(root.filename))
+        #my_lbl2 = Label(image=my_img).grid()
 
         self.root.mainloop()                              #end of Main UI Window call
+
+
+
+
+'''
+NOTES
+https://stackoverflow.com/questions/65473027/python3-open-image-with-dialog-box-in-tkinter
+
+'''
