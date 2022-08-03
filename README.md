@@ -23,6 +23,7 @@
 - Range - Highlight spell/Distance attack range as coloured radius (Could be combined with movement?)
 - Area of Attack - Highlight area of attack and cone shaped attacks with button click
 - Set Scale - Click on grid/map area twice to set 5ft, 10ft or 15ft scale
+- Map filters - Apply gradient filters for underground or nighttime maps
 
 
 
