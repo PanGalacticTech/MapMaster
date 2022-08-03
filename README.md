@@ -21,7 +21,7 @@
 - Blackout button, keeps 2nd window open but in blackout mode
 - Movement - Highlights movement distance + dash action as coloured radius
 - Range - Highlight spell/Distance attack range as coloured radius (Could be combined with movement?)
-- Area of Attack - Highlight area of attack and cone shaped attacks with button click
+- Area of Attack - Highlight area of attack, cone & Cube shaped attacks with button click
 - Set Scale - Click on grid/map area twice to set 5ft, 10ft or 15ft scale
 - Map filters - Apply gradient filters for underground or nighttime maps
 
