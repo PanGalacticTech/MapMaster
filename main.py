@@ -6,7 +6,9 @@
 import UI as GUI
 
 def main():
+    #root = Tk()
     app = GUI.UI_main_window()
+
 
 
 

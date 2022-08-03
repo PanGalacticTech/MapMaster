@@ -13,12 +13,14 @@ import tkinter.font as TkFont
 
 #USER COLOURS:
 DARK_GREY = "#212121"
+DARKER_GREY = "#1c1c1c"
 FEATURE_GREY = "#666666"
 LIGHT_GREY = "#e6e6e6"
 TEXT_GREY = "#eeeeee"
 BG_GREY = "#303030"
 ACTIVE_BLUE = "#09dceb"
 YELLOW_ORANGE = "#e8b60e"
+BLACK = "#000000"
 
 
 #USER FONTS
@@ -30,7 +32,7 @@ YELLOW_ORANGE = "#e8b60e"
 class darkFrame(tk.Frame):
     def __init__(self, master=None, **kwargs):
         self.lbl_ft = TkFont.Font(family='Consolas', size=12, weight='bold')
-        tk.Frame.__init__(self, master, bg=DARK_GREY, relief="ridge", bd=2, **kwargs)
+        tk.Frame.__init__(self, master, relief="ridge", bd=3, **kwargs)       #bg=DARK_GREY
 
 class int_entry(tk.Entry):
     def __init__(self, master=None, **kwargs):
@@ -60,12 +62,20 @@ class darkBorderless(tk.Frame):
 
 
 
-class selectButton(tk.Button):
+class radioButton(tk.Button):                            ## THIS IS A RADIO BUTTON WTF
     def __init__(self, master=None, **kwargs):
         self.var = tk.StringVar()
         self.bld_ft = TkFont.Font(family='Consolas', size=10, weight='bold')
         tk.Radiobutton.__init__(self, master, bg = BG_GREY, fg=TEXT_GREY, font=self.bld_ft, selectcolor="Black",
                                 activebackground = FEATURE_GREY, **kwargs)
+
+
+class selectButton(tk.Button):                            ## THIS IS A RADIO BUTTON WTF
+    def __init__(self, master=None, **kwargs):
+        self.var = tk.StringVar()
+        self.bld_ft = TkFont.Font(family='Consolas', size=10, weight='bold')
+        tk.Button.__init__(self, master, bg = BG_GREY, fg=TEXT_GREY, font=self.bld_ft,
+                                activebackground = FEATURE_GREY, **kwargs) #selectcolor="Black",
 
 
 
