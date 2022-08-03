@@ -62,8 +62,14 @@ class UI_main_window():
         self.top_frame = UE.darkLabel(self.root, height=500, text="MapMaster DMs Map & Resource Manager")
         self.top_frame.grid(padx=5, pady=5,sticky="NSEW")
 
+        self.site_use_title = UE.darkLabelTitle(self.top_frame, text="[Open Map]")
+        self.site_use_title.grid()
+
         self.file_dialog_box = UE.darkFrame(self.top_frame)
         self.file_dialog_box.grid(sticky="SE")
+        self.PLACEHOLDER_TEXT = UE.darkLabelTitle(self.file_dialog_box, text="[Open File Box]")
+        self.PLACEHOLDER_TEXT.grid(padx=10, pady=10,sticky="NSEW")
+
 
         # Return the name and location of the file.
         #self.file_dialog = filedialog.askopenfilename(initialdir="/Pictures", title="select a file",
