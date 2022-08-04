@@ -26,8 +26,8 @@ import UI_elements as UE
 #USER VARIABLES:
 MAIN_WINDOW_TITLE = "MapMaster - Dungeon Master's Game Management System"
 
-MAIN_WINDOW_WIDTH = "1500"
-MAIN_WINDOW_HEIGHT = "1025"
+MAIN_WINDOW_WIDTH = "1600"
+MAIN_WINDOW_HEIGHT = "1050"
 MAIN_WINDOW_BACKGROUND = UE.DARK_GREY
 
 
@@ -62,6 +62,9 @@ class UI_main_window():
         #self.ft_title = UE.title_font
         #self.ft_norm   = UE.norm_font
 
+        ## Set out global variables
+
+
 
 
 
@@ -81,37 +84,37 @@ class UI_main_window():
 
         # Button Placeholders
         self.PLACEHOLDER_TEXT = UE.darkLabelTitle(self.side_frame, text="[Open Map]")
-        self.PLACEHOLDER_TEXT.grid(padx=10, pady=10,sticky="NSEW")
+        self.PLACEHOLDER_TEXT.grid( padx=10, pady=10,sticky="NSEW", row= 0)
         self.PLACEHOLDER_TEXT2 = UE.darkLabelTitle(self.side_frame, text="[Save Map]")
-        self.PLACEHOLDER_TEXT2.grid(padx=10, pady=10, sticky="NSEW")
-        self.PLACEHOLDER_TEXT3 = UE.darkLabelTitle(self.side_frame, text="[New Object]")
-        self.PLACEHOLDER_TEXT3.grid(padx=10, pady=10, sticky="NSEW")
-
-        self.PLACEHOLDER_TEXT5 = UE.darkLabelTitle(self.side_frame, text="[Insert Background]")
-        self.PLACEHOLDER_TEXT5.grid(column=0, row=4, padx=10, pady=10, sticky="NSEW")
-
-
+        self.PLACEHOLDER_TEXT2.grid(padx=10, pady=10, sticky="NSEW",row= 1)
+        self.PLACEHOLDER_TEXT3 = UE.darkLabelTitle(self.side_frame, text="[Add Icon]")
+        self.PLACEHOLDER_TEXT3.grid(padx=10, pady=10, sticky="NSEW",row= 3)
+        self.PLACEHOLDER_TEXT3 = UE.darkLabelTitle(self.side_frame, text="[Create Token]")
+        self.PLACEHOLDER_TEXT3.grid(padx=10, pady=10, sticky="NSEW", row=4)
+        self.PLACEHOLDER_TEXT5 = UE.darkLabelTitle(self.side_frame, text="[Map Filters]")
+        self.PLACEHOLDER_TEXT5.grid(padx=10, pady=10, sticky="NSEW", row=6)
 
 
         # Object Palette
-        self.PLACEHOLDER_TEXT4 = UE.darkLabelTitle(self.side_frame, text="[Object Palette]")
-        self.PLACEHOLDER_TEXT4.grid(column=0, row=2,padx=10, pady=10, sticky="NSEW")
         self.object_frame = UE.darkFrame(self.side_frame, bg=UE.BLACK)
-        self.object_frame.grid(column=0, row=3, padx=10, pady=10)
+        self.object_frame.grid(column=0, padx=10, pady=10, row=2)
+        self.palette_title = UE.darkLabel(self.object_frame, text="[Object Palette]")
+        self.palette_title.grid(column=0, row=0, padx=10, pady=10, sticky="N", columnspan=2)
+
         # Object Items
         self.PLACEHOLDER_ICON = UE.darkLabel(self.object_frame, text="[Icon1]")
-        self.PLACEHOLDER_ICON.grid(column=0, row=0, padx=10, pady=10, sticky="NSEW")
+        self.PLACEHOLDER_ICON.grid(column=0, row=1, padx=10, pady=10, sticky="NSEW")
         self.PLACEHOLDER_ICON2 = UE.darkLabel(self.object_frame, text="[Icon2]")
-        self.PLACEHOLDER_ICON2.grid(column=1, row=0, padx=10, pady=10, sticky="NSEW")
+        self.PLACEHOLDER_ICON2.grid(column=1, row=1, padx=10, pady=10, sticky="NSEW")
         self.PLACEHOLDER_ICON3 = UE.darkLabel(self.object_frame, text="[Icon3]")
-        self.PLACEHOLDER_ICON3.grid(column=0, row=1, padx=10, pady=10, sticky="NSEW")
+        self.PLACEHOLDER_ICON3.grid(column=0, row=2, padx=10, pady=10, sticky="NSEW")
         self.PLACEHOLDER_ICON4 = UE.darkLabel(self.object_frame, text="[Icon4]")
-        self.PLACEHOLDER_ICON4.grid(column=1, row=1, padx=10, pady=10, sticky="NSEW")
+        self.PLACEHOLDER_ICON4.grid(column=1, row=2, padx=10, pady=10, sticky="NSEW")
 
         ##Outer Frame (To help center map)
         self.out_frame = UE.darkFrame(self.top_frame, bg=UE.BLACK, height=1000)  # , text="MapMaster DMs Map & Resource Manager"  #TODO: Dont need this frame?
         self.out_frame.grid( row=0, column=1, padx=10, pady=10, sticky="NSEW")
-        self.PLACEHOLDER_MAP_TITLE = UE.darkLabel(self.out_frame, text="[BATTLE MAP TITLE]")
+        self.PLACEHOLDER_MAP_TITLE = UE.darkLabelTitle(self.out_frame, text="[BATTLE MAP TITLE]")
         self.PLACEHOLDER_MAP_TITLE.grid(padx=10, pady=10, row=0, column=0, columnspan=2, sticky="NSEW")
 
         ## Map Frame
@@ -122,13 +125,13 @@ class UI_main_window():
         ##self.MAP_PLACEHOLDER.grid(padx=10, pady=10, sticky="NSEW", row=1, column=0)
 
         ## Bottom Button Frame
-        self.down_frame = UE.darkFrame(self.top_frame, bg=UE.BLACK)  # , text="MapMaster DMs Map & Resource Manager"
-        self.down_frame.grid(padx=10, pady=10, sticky="S", row=5, column=0, columnspan=2)
+        #self.down_frame = UE.darkFrame(self.top_frame, bg=UE.BLACK)  # , text="MapMaster DMs Map & Resource Manager"
+        #self.down_frame.grid(padx=10, pady=10, row=4, column=0, columnspan=2) #, sticky="S"
 
         ## Live Map Control Frame
 
-        self.live_frame = UE.darkFrame(self.down_frame, bg=UE.BLACK)
-        self.live_frame.grid(padx=10, pady=10, sticky="W", row=0, column=0, columnspan=3)
+        self.live_frame = UE.darkFrame(self.top_frame, bg=UE.BLACK)
+        self.live_frame.grid(padx=10, pady=10, sticky="W", row=4, column=0, columnspan=2)
 
         self.PLACEHOLDER_BUTTON = UE.darkLabelTitle(self.live_frame, text="[Live Map Active]")
         self.PLACEHOLDER_BUTTON.grid(padx=10, pady=10,row=0, column=0, sticky="S")
@@ -138,14 +141,17 @@ class UI_main_window():
         self.PLACEHOLDER_BUTTON2.grid(padx=10, pady=10, row=0, column=2,sticky="S")
 
         ## Range and Character Control Frame
-        self.range_frame = UE.darkFrame(self.down_frame, bg=UE.BLACK)
-        self.range_frame.grid(padx=10, pady=10, sticky="E", row=0, column=4, columnspan=3)
+        self.range_frame = UE.darkFrame(self.top_frame, bg=UE.BLACK)
+        self.range_frame.grid(padx=10, pady=10, sticky="E", row=4, column=1, columnspan=2)
+
         self.PLACEHOLDER_BUTTON3 = UE.darkLabelTitle(self.range_frame, text="[Cone & Areas]")
         self.PLACEHOLDER_BUTTON3.grid(padx=10, pady=10, row=0, column=0,sticky="S")
         self.PLACEHOLDER_BUTTON4 = UE.darkLabelTitle(self.range_frame, text="[Range]")
         self.PLACEHOLDER_BUTTON4.grid(padx=10, pady=10,row=0,  column=1,sticky="S")
         self.PLACEHOLDER_BUTTON5 = UE.darkLabelTitle(self.range_frame, text="[Set Scale]")
         self.PLACEHOLDER_BUTTON5.grid(padx=10, pady=10,row=0, column=2,sticky="S")
+        self.PLACEHOLDER_BUTTON5 = UE.darkLabelTitle(self.range_frame, text="[John Maddon]")
+        self.PLACEHOLDER_BUTTON5.grid(padx=10, pady=10, row=0, column=3, sticky="S")
 
 
         # Return the name and location of the file.
@@ -170,26 +176,23 @@ class UI_main_window():
 
     def background_image_widget(self):
         self.select = UE.selectButton(self.side_frame, text="Open Background Map", command=self.select_background)
-        self.select.grid()
-        self.canvas = Canvas(self.map_frame, width=1200, height=800, bg=UE.DARKER_GREY) #TODO change canvas border colour
-        self.canvas.grid()
+        self.select.grid(padx=5, pady=5)
+        self.canvas = Canvas(self.map_frame, width=1200, height=850, bg=UE.DARKER_GREY, highlightcolor=UE.ACTIVE_BLUE, bd=0, relief="sunken") #TODO change canvas border colour
+        self.canvas.grid(sticky="NSEW", padx=5, pady=5)
 
 
     def select_background(self):
         try:
             file_path = filedialog.askopenfilename()
-            #des = Image.open(file_path)
-            #resized_image = des.resize((600, 600), Image.ANTIALIAS)
-            #resized_image = self.resize_map(1000, file_path)
             resized_image = self.resize_image(file_path)
             bg_image = ImageTk.PhotoImage(resized_image)
             self.canvas.bg_image = bg_image
-            #self.canvas.bg_image = resized_image
-            self.canvas.create_image(600,775, image=self.canvas.bg_image,anchor="s") #  # (Numbers specify the CENTER of the image- FFS NOT WELL DOCUMENTED AT ALL WANKERS)
+            self.canvas.create_image(600,425, image=self.canvas.bg_image) # ,anchor="s" # (Numbers specify the CENTER of the image- FFS NOT WELL DOCUMENTED AT ALL WANKERS)
+            print("New Map Background Applied")
         except:
             print("User Closed Dialogue Box")
 
-    def resize_map(self, basewidth, filepath):
+    def resize_map(self, basewidth, filepath):   # DEPRECIATED NOT USED ATM
         img = Image.open(filepath)
         print(filepath)
         print(img.size[0],", ",img.size[1])
@@ -205,12 +208,20 @@ class UI_main_window():
 
     def resize_image(self, filepath):
         img = Image.open(filepath)
+        print(filepath)
+        print(img.size[0], ", ", img.size[1])
         #resize_img = ImageOps.fit(img, (900,900),method=0,bleed=0.0,centering=(0.5,0.5))
-        img.thumbnail((1000,1000))    #Needs to be passed type tuple ## This does NOT RETURN IMAGE. it works on img object
+        img.thumbnail((1000,850))    #Needs to be passed type tuple ## This does NOT RETURN IMAGE. it works on img object
+        print("New Image Size")
+        print(img.size[0],img.size[1])
         return img
 
+
+#TODO: https://www.youtube.com/watch?v=Z4zePg2M5H8  Watch how to code drag and drop tomorrow
 '''
 NOTES
+https://www.youtube.com/watch?v=Z4zePg2M5H8  # How to do drag and drop py
+
 https://pillow.readthedocs.io/en/stable/reference/Image.html#examples
 https://pillow.readthedocs.io/en/stable/handbook/tutorial.html
 
