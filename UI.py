@@ -11,11 +11,11 @@ from tkinter import ttk
 import tkinter.font as TkFont
 
 #from tkinter import filedialog
-#import Pillow
+
 #from PIL import ImageTk, Image
 
 from tkinter import Tk, filedialog, Frame, Button, Canvas
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk, ImageOps
 
 
 import UI_elements as UE
@@ -26,8 +26,8 @@ import UI_elements as UE
 #USER VARIABLES:
 MAIN_WINDOW_TITLE = "MapMaster - Dungeon Master's Game Management System"
 
-MAIN_WINDOW_WIDTH = "1600"
-MAIN_WINDOW_HEIGHT = "900"
+MAIN_WINDOW_WIDTH = "1500"
+MAIN_WINDOW_HEIGHT = "1025"
 MAIN_WINDOW_BACKGROUND = UE.DARK_GREY
 
 
@@ -77,7 +77,7 @@ class UI_main_window():
 
         # Side Button Frame
         self.side_frame = UE.darkFrame(self.top_frame, bg=UE.BLACK)
-        self.side_frame.grid(column=0, sticky="NW")
+        self.side_frame.grid(column=0, sticky="NW", padx=10, pady=10)
 
         # Button Placeholders
         self.PLACEHOLDER_TEXT = UE.darkLabelTitle(self.side_frame, text="[Open Map]")
@@ -97,7 +97,7 @@ class UI_main_window():
         self.PLACEHOLDER_TEXT4 = UE.darkLabelTitle(self.side_frame, text="[Object Palette]")
         self.PLACEHOLDER_TEXT4.grid(column=0, row=2,padx=10, pady=10, sticky="NSEW")
         self.object_frame = UE.darkFrame(self.side_frame, bg=UE.BLACK)
-        self.object_frame.grid(column=0, row=3)
+        self.object_frame.grid(column=0, row=3, padx=10, pady=10)
         # Object Items
         self.PLACEHOLDER_ICON = UE.darkLabel(self.object_frame, text="[Icon1]")
         self.PLACEHOLDER_ICON.grid(column=0, row=0, padx=10, pady=10, sticky="NSEW")
@@ -109,17 +109,17 @@ class UI_main_window():
         self.PLACEHOLDER_ICON4.grid(column=1, row=1, padx=10, pady=10, sticky="NSEW")
 
         ##Outer Frame (To help center map)
-        self.out_frame = UE.darkFrame(self.top_frame, bg=UE.BLACK, height=1000)  # , text="MapMaster DMs Map & Resource Manager"
+        self.out_frame = UE.darkFrame(self.top_frame, bg=UE.BLACK, height=1000)  # , text="MapMaster DMs Map & Resource Manager"  #TODO: Dont need this frame?
         self.out_frame.grid( row=0, column=1, padx=10, pady=10, sticky="NSEW")
         self.PLACEHOLDER_MAP_TITLE = UE.darkLabel(self.out_frame, text="[BATTLE MAP TITLE]")
-        self.PLACEHOLDER_MAP_TITLE.grid(padx=10, pady=10, row=0, column=0, sticky="NSEW")
+        self.PLACEHOLDER_MAP_TITLE.grid(padx=10, pady=10, row=0, column=0, columnspan=2, sticky="NSEW")
 
         ## Map Frame
         self.map_frame = UE.darkFrame(self.out_frame, bg=UE.DARKER_GREY,  height=1000)  # , text="MapMaster DMs Map & Resource Manager"
-        self.map_frame.grid(padx=10, pady=10, sticky="NSEW", row=1, column=0)
+        self.map_frame.grid(padx=10, pady=10, sticky="NSEW", row=1, column=0, columnspan=2)
 
-        self.MAP_PLACEHOLDER = UE.darkLabel(self.map_frame, text="[Map Missing]")
-        self.MAP_PLACEHOLDER.grid(padx=10, pady=10, sticky="NSEW", row=1, column=0)
+        ##self.MAP_PLACEHOLDER = UE.darkLabel(self.map_frame, text="[Map Missing]")          #TODO: change this so only shows when map not loaded
+        ##self.MAP_PLACEHOLDER.grid(padx=10, pady=10, sticky="NSEW", row=1, column=0)
 
         ## Bottom Button Frame
         self.down_frame = UE.darkFrame(self.top_frame, bg=UE.BLACK)  # , text="MapMaster DMs Map & Resource Manager"
@@ -171,25 +171,65 @@ class UI_main_window():
     def background_image_widget(self):
         self.select = UE.selectButton(self.side_frame, text="Open Background Map", command=self.select_background)
         self.select.grid()
-        self.canvas = Canvas(self.map_frame, width=600, height=600, bg=UE.DARKER_GREY)
+        self.canvas = Canvas(self.map_frame, width=1200, height=800, bg=UE.DARKER_GREY) #TODO change canvas border colour
         self.canvas.grid()
 
 
     def select_background(self):
-        file_path = filedialog.askopenfilename()
-        des = Image.open(file_path)
-        resized_image = des.resize((600, 600), Image.ANTIALIAS)
-        bg_image = ImageTk.PhotoImage(resized_image)
-        self.canvas.bg_image = bg_image
-        self.canvas.create_image(500,500, image=self.canvas.bg_image)
+        try:
+            file_path = filedialog.askopenfilename()
+            #des = Image.open(file_path)
+            #resized_image = des.resize((600, 600), Image.ANTIALIAS)
+            #resized_image = self.resize_map(1000, file_path)
+            resized_image = self.resize_image(file_path)
+            bg_image = ImageTk.PhotoImage(resized_image)
+            self.canvas.bg_image = bg_image
+            #self.canvas.bg_image = resized_image
+            self.canvas.create_image(600,775, image=self.canvas.bg_image,anchor="s") #  # (Numbers specify the CENTER of the image- FFS NOT WELL DOCUMENTED AT ALL WANKERS)
+        except:
+            print("User Closed Dialogue Box")
+
+    def resize_map(self, basewidth, filepath):
+        img = Image.open(filepath)
+        print(filepath)
+        print(img.size[0],", ",img.size[1])
+        wpercent = (basewidth / float(img.size[0]))
+        print(wpercent,"%")
+        hsize = int((float(img.size[1]) * float(wpercent)))
+        print("New Image Size")
+        print(basewidth,hsize)
+        img = img.resize((basewidth, hsize), Image.ANTIALIAS)
+        #img.save('mapbackground.jpg')
+        return img
 
 
-
+    def resize_image(self, filepath):
+        img = Image.open(filepath)
+        #resize_img = ImageOps.fit(img, (900,900),method=0,bleed=0.0,centering=(0.5,0.5))
+        img.thumbnail((1000,1000))    #Needs to be passed type tuple ## This does NOT RETURN IMAGE. it works on img object
+        return img
 
 '''
 NOTES
+https://pillow.readthedocs.io/en/stable/reference/Image.html#examples
+https://pillow.readthedocs.io/en/stable/handbook/tutorial.html
+
 https://stackoverflow.com/questions/65473027/python3-open-image-with-dialog-box-in-tkinter
 https://stackoverflow.com/questions/53912628/how-to-open-the-filedialog-after-pressing-the-button
 https://www.tutorialspoint.com/how-to-resize-an-image-using-tkinter
+https://pythonguides.com/python-tkinter-canvas/
+ImageOps.fit(image, size, method, bleed, centering) => image
+Syntax: PIL.ImageOps.fit(image, size, method=0, bleed=0.0, centering=(0.5, 0.5))
 
+Parameters:
+image – The image to size and crop.
+size – The requested output size in pixels, given as a (width, height) tuple.
+method – What resampling method to use. Default is PIL.Image.NEAREST.
+bleed – Remove a border around the outside of the image from all four edges.
+centering – Control the cropping position.
+
+Use (0.5, 0.5) for center cropping (e.g. if cropping the width, take 50% off of the left side, and therefore 50% off the right side).
+(0.0, 0.0) will crop from the top left corner (i.e. if cropping the width, take all of the crop off of the right side, and if cropping the height, take all of it off the bottom).
+(1.0, 0.0) will crop from the bottom left corner, etc. (i.e. if cropping the width, take all of the crop off the left side, and if cropping the height take none from the top, and therefore all off the bottom).
+Returns: An image.
 '''
