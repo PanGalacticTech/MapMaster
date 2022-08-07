@@ -28,14 +28,15 @@ class moving_image_mouse():
         self.img_list = []
 
         # add image to canvas
-        icon_filepath = self.save_resize_image("D:\Pan Galactic Engineering\MapMaster\\test_scripts\\test_icons\enemy_dot.png", 25, 25, "enemy_dot")
+        icon_filepath = self.save_resize_image("D:\Pan Galactic Engineering\MapMaster\\test_scripts\\test_icons\Enemy_Dot.png", 25, 25, "enemy_dot")
         self.temp_icon_filepath = icon_filepath
         self.place_icon(self.temp_icon_filepath, self.icon_x, self.icon_y, 0)
 
         #
         # add 2nd image
-        icon2_path = self.save_resize_image("D:\Pan Galactic Engineering\MapMaster\map_icons\enemy_dot2.png", 25, 25, "enemy_dot2")
-        self.place_icon(icon2_path, self.icon_x+50, self.icon_y+50, 1)
+        icon2_path = self.save_resize_image("D:\Pan Galactic Engineering\MapMaster\\test_scripts\\test_icons\Enemy_Dot.png", 25, 25, "enemy_dot2")
+        icon2_newpath = self.img_recolor(icon2_path, 0, 0, 0, "enemy_dot2")
+        self.place_icon(icon2_newpath, self.icon_x+50, self.icon_y+50, 1)
 
 
         # Label to output xy of mouse
@@ -162,9 +163,9 @@ class moving_image_mouse():
         img = Image.open(filepath)
         img = img.convert("RGBA")
         bands = img.split()
-        bands[0].point(1)
-        bands[1].point(0)
-        bands[2].point(0)
+        bands[0].point(lambda i:i*0+204)
+        bands[1].point(lambda i:i * 0)
+        bands[2].point(lambda i:i * 0)
         img2 = Image.merge("RGBA",( bands[0], bands[1], bands[2], bands[3]))
         new_filepath = "D:\Pan Galactic Engineering\MapMaster\map_icons\\" + new_filename + ".png"
         img2.save(new_filepath)

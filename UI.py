@@ -51,6 +51,7 @@ class UI_main_window():
         # root.config(background=atk.DEFAULT_COLOR)
         self.root.geometry(WIDTH + "x" + HEIGHT)
         self.root.configure(background=UE.DARK_GREY)
+        self.root.iconbitmap("D:\Pan Galactic Engineering\MapMaster\Icons\MapMaster_Icon256.ico")
 
 # it is recommended to select tkinter theme required for things to be right on windows,
 # 'alt', 'default', or 'classic' work fine on windows

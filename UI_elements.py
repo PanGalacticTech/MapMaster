@@ -7,20 +7,52 @@ MapMaster User Interface Elements
 
 
 import tkinter as tk
-
+from tkinter import ttk
 import tkinter.font as TkFont
 
 
 #USER COLOURS:
-DARK_GREY = "#212121"
-DARKER_GREY = "#1c1c1c"
+
+
 FEATURE_GREY = "#666666"
 LIGHT_GREY = "#e6e6e6"
 TEXT_GREY = "#eeeeee"
 BG_GREY = "#303030"
 ACTIVE_BLUE = "#09dceb"
 YELLOW_ORANGE = "#e8b60e"
-BLACK = "#000000"
+## GreyPalete
+BLACK = "#000000"         # Grey 0%
+DARKER_GREY = "#1c1c1c"   # Grey 11%
+DARK_GREY = "#212121"     # Grey 13%
+MID_GREY = "#2b2b2b"      # Grey 17%
+GREY = "#383838"          # Grey 22%
+GREY2 = "#474747"          # Grey 28%
+
+
+def grey_picker(percentage):
+    int_i = int(255*percentage)
+    hex_o = hex(int_i)
+    hex_o = hex_o[2:]
+    while len(hex_o) < 2:
+        hex_o = "0" + hex_o
+    outstring = "#" + hex_o + hex_o + hex_o
+    return outstring
+
+#grey_picker(0.01)
+
+def display_colour(color):
+    root = tk.Tk(className="Display Colour")
+    #root.config(background=atk.DEFAULT_COLOR)
+    root.geometry("400x400")
+    root.configure(background=color)
+    root.iconbitmap("D:\Pan Galactic Engineering\MapMaster\Icons\MapMaster_Icon256.ico")
+    s = ttk.Style()
+    s.theme_use('classic')
+    color_label = tk.Label(root, text=color, bg=DARKER_GREY, fg=grey_picker(0.65))
+    color_label.grid(padx=10, pady=10, sticky="SE")
+    root.mainloop()
+
+#display_colour(grey_picker(1))
 
 
 #USER FONTS
@@ -89,6 +121,11 @@ class darkLabel(tk.Label):
     def __init__(self, master=None, **kwargs):
         self.lbl_ft = TkFont.Font(family='Consolas', size=12, weight='bold')
         tk.Label.__init__(self, master, font=self.lbl_ft, bg=DARK_GREY, fg=LIGHT_GREY, **kwargs)
+
+class colorLabel(tk.Label):
+    def __init__(self, master=None, **kwargs):
+        self.lbl_ft = TkFont.Font(family='Consolas', size=12, weight='bold')
+        tk.Label.__init__(self, master, font=self.lbl_ft, **kwargs)
 
 
 class darkMessage(tk.Message):
