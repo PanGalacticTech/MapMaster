@@ -16,26 +16,37 @@ class moving_image_mouse():
         # Canvas Width
         self.canvas_width = 800
         self.canvas_height = 600
-        self.icon_x = self.canvas_width // 2
-        self.icon_y = self.canvas_height // 2
+
+
 
 
         self.m_canvas = Canvas(self.top_frame, width=self.canvas_width, height=self.canvas_height, bg=UE.DARK_GREY)
         self.m_canvas.grid(padx=10, pady=10)
 
         #List to hold images/references
-        self.icon_list = []
+        #self.icon_list = []
         self.img_list = []
+        self.icon_xy = []
+        self.icon_x = self.canvas_width // 2
+        self.icon_y = self.canvas_height // 2
+        self.icon_xy.append([self.icon_x, self.icon_y])
+        self.icon2_x = (self.canvas_width // 2) + 50
+        self.icon2_y = (self.canvas_height // 2) + 50
+        self.icon_xy.append([self.icon2_x, self.icon2_y])
+        print(self.icon_xy)
+        print(self.icon_xy[0][1])
+
+
+
 
         # add image to canvas
         icon_filepath = self.save_resize_image("D:\Pan Galactic Engineering\MapMaster\\test_scripts\\test_icons\enemy_dot.png", 25, 25, "enemy_dot")
         self.temp_icon_filepath = icon_filepath
-        self.place_icon(self.temp_icon_filepath, self.icon_x, self.icon_y, 0)
+        self.place_icon(self.temp_icon_filepath, self.icon_xy[0][0], self.icon_xy[0][1], 0)
 
-        #
         # add 2nd image
         icon2_path = self.save_resize_image("D:\Pan Galactic Engineering\MapMaster\map_icons\enemy_dot2.png", 25, 25, "enemy_dot2")
-        self.place_icon(icon2_path, self.icon_x+50, self.icon_y+50, 1)
+        self.place_icon(icon2_path, self.icon_xy[1][0], self.icon_xy[1][1], 1)
 
 
         # Label to output xy of mouse
@@ -96,19 +107,28 @@ class moving_image_mouse():
         return new_filepath
 
     def place_icon(self, filepath, x, y, n):
-        #global img
-        #img = PhotoImage(file=filepath)  #
-        self.img_list.append(PhotoImage(file=filepath))
-        self.icon_x = x
-        self.icon_y = y
-       # self.my_img = self.m_canvas.create_image(x, y, image=img)  # anchor=NW
-        self.icon_list.append(self.m_canvas.create_image(x, y, image=self.img_list[n])) # anchor=NW
+        global img
+        img = PhotoImage(file=filepath)  #
+        #self.img_list.append(PhotoImage(file=filepath))
+        self.icon_xy[n][0] = x
+        self.icon_xy[n][1] = y
+        self.my_img = self.m_canvas.create_image(x, y, image=img)  # anchor=NW
+        #self.icon_list = (self.m_canvas.create_image(x, y, image=img)) # anchor=NW
+
+    def move_icon(self, x, y, n):
+        img = self.img_list[n]
+        self.icon_xy[n][0] = x
+        self.icon_xy[n][1] = y
+        self.icon_list = (self.m_canvas.create_image(x, y, image=self.img_list[n]))  # anchor=NW
+
 
     def move(self, event):
         #print("X: ",self.icon_x, event.x, "Y:", self.icon_y, event.y)
         self.mouse_label.config(text="Mouse: " + str(event.x) + ", " + str(event.y))
-        if self.in_xy_range(self.icon_x, self.icon_y , event.x , event.y, 25):
+        if self.in_xy_range(self.icon_xy[0][0], self.icon_xy[0][1] , event.x , event.y, 25):
             self.place_icon(self.temp_icon_filepath, event.x, event.y, 0)
+                #self.move_icon(event.x, event.y, iterator)
+
 
 
 
