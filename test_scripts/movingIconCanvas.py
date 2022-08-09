@@ -17,8 +17,9 @@ https://stackoverflow.com/questions/42322966/how-to-display-and-move-multiple-im
 '''
 
 class movingIconCanvas:
-    def __init__(self):
-        self.top_frame = UE.darkFrame(root, bg=UE.DARKER_GREY)
+    def __init__(self, root):
+        self.root = root
+        self.top_frame = UE.darkFrame(self.root, bg=UE.DARKER_GREY)
         # Canvas Width
         self.canvas_width = 800
         self.canvas_height = 600
@@ -32,15 +33,18 @@ class movingIconCanvas:
         #List to hold images/references
 
         self.icon_f_list = []    # Holds Filelinks to images
-        self.icon_list = []      # hold actual images?
+        self.icon_list = []      # hold img_refs
         self.icon_xy = []        # holds list of list of xy positions
-        self.canvas_obj_list = [] #???
+        self.canvas_obj_list = [] #??? Holds objects once in canvas? IDK
 
-        # Check image size and Add image to filelist
+        # Check image size and Add image to ref list
         self.add_image("D:\Pan Galactic Engineering\MapMaster\map_icons\enemy_dot.png")
         # Place image on canvas
-        #self.place_image(self.icon_f_list[0] ,self.init_x, self.init_y, 0)
-        self.canvas_obj_list[0] = self.map_canvas.create_image(self.init_x, self.init_y, image=self.icon_list[0])
+        self.canvas_obj_list.append(self.map_canvas.create_image(self.init_x, self.init_y, image=self.icon_list[0]))
+
+        self.add_image("D:\Pan Galactic Engineering\MapMaster\\test_scripts\\test_icons\Orange_Dot.png")
+        # Place image on canvas
+        self.canvas_obj_list.append(self.map_canvas.create_image(self.init_x, self.init_y, image=self.icon_list[1]))
 
         # Label to output xy of mouse
         self.mouse_label = UE.colorLabel(self.top_frame, text="Mouse: ",bg=UE.DARKER_GREY, fg=UE.grey_picker(0.65))
@@ -79,12 +83,36 @@ class movingIconCanvas:
 
     def startMovement(self, event):
         print("startMovement")
+        self.__move = True
+        #self.initi_x = c.canvasx(event.x)  # Translate mouse x screen coordinate to canvas coordinate
+        #self.initi_y = c.canvasy(event.y)  # Translate mouse y screen coordinate to canvas coordinate
+        self.initi_x = event.x
+        self.initi_y = event.y
+        #print('startMovement init', self.initi_x, self.initi_y)
+        self.movingimage = self.map_canvas.find_closest(self.initi_x, self.initi_y, halo=1)  # get canvas object ID of where mouse pointer is
+        print(self.movingimage)
+        print(self.map_canvas.find_all())  # get all canvas objects ID
 
     def stopMovement(self, event):
         print("stopMovement")
+        self.__move = False
 
     def movement(self, event):
-        print("movement")
+        if self.__move:
+            self.mouse_label.config(text="Mouse: " + str(event.x) + ", " + str(event.y))
+            #end_x = c.canvasx(event.x)  # Translate mouse x screen coordinate to canvas coordinate
+            #end_y = c.canvasy(event.y)  # Translate mouse y screen coordinate to canvas coordinate  // dont think I need this because done already
+            end_x = event.x
+            end_y = event.y
+            #print('movement end', end_x, end_y)
+            deltax = end_x - self.initi_x  # Find the difference
+            deltay = end_y - self.initi_y
+            #print('movement delta', deltax, deltay)
+            self.initi_x = end_x  # Update previous current with new location
+            self.initi_y = end_y
+            #print('movement init', self.initi_x, self.initi_y)
+            self.map_canvas.move(self.movingimage, deltax, deltay)  # move object
+            self.map_canvas["cursor"] = "hand2"
 
 
 
@@ -95,7 +123,8 @@ class movingIconCanvas:
         if (img.size[0] > 50) or (img.size[1] > 50):
             img = self.resize_image(filepath, 25, 25, )
         #self.icon_f_list.append(filepath)
-        self.icon_list.append(img)
+        img_ref = ImageTk.PhotoImage(img)
+        self.icon_list.append(img_ref)
 
     def place_image(self, filepath, x, y, img_n):
         self.icon_list[img_n] = self.map_canvas.create_image(x, y, image=filepath)
@@ -158,7 +187,7 @@ class movingIconCanvas:
 
 
 
-GUI = movingIconCanvas()
+GUI = movingIconCanvas(root)
 
 
 
