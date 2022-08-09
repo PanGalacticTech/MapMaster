@@ -193,19 +193,6 @@ class UI_main_window():
         except:
             print("User Closed Dialogue Box")
 
-    def resize_map(self, basewidth, filepath):   # DEPRECIATED NOT USED ATM
-        img = Image.open(filepath)
-        print(filepath)
-        print(img.size[0],", ",img.size[1])
-        wpercent = (basewidth / float(img.size[0]))
-        print(wpercent,"%")
-        hsize = int((float(img.size[1]) * float(wpercent)))
-        print("New Image Size")
-        print(basewidth,hsize)
-        img = img.resize((basewidth, hsize), Image.ANTIALIAS)
-        #img.save('mapbackground.jpg')
-        return img
-
 
     def resize_image(self, filepath):
         img = Image.open(filepath)
