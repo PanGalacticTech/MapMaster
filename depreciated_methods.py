@@ -47,3 +47,14 @@ def place_icon(self, filepath, x, y, n):
 # Dont think this one ever worked
 def place_icon(self, filepath, x, y, img_n):
     self.icon_list[img_n] = self.map_canvas.create_image(x, y, image=filepath)
+
+
+
+
+#Centering a Canvas:
+# Configure the row/col of our frame and root window to be resizable and fill all available space
+        #self.top_frame.grid(row=0, column=0, sticky="NESW")
+        #self.top_frame.grid_rowconfigure(0, weight=1)
+        #self.top_frame.grid_columnconfigure(0, weight=1)
+        #self.root.grid_rowconfigure(0, weight=1)
+        #self.root.grid_columnconfigure(0, weight=1)

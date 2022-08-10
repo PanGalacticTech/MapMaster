@@ -9,7 +9,7 @@ root = Tk()
 root.geometry("1600x1100")
 root.title("MapMaster DM's Tool")
 root.iconbitmap("D:\Pan Galactic Engineering\MapMaster\Icons\MapMaster_Icon256.ico")
-
+                  # self.s ?!/ no idea
 
 
 
@@ -66,25 +66,22 @@ class movingIconCanvas:
         self.icon_list = []      # hold img_refs
         self.icon_xy = []        # holds list of list of xy positions
         self.canvas_obj_list = [] #??? Holds objects once in canvas? IDK
-        self.icon_no = 0           # Dont like this but currently used to track new items into the array
+        self.icon_no = 0           # Dont like this but currently used to track new items into the array // Actually dont think this ever got used
 
-
+        # Always hold the cursor position using event for things like deleting stuff
+        self.cursor_x = 0
+        self.cursor_y = 0
 
 
         # Check image size and Add image to ref list
-        try:
-            print("WTF")
-            #self.add_icon("D:\Pan Galactic Engineering\MapMaster\map_icons\enemy_dot.png")
+        self.add_icon("D:\Pan Galactic Engineering\MapMaster\map_icons\enemy_dot.png")
         # Place image on canvas
-            #self.place_icon(self.init_x, self.init_y, self.icon_no)
+        self.place_icon(self.init_x, self.init_y, 0)
 
-            #self.add_icon("D:\Pan Galactic Engineering\MapMaster\\test_scripts\\test_icons\Orange_Dot.png")
+        self.add_icon("D:\Pan Galactic Engineering\MapMaster\\test_scripts\\test_icons\Orange_Dot.png")
         # Place image on canvas
-            #self.canvas_obj_list.append(self.map_canvas.create_image(self.init_x, self.init_y, image=self.icon_list[1]))
-
-        except:
-            print("Icons Not Found - Skipping")
-
+       # self.canvas_obj_list.append(self.map_canvas.create_image(self.init_x, self.init_y, image=self.icon_list[1]))
+        self.place_icon(self.init_x, self.init_y, 1)
 
 
 
@@ -96,12 +93,12 @@ class movingIconCanvas:
         #self.root.bind("<Left>", self.left)
         #self.root.bind("<Right>", self.right)
         #self.root.bind("<Up>", self.up)
-        #self.root.bind("<Down>", self.down)
+        #self.map_canvas.bind("<Down>", self.down)
 
         self.map_canvas.bind("<Button-1>", self.startMovement)
         self.map_canvas.bind("<ButtonRelease-1>", self.stopMovement)
         self.map_canvas.bind("<Motion>", self.movement)
-        self.map_canvas.bind("<Del>", self.delete_icon)
+        self.root.bind("<Delete>", self.delete_icon)
 
         #self.m_canvas.bind("<Double-B1", self.move)  # Double click binding (We will use this later)
 
@@ -109,6 +106,12 @@ class movingIconCanvas:
 
 
 
+        # Configure the row/col of our frame and root window to be resizable and fill all available space
+        #self.top_frame.grid(row=0, column=0, sticky="NESW")
+        #self.top_frame.grid_rowconfigure(0, weight=1)
+        #self.top_frame.grid_columnconfigure(0, weight=1)
+        #self.root.grid_rowconfigure(0, weight=1)
+        #self.root.grid_columnconfigure(0, weight=1)
 
 
 
@@ -130,7 +133,7 @@ class movingIconCanvas:
         self.object_frame.grid(column=0, padx=10, pady=10, row=1)
 
         self.background_image_widget(self.side_frame, 2, 0)
-        self.add_icon_widget(self.side_frame, 3, 0)
+        self.add_icon_widget(self.side_frame, 4, 0)
 
 
         ##Outer Frame (To help center map)
@@ -152,7 +155,7 @@ class movingIconCanvas:
     def placeholder_text(self):
         # Button Placeholders
         self.PLACEHOLDER_TEXT3 = UE.darkLabelTitle(self.side_frame, text="[Create Token]")
-        self.PLACEHOLDER_TEXT3.grid(padx=10, pady=10, sticky="NSEW", row=4)
+        self.PLACEHOLDER_TEXT3.grid(padx=10, pady=10, sticky="NSEW", row=5)
         self.PLACEHOLDER_TEXT5 = UE.darkLabelTitle(self.side_frame, text="[Map Filters]")
         self.PLACEHOLDER_TEXT5.grid(padx=10, pady=10, sticky="NSEW", row=6)
 
@@ -205,6 +208,9 @@ class movingIconCanvas:
     def background_image_widget(self, container, item_row, item_column):
         self.backgound_button = UE.selectButton(container, text="Open Background Map", command=self.select_bg_dialog)
         self.backgound_button.grid(padx=5, pady=5, row=item_row, column=item_column)
+        self.delete_map_button = UE.selectButton(container, text="Delete Background Map", command=self.delete_map)
+        self.delete_map_button.grid(padx=5, pady=5, row=item_row+1, column=item_column)
+
         #self.canvas = Canvas(self.map_frame, width=1200, height=850, bg=UE.DARKER_GREY, highlightcolor=UE.ACTIVE_BLUE, bd=0, relief="sunken") #TODO change canvas border colour
         #self.canvas.grid(sticky="NSEW", padx=5, pady=5)
 
@@ -233,6 +239,19 @@ class movingIconCanvas:
         print("New Image Size")
         print(img.size[0],img.size[1])
         return img
+
+    def delete_map(self):
+        print("Deleting Map Background")
+        items = self.map_canvas.find_all()
+        print(items)
+        for item in items:
+            print(item)
+            for tag in self.map_canvas.gettags(item):  ## Check object isnt the background
+                print(tag)
+                if (tag == "background"):
+                    self.map_canvas.delete(item)
+                    print(self.map_canvas.find_all())  # get all canvas objects ID
+
 
 
     #Adding Icons
@@ -269,7 +288,7 @@ class movingIconCanvas:
 
     #Places icon from list onto canvas
     def place_icon(self,  x, y, img_n):
-        self.canvas_obj_list.append(self.map_canvas.create_image(x, y, image=self.icon_list[img_n]))
+        self.canvas_obj_list.append(self.map_canvas.create_image(x, y, image=self.icon_list[img_n], tags="icon"))
 
 
 
@@ -299,9 +318,30 @@ class movingIconCanvas:
         return new_filepath
 
 #Events
+    #Delete an Icon - SEMI BROKEN works but only if move Icon to upper corner of canvas
     def delete_icon(self, event):
         print("Deleting Icon")
+        item = self.map_canvas.find_closest(self.cursor_x, self.cursor_y, halo=1)  # get canvas object ID of where mouse pointer is  try [0] after this line? seen it on anothe solution
+        print(item)
+        for tag in self.map_canvas.gettags(item):                                    ## Check object isnt the background
+            print(tag)
+            if (tag == "icon"):
+                self.map_canvas.delete(item)
+                print(self.map_canvas.find_all())  # get all canvas objects ID
 
+            #if (tag == "background"):
+            #    print("Background Selected - exiting")
+            #    break
+            #else:
+            #    self.map_canvas.delete(item)
+            #    print(self.map_canvas.find_all())  # get all canvas objects ID
+
+
+
+
+
+    def down(self, event):
+        print("Down arrow pressed")
 
 # Event Methods for moving icons
     def startMovement(self, event):
@@ -310,6 +350,7 @@ class movingIconCanvas:
         #print('startMovement init', self.initi_x, self.initi_y)
         item = self.map_canvas.find_closest(self.initi_x, self.initi_y, halo=1)  # get canvas object ID of where mouse pointer is  try [0] after this line? seen it on anothe solution
         for tag in self.map_canvas.gettags(item):                                    ## Check object isnt the background
+            print(tag)
             if (tag == "background"):
                 print("Background Selected - exiting")
                 self.__move = False
@@ -339,6 +380,8 @@ class movingIconCanvas:
             #print('movement init', self.initi_x, self.initi_y)
             self.map_canvas.move(self.movingimage, deltax, deltay)  # move object
             self.map_canvas["cursor"] = "hand2"
+        self.cursor_x = event.x
+        self.cursor_x = event.y
 
 
 
