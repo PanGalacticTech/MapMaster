@@ -4,6 +4,11 @@ from tkinter import ttk
 import UI_elements as UE
 from PIL import Image, ImageTk, ImageOps
 import tkinter.font as TkFont
+from tkinter.filedialog import asksaveasfile
+
+import json_savefiles as save
+
+
 
 root = Tk()
 root.geometry("1600x1100")
@@ -72,16 +77,18 @@ class movingIconCanvas:
         self.cursor_x = 0
         self.cursor_y = 0
 
+        #self.load_map_from_dic(save.saved_map)
+
 
         # Check image size and Add image to ref list
-        self.add_icon("D:\Pan Galactic Engineering\MapMaster\map_icons\enemy_dot.png")
+        #self.add_icon("D:\Pan Galactic Engineering\MapMaster\map_icons\enemy_dot.png")
         # Place image on canvas
-        self.place_icon(self.init_x, self.init_y, 0)
+        #self.place_icon(self.init_x, self.init_y, 0)
 
-        self.add_icon("D:\Pan Galactic Engineering\MapMaster\\test_scripts\\test_icons\Orange_Dot.png")
+        #self.add_icon("D:\Pan Galactic Engineering\MapMaster\\test_scripts\\test_icons\Orange_Dot.png")
         # Place image on canvas
        # self.canvas_obj_list.append(self.map_canvas.create_image(self.init_x, self.init_y, image=self.icon_list[1]))
-        self.place_icon(self.init_x, self.init_y, 1)
+        #self.place_icon(self.init_x, self.init_y, 1)
 
 
 
@@ -135,11 +142,13 @@ class movingIconCanvas:
         self.background_image_widget(self.side_frame, 2, 0)
         self.add_icon_widget(self.side_frame, 4, 0)
 
+        self.map_name_text = "[BATTLE MAP TITLE]"
+        self.background_file = ""
 
         ##Outer Frame (To help center map)
         #self.out_frame = UE.darkFrame(self.top_frame, bg=UE.BLACK)  # , text="MapMaster DMs Map & Resource Manager" , height=1000 #TODO: Dont need this frame?
         #self.out_frame.grid(row=0, column=1, padx=10, pady=10, sticky="NSEW")
-        self.battle_map_title = UE.darkLabelTitle(self.top_frame, text="[BATTLE MAP TITLE]")
+        self.battle_map_title = UE.darkLabelTitle(self.top_frame, text=self.map_name_text)
         self.battle_map_title.grid(padx=10, pady=5, row=0, column=1, columnspan=2, sticky="N")
          ## Map Frame
         self.map_frame = UE.darkFrame(self.top_frame, bg=UE.DARKER_GREY)  # , text="MapMaster DMs Map & Resource Manager" ,height=1000
@@ -155,9 +164,9 @@ class movingIconCanvas:
     def placeholder_text(self):
         # Button Placeholders
         self.PLACEHOLDER_TEXT3 = UE.darkLabelTitle(self.side_frame, text="[Create Token]")
-        self.PLACEHOLDER_TEXT3.grid(padx=10, pady=10, sticky="NSEW", row=5)
+        self.PLACEHOLDER_TEXT3.grid(padx=10, pady=10, sticky="NSEW", row=7)
         self.PLACEHOLDER_TEXT5 = UE.darkLabelTitle(self.side_frame, text="[Map Filters]")
-        self.PLACEHOLDER_TEXT5.grid(padx=10, pady=10, sticky="NSEW", row=6)
+        self.PLACEHOLDER_TEXT5.grid(padx=10, pady=10, sticky="NSEW", row=8)
 
         #Placeholder Icons
         self.PLACEHOLDER_ICON = UE.darkLabel(self.object_frame, text="[Icon1]")
@@ -191,20 +200,98 @@ class movingIconCanvas:
     def save_buttons_widget(self, container, wiget_row, wiget_column):
         self.savebox = UE.darkBorderless(container)
         self.savebox.grid(padx=10, pady=5, sticky="N", row=wiget_row, column=wiget_column)
-        self.open_button = UE.selectButton(self.savebox, text="Open File", command=self.open_file)
+        self.open_button = UE.selectButton(self.savebox, text="Open File", command=self.open_save_game)
         self.open_button.grid(padx=10, pady=5)
-        self.saveas_button = UE.selectButton(self.savebox, text="Save As", command=self.open_file)
+        self.saveas_button = UE.selectButton(self.savebox, text="Save As", command=self.save_game)
         self.saveas_button .grid(padx=10, pady=5)
-        self.save_button = UE.selectButton(self.savebox, text="Save", command=self.open_file)
+        self.save_button = UE.selectButton(self.savebox, text="Save", command=self.open_save_game)
         self.save_button.grid(padx=10, pady=5)
 
 
 
-    def open_file(self):
+
+    def open_save_game(self):
         print("Opening File Dialog")
+        try:
+            file_path = filedialog.askopenfilename(initialdir="D:\Pan Galactic Engineering\MapMaster\saved_games",
+                    filetypes = [("Json File", "*.json")],
+                    title = "Choose a Saved .json file")
+            recalled_dic = save.recall_json_map(file_path)
+            print(recalled_dic)
+            self.load_map_from_dic(recalled_dic)
+        except:
+            print("problems recalling saved file")
 
 
-    #Background Images
+    def save_game(self):
+        print("Saving File")
+        #first we need a dictionary of the current map
+        map_dic = self.create_map_dic()
+        try:
+            json_file = save.return_json_str(map_dic)
+            print(json_file)
+            self.save_file(json_file)
+            #save.save_json_map()
+            #json_file = asksaveasfilename(initialdir="D:\Pan Galactic Engineering\MapMaster\saved_games",
+            #       defaultextension=[("Json File", "*.json")],
+             #      title = "Save Map as .json File")
+        except:
+            print("problems recalling saved file")
+
+
+
+    def create_map_dic(self):
+        map_dic = save.proto_map_dic
+        map_dic["name"] = self.map_name_text
+        map_dic["background"] = self.background_file
+        map_item_list = self.map_canvas.find_all()
+        print(map_item_list)
+        print(self.icon_f_list)
+        for icon_id in map_item_list:
+            print("Current Icon ID: ", icon_id)
+            print(self.map_canvas.gettags(icon_id))
+            tags = self.map_canvas.gettags(icon_id)
+            if "icon" in tags:
+            #first we need to make empty dictionary entry for this icon
+                map_dic["icons"][icon_id] = {}
+                coords = self.map_canvas.coords(icon_id)                             # grab the coordinates of all objects in canvas
+                map_dic["icons"][icon_id]["file"] = self.icon_f_list[icon_id-1]     # subtract 1
+                map_dic["icons"][icon_id]["pos_x"] = coords[0]
+                map_dic["icons"][icon_id]["pos_y"] = coords[1]
+                print(map_dic["icons"][icon_id])
+            else:
+                print("No Icon Found")
+        print(map_dic)
+        return map_dic
+
+    def save_file(self, json_file):
+        f = filedialog.asksaveasfile(mode='w', defaultextension=".json")
+        if f is None:  # asksaveasfile return `None` if dialog closed with "cancel".
+            return
+        f.write(json_file)
+        f.close()
+
+    def load_map_from_dic(self, map_dic):
+        self.battle_map_title.config(text= map_dic["name"])
+        self.add_background(map_dic["background"])
+        print(map_dic["icons"])
+        for icons in map_dic["icons"]:      # Icons just returns a (list?) of the numbers of the dictionarys of items - AS A STRING
+            print(icons)
+            current_file = map_dic["icons"][icons]["file"]
+            print(f"Loading File: {current_file}")
+            object_id = self.add_icon(current_file)
+            icon_x =  int(map_dic["icons"][icons]["pos_x"])
+            icon_y =  int(map_dic["icons"][icons]["pos_y"])
+            self.place_icon(icon_x, icon_y, object_id)
+            #self.icon_f_list.append(icons["file"])
+
+
+
+
+
+
+
+            #Background Images
     def background_image_widget(self, container, item_row, item_column):
         self.backgound_button = UE.selectButton(container, text="Open Background Map", command=self.select_bg_dialog)
         self.backgound_button.grid(padx=5, pady=5, row=item_row, column=item_column)
@@ -217,16 +304,20 @@ class movingIconCanvas:
 
     def select_bg_dialog(self):
         try:
-            file_path = filedialog.askopenfilename()
-            resized_image = self.resize_map(file_path)
-            bg_image = ImageTk.PhotoImage(resized_image)
-            self.map_canvas.bg_image = bg_image
-            bg_id = self.map_canvas.create_image(654,438, image=self.map_canvas.bg_image, tags="background") # ,anchor="s" # (Numbers specify the CENTER of the image- FFS NOT WELL DOCUMENTED AT ALL WANKERS)
-            print(f"Background ID: {bg_id}")
-            self.map_canvas.tag_lower(bg_id, 1)    ## Lower the background to the lowest position
-            print("New Map Background Applied")
+            self.background_file = filedialog.askopenfilename(initialdir="D:\Pan Galactic Engineering\MapMaster\map_backgrounds")
+            self.add_background(self.background_file)
         except:
             print("User Closed Dialogue Box")
+
+    def add_background(self, file_path):
+        resized_image = self.resize_map(file_path)
+        bg_image = ImageTk.PhotoImage(resized_image)
+        self.map_canvas.bg_image = bg_image
+        bg_id = self.map_canvas.create_image(654, 438, image=self.map_canvas.bg_image,
+                                             tags="background")  # ,anchor="s" # (Numbers specify the CENTER of the image- FFS NOT WELL DOCUMENTED AT ALL WANKERS)
+        print(f"Background ID: {bg_id}")
+        self.map_canvas.tag_lower(bg_id, 1)  ## Lower the background to the lowest position
+        print("New Map Background Applied")
 
 
     # Opens image from passed filepath. Resizes image to fit background area
@@ -259,21 +350,49 @@ class movingIconCanvas:
     def add_icon_widget(self, container, item_row, item_column):
         self.add_icon_button = UE.selectButton(container, text="Add Icon", command=self.add_icon_dialog)
         self.add_icon_button.grid(padx=5, pady=5, row=item_row, column=item_column)
+        self.add_image_button = UE.selectButton(container, text="Add Image", command=self.add_icon_dialog)
+        self.add_image_button.grid(padx=5, pady=5, row=item_row+1, column=item_column)
+
+    # Same as add icon but does not resize image
+    def add_image_dialog(self):
+        try:
+            file_path = filedialog.askopenfilename(initialdir="D:\Pan Galactic Engineering\MapMaster\map_icons")
+            item_id = self.add_image(file_path)
+            print(f"Icon ID: {item_id}")
+            self.place_icon(self.init_x, self.init_y, item_id)
+            print("New Image Added")
+        except:
+            print("User Closed Dialogue Box")
+
+    def add_image(self, filepath):
+        img = Image.open(filepath)
+        print(filepath)
+        print(img.size[0], ", ", img.size[1])
+        #if (img.size[0] > 50) or (img.size[1] > 50):
+        #    img = self.resize_image(filepath, 25, 25, )
+        # self.icon_f_list.append(filepath)
+        img_ref = ImageTk.PhotoImage(img)
+        print(img_ref)
+        self.icon_list.append(img_ref)
+        item_id = len(self.icon_list)
+        item_id = item_id - 1  # Because its used in an indexed 0 list later
+        return item_id
 
 
     def add_icon_dialog(self):
         try:
-            file_path = filedialog.askopenfilename()
+            file_path = filedialog.askopenfilename(initialdir="D:\Pan Galactic Engineering\MapMaster\map_icons")
             item_id = self.add_icon(file_path)
             print(f"Icon ID: {item_id}")
             self.place_icon(self.init_x, self.init_y , item_id)
-            print("New Icon Added Applied")
+            print("New Icon Added")
         except:
             print("User Closed Dialogue Box")
 
     #Adds an icon from filepath - checks image is suitable size for icon, if too large - resizes
     def add_icon(self, filepath):               ## This needs to return ID number of the added file
         img = Image.open(filepath)
+        self.icon_f_list.append(filepath)
         print(filepath)
         print(img.size[0], ", ", img.size[1])
         if (img.size[0] > 50) or (img.size[1] > 50):
