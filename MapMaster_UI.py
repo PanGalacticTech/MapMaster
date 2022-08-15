@@ -73,6 +73,10 @@ class movingIconCanvas:
         self.canvas_obj_list = [] #??? Holds objects once in canvas? IDK
         self.icon_no = 0           # Dont like this but currently used to track new items into the array // Actually dont think this ever got used
 
+        # The above is stupid. Why use lists and have to match and do all kinds of crazy complicated stuff. Just use a dictionary!
+
+        self.icon_dic = save.proto_icon_dic
+
         # Always hold the cursor position using event for things like deleting stuff
         self.cursor_x = 0
         self.cursor_y = 0
@@ -319,7 +323,7 @@ class movingIconCanvas:
         bg_id = self.map_canvas.create_image(654, 438, image=self.map_canvas.bg_image,
                                              tags="background")  # ,anchor="s" # (Numbers specify the CENTER of the image- FFS NOT WELL DOCUMENTED AT ALL WANKERS)
         print(f"Background ID: {bg_id}")
-        self.map_canvas.tag_lower(bg_id, 1)  ## Lower the background to the lowest position
+        self.map_canvas.tag_lower(bg_id, 0)  ## Lower the background to the lowest position WAS WORKING WITH 1 TRYING WITH 0
         print("New Map Background Applied")
 
 
@@ -353,7 +357,7 @@ class movingIconCanvas:
     def add_icon_widget(self, container, item_row, item_column):
         self.add_icon_button = UE.selectButton(container, text="Add Icon", command=self.add_icon_dialog)
         self.add_icon_button.grid(padx=5, pady=5, row=item_row, column=item_column)
-        self.add_image_button = UE.selectButton(container, text="Add Image", command=self.add_icon_dialog)
+        self.add_image_button = UE.selectButton(container, text="Add Image", command=self.add_image_dialog)
         self.add_image_button.grid(padx=5, pady=5, row=item_row+1, column=item_column)
 
     # Same as add icon but does not resize image
@@ -366,6 +370,8 @@ class movingIconCanvas:
             print("New Image Added")
         except:
             print("User Closed Dialogue Box")
+
+'https://www.digitalocean.com/community/tutorials/python-add-to-dictionary'
 
     def add_image(self, filepath):
         img = Image.open(filepath)
@@ -504,13 +510,6 @@ class movingIconCanvas:
             self.map_canvas["cursor"] = "hand2"
         self.cursor_x = event.x
         self.cursor_x = event.y
-
-
-
-
-
-
-
 
 
 

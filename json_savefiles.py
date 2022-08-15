@@ -108,7 +108,13 @@ proto_map_dic = {
     }
 }
 
-
+proto_icon_dic = {
+        1: {
+        "file" : "",
+        "pos_x" : 0,
+        "pos_y" : 0,
+        }
+}
 
 # Accessing this dictionary
 #print(saved_map["name"])
