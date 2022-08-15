@@ -247,6 +247,8 @@ class movingIconCanvas:
         map_item_list = self.map_canvas.find_all()
         print(map_item_list)
         print(self.icon_f_list)
+        print(f"Number of icons: {len(map_item_list)}")
+        print(f"Number of Files: {len(self.icon_f_list)}")
         for icon_id in map_item_list:
             print("Current Icon ID: ", icon_id)
             print(self.map_canvas.gettags(icon_id))
@@ -261,6 +263,7 @@ class movingIconCanvas:
                 print(map_dic["icons"][icon_id])
             else:
                 print("No Icon Found")
+        print("End of Create Map Dictionary")
         print(map_dic)
         return map_dic
 
