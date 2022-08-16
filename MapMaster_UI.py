@@ -81,18 +81,10 @@ class movingIconCanvas:
         self.cursor_x = 0
         self.cursor_y = 0
 
+        # Uncomment to load default game on startup
         #self.load_map_from_dic(save.saved_map)
 
 
-        # Check image size and Add image to ref list
-        #self.add_icon("D:\Pan Galactic Engineering\MapMaster\map_icons\enemy_dot.png")
-        # Place image on canvas
-        #self.place_icon(self.init_x, self.init_y, 0)
-
-        #self.add_icon("D:\Pan Galactic Engineering\MapMaster\\test_scripts\\test_icons\Orange_Dot.png")
-        # Place image on canvas
-       # self.canvas_obj_list.append(self.map_canvas.create_image(self.init_x, self.init_y, image=self.icon_list[1]))
-        #self.place_icon(self.init_x, self.init_y, 1)
 
 
 
@@ -117,7 +109,7 @@ class movingIconCanvas:
 
 
 
-        # Configure the row/col of our frame and root window to be resizable and fill all available space
+        # Configure the row/col of our frame and root window to be resizable and fill all available space / May be reused if re-written with .pack
         #self.top_frame.grid(row=0, column=0, sticky="NESW")
         #self.top_frame.grid_rowconfigure(0, weight=1)
         #self.top_frame.grid_columnconfigure(0, weight=1)
@@ -286,10 +278,10 @@ class movingIconCanvas:
             print(icons)
             current_file = map_dic["icons"][icons]["file"]
             print(f"Loading File: {current_file}")
-            object_id = self.add_icon(current_file)
-            icon_x =  int(map_dic["icons"][icons]["pos_x"])
-            icon_y =  int(map_dic["icons"][icons]["pos_y"])
-            self.place_icon(icon_x, icon_y, object_id)
+            icon_x = int(map_dic["icons"][icons]["pos_x"])
+            icon_y = int(map_dic["icons"][icons]["pos_y"])
+            object_id = self.add_place_icon(icon_x, icon_y, current_file)
+            #self.place_icon(icon_x, icon_y, object_id)
             #self.icon_f_list.append(icons["file"])
 
 
@@ -320,10 +312,17 @@ class movingIconCanvas:
         resized_image = self.resize_map(file_path)
         bg_image = ImageTk.PhotoImage(resized_image)
         self.map_canvas.bg_image = bg_image
-        bg_id = self.map_canvas.create_image(654, 438, image=self.map_canvas.bg_image,
-                                             tags="background")  # ,anchor="s" # (Numbers specify the CENTER of the image- FFS NOT WELL DOCUMENTED AT ALL WANKERS)
+        bg_id = self.map_canvas.create_image(654, 438, image=self.map_canvas.bg_image, tags="background")  # ,anchor="s" # (Numbers specify the CENTER of the image- FFS NOT WELL DOCUMENTED AT ALL WANKERS)
         print(f"Background ID: {bg_id}")
-        self.map_canvas.tag_lower(bg_id, 0)  ## Lower the background to the lowest position WAS WORKING WITH 1 TRYING WITH 0
+        # This line is not working sometimes, its quitting here and going to except.
+        try:
+            self.map_canvas.tag_lower(bg_id, 1)  ## dont like this but it seems flakey at the moment
+            #print("Tagging lower \"1\" Worked")
+            #self.map_canvas.tag_lower(bg_id, "icon")  ## Lower the background to the lowest position WAS WORKING WITH 1 DOES NOT WORK WITH 0
+            #print("Tagging lower \"icon\" Worked")
+        except:
+            print("Problem tagging background lower")
+            return 0
         print("New Map Background Applied")
 
 
@@ -363,15 +362,13 @@ class movingIconCanvas:
     # Same as add icon but does not resize image
     def add_image_dialog(self):
         try:
-            file_path = filedialog.askopenfilename(initialdir="D:\Pan Galactic Engineering\MapMaster\map_icons")
-            item_id = self.add_image(file_path)
-            print(f"Icon ID: {item_id}")
-            self.place_icon(self.init_x, self.init_y, item_id)
+            filepath = filedialog.askopenfilename(initialdir="D:\Pan Galactic Engineering\MapMaster\map_icons")
+            self.add_place_image(self.init_x, self.init_y, filepath)
             print("New Image Added")
         except:
             print("User Closed Dialogue Box")
 
-'https://www.digitalocean.com/community/tutorials/python-add-to-dictionary'
+#https://www.digitalocean.com/community/tutorials/python-add-to-dictionary
 
     def add_image(self, filepath):
         img = Image.open(filepath)
@@ -387,37 +384,62 @@ class movingIconCanvas:
         item_id = item_id - 1  # Because its used in an indexed 0 list later
         return item_id
 
+    def add_place_image(self, x, y, filepath):
+        img = Image.open(filepath)
+        print(f"Opening Icon: {filepath}")
+        print(f"IconSize: {img.size[0]}, {img.size[1]}")
+        #if (img.size[0] > 50) or (img.size[1] > 50):
+        #    print("Icon Too Large: Resizing Icon")
+        #img = self.resize_image(filepath, 25, 25)
+        img_ref = ImageTk.PhotoImage(img)
+        print(f"img_ref: {img_ref}")
+        img_canvas_id = self.map_canvas.create_image(x, y, image=img_ref, tags="image")
+        print(f"img_canvas_id: {img_canvas_id}")
+        self.icon_dic[img_canvas_id] = {}
+        self.icon_dic[img_canvas_id].update({
+            "file": filepath,
+            "pos_x": x,
+            "pos_y": y,
+            "ref" : img_ref,                           # Even if img_ref isnt used it helps maintain it as global object to avoid garbage collection
+            "tag": "icon"})
+        print(self.icon_dic)
+        print(self.map_canvas.find_all())  # get all canvas objects ID
+
 
     def add_icon_dialog(self):
         try:
-            file_path = filedialog.askopenfilename(initialdir="D:\Pan Galactic Engineering\MapMaster\map_icons")
-            item_id = self.add_icon(file_path)
-            print(f"Icon ID: {item_id}")
-            self.place_icon(self.init_x, self.init_y , item_id)
+            filepath = filedialog.askopenfilename(initialdir="D:\Pan Galactic Engineering\MapMaster\map_icons")
+            self.add_place_icon(self.init_x, self.init_y, filepath)
             print("New Icon Added")
         except:
             print("User Closed Dialogue Box")
 
-    #Adds an icon from filepath - checks image is suitable size for icon, if too large - resizes
-    def add_icon(self, filepath):               ## This needs to return ID number of the added file
-        img = Image.open(filepath)
-        self.icon_f_list.append(filepath)
-        print(filepath)
-        print(img.size[0], ", ", img.size[1])
-        if (img.size[0] > 50) or (img.size[1] > 50):
-            img = self.resize_image(filepath, 25, 25, )
-        #self.icon_f_list.append(filepath)
-        img_ref = ImageTk.PhotoImage(img)
-        print(img_ref)
-        self.icon_list.append(img_ref)
-        item_id = len(self.icon_list)
-        item_id = item_id-1   #Because its used in an indexed 0 list later
-        return item_id
 
     #Places icon from list onto canvas
     def place_icon(self,  x, y, img_n):
         self.canvas_obj_list.append(self.map_canvas.create_image(x, y, image=self.icon_list[img_n], tags="icon"))
 
+
+    def add_place_icon(self, x, y, filepath):
+        img = Image.open(filepath)
+        print(f"Opening Icon: {filepath}")
+        print(f"IconSize: {img.size[0]}, {img.size[1]}")
+        if (img.size[0] > 50) or (img.size[1] > 50):
+            print("Icon Too Large: Resizing Icon")
+            img = self.resize_image(filepath, 25, 25)
+        img_ref = ImageTk.PhotoImage(img)
+        print(f"img_ref: {img_ref}")
+        img_canvas_id = self.map_canvas.create_image(x, y, image=img_ref, tags="icon")
+        print(f"img_canvas_id: {img_canvas_id}")
+        self.icon_dic[img_canvas_id] = {}
+        self.icon_dic[img_canvas_id].update({
+            "file": filepath,
+            "pos_x": x,
+            "pos_y": y,
+            "ref" : img_ref,                           # Even if img_ref isnt used it helps maintain it as global object to avoid garbage collection
+            "tag": "icon"})
+        print(self.icon_dic)
+        print(self.map_canvas.find_all())  # get all canvas objects ID
 
 
 
@@ -510,9 +532,6 @@ class movingIconCanvas:
             self.map_canvas["cursor"] = "hand2"
         self.cursor_x = event.x
         self.cursor_x = event.y
-
-
-
 
 
 

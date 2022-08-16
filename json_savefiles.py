@@ -9,9 +9,18 @@ import json
 
 import io
 
+# Prototype Icon dictionary
+proto_icon_dic = {
+        1: {
+        "file"  : "",
+        "ref" : "",
+        "pos_x" : 0,
+        "pos_y" : 0,
+        "tag"   : ""
+        }
+}
 
-
-#Example Saved Map
+#Example Saved Map - Used for loading at start
 
 saved_map = {
     "name": "Bullywug Cavern",
@@ -108,13 +117,14 @@ proto_map_dic = {
     }
 }
 
-proto_icon_dic = {
-        1: {
-        "file" : "",
-        "pos_x" : 0,
-        "pos_y" : 0,
-        }
-}
+
+
+
+
+'''
+
+'''
+
 
 # Accessing this dictionary
 #print(saved_map["name"])
