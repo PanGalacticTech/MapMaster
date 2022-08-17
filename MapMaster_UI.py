@@ -329,8 +329,8 @@ class movingIconCanvas:
     # Opens image from passed filepath. Resizes image to fit background area
     def resize_map(self, filepath):
         img = Image.open(filepath)
-        print(filepath)
-        print(img.size[0], ", ", img.size[1])
+        #print(filepath)
+        #print(img.size[0], ", ", img.size[1])
         #resize_img = ImageOps.fit(img, (900,900),method=0,bleed=0.0,centering=(0.5,0.5))
         img.thumbnail((1000,850))    #Needs to be passed type tuple ## This does NOT RETURN IMAGE. it works on img object
         print("New Image Size")
@@ -347,6 +347,7 @@ class movingIconCanvas:
                 print(tag)
                 if (tag == "background"):
                     self.map_canvas.delete(item)
+                    self.background_file = "" # Also delete the file reference so that does not get saved in our JSON database
                     print(self.map_canvas.find_all())  # get all canvas objects ID
 
 
@@ -445,8 +446,8 @@ class movingIconCanvas:
 
     def resize_image(self, filepath, Wmax, Hmax):
         img = Image.open(filepath)
-        print(filepath)
-        print(img.size[0], ", ", img.size[1])
+        #print(filepath)
+        #print(img.size[0], ", ", img.size[1])
         # resize_img = ImageOps.fit(img, (900,900),method=0,bleed=0.0,centering=(0.5,0.5))
         img.thumbnail((Wmax, Hmax))  # Needs to be passed type tuple ## This does NOT RETURN IMAGE. it works on img object
         print("New Image Size")
@@ -470,15 +471,19 @@ class movingIconCanvas:
 #Events
     #Delete an Icon - SEMI BROKEN works but only if move Icon to upper corner of canvas
     def delete_icon(self, event):
-        print("Deleting Icon")
-        item = self.map_canvas.find_closest(self.cursor_x, self.cursor_y, halo=1)  # get canvas object ID of where mouse pointer is  try [0] after this line? seen it on anothe solution
-        print(item)
-        for tag in self.map_canvas.gettags(item):                                    ## Check object isnt the background
-            print(tag)
-            if (tag == "icon"):
-                self.map_canvas.delete(item)
-                print(self.map_canvas.find_all())  # get all canvas objects ID
-
+        img_canvas_id = self.map_canvas.find_closest(self.cursor_x, self.cursor_y, halo=1)  # get canvas object ID of where mouse pointer is  try [0] after this line? seen it on anothe solution
+        print(f" Deleting Img: {img_canvas_id}")
+        for tag in self.map_canvas.gettags(img_canvas_id):                                    ## Check object isnt the background
+            print(f" Current Tags in {img_canvas_id}: {tag}")
+            if (tag == "icon" or tag == "image"):
+                self.map_canvas.delete(img_canvas_id)                                        ## Delete image in the canvas
+                print(f"Found Match for tag: {tag}, Deleting Item")
+                print(f"Remaining Items: {self.map_canvas.find_all()}")  # get all canvas objects ID
+                print("Icon Dictionary Origional")
+                self.print_dictionary(self.icon_dic)
+                del self.icon_dic[img_canvas_id]  ## Also delete from dictionary
+                print("Icon Dictionary Item Removed")
+                self.print_dictionary(self.icon_dic)
             #if (tag == "background"):
             #    print("Background Selected - exiting")
             #    break
@@ -486,7 +491,10 @@ class movingIconCanvas:
             #    self.map_canvas.delete(item)
             #    print(self.map_canvas.find_all())  # get all canvas objects ID
 
+    def print_dictionary(self, dictionary):
 
+        for key, value in item:
+            print(key, " : ", value)
 
 
 
