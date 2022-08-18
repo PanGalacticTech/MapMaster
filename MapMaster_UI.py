@@ -492,8 +492,7 @@ class movingIconCanvas:
             #    print(self.map_canvas.find_all())  # get all canvas objects ID
 
     def print_dictionary(self, dictionary):
-
-        for key, value in item:
+        for key, value in dictionary.items():
             print(key, " : ", value)
 
 
