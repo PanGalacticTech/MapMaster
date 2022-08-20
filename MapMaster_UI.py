@@ -73,22 +73,18 @@ class movingIconCanvas:
         self.canvas_obj_list = [] #??? Holds objects once in canvas? IDK
         self.icon_no = 0           # Dont like this but currently used to track new items into the array // Actually dont think this ever got used
 
+        # The above is stupid. Why use lists and have to match and do all kinds of crazy complicated stuff. Just use a dictionary!
+
+        self.icon_dic = save.proto_icon_dic
+
         # Always hold the cursor position using event for things like deleting stuff
         self.cursor_x = 0
         self.cursor_y = 0
 
+        # Uncomment to load default game on startup
         #self.load_map_from_dic(save.saved_map)
 
 
-        # Check image size and Add image to ref list
-        #self.add_icon("D:\Pan Galactic Engineering\MapMaster\map_icons\enemy_dot.png")
-        # Place image on canvas
-        #self.place_icon(self.init_x, self.init_y, 0)
-
-        #self.add_icon("D:\Pan Galactic Engineering\MapMaster\\test_scripts\\test_icons\Orange_Dot.png")
-        # Place image on canvas
-       # self.canvas_obj_list.append(self.map_canvas.create_image(self.init_x, self.init_y, image=self.icon_list[1]))
-        #self.place_icon(self.init_x, self.init_y, 1)
 
 
 
@@ -113,7 +109,7 @@ class movingIconCanvas:
 
 
 
-        # Configure the row/col of our frame and root window to be resizable and fill all available space
+        # Configure the row/col of our frame and root window to be resizable and fill all available space / May be reused if re-written with .pack
         #self.top_frame.grid(row=0, column=0, sticky="NESW")
         #self.top_frame.grid_rowconfigure(0, weight=1)
         #self.top_frame.grid_columnconfigure(0, weight=1)
@@ -210,7 +206,12 @@ class movingIconCanvas:
 
 
 
+
     def open_save_game(self):
+        print("Clearing Canvas")
+        self.delete_map()
+        self.delete_all_icons()
+        print("Map Cleared")
         print("Opening File Dialog")
         try:
             file_path = filedialog.askopenfilename(initialdir="D:\Pan Galactic Engineering\MapMaster\saved_games",
@@ -233,39 +234,40 @@ class movingIconCanvas:
             self.save_file(json_file)
             #save.save_json_map()
             #json_file = asksaveasfilename(initialdir="D:\Pan Galactic Engineering\MapMaster\saved_games",
-            #       defaultextension=[("Json File", "*.json")],
-             #      title = "Save Map as .json File")
+           #        defaultextension=[("Json File", "*.json")],
+           #        title = "Save Map as .json File")
         except:
-            print("problems recalling saved file")
+            print("problems saving file")
 
 
 
     def create_map_dic(self):
-        map_dic = save.proto_map_dic
+        #map_dic = save.proto_map_dic               ## Start with the prototype dictionary
+        map_dic = {}                               ## Does it even need prototype?
         map_dic["name"] = self.map_name_text
         map_dic["background"] = self.background_file
-        map_item_list = self.map_canvas.find_all()
-        print(map_item_list)
-        print(self.icon_f_list)
-        for icon_id in map_item_list:
-            print("Current Icon ID: ", icon_id)
-            print(self.map_canvas.gettags(icon_id))
-            tags = self.map_canvas.gettags(icon_id)
-            if "icon" in tags:
-            #first we need to make empty dictionary entry for this icon
-                map_dic["icons"][icon_id] = {}
-                coords = self.map_canvas.coords(icon_id)                             # grab the coordinates of all objects in canvas
-                map_dic["icons"][icon_id]["file"] = self.icon_f_list[icon_id-1]     # subtract 1
-                map_dic["icons"][icon_id]["pos_x"] = coords[0]
-                map_dic["icons"][icon_id]["pos_y"] = coords[1]
-                print(map_dic["icons"][icon_id])
-            else:
-                print("No Icon Found")
-        print(map_dic)
+        #map_item_list = self.map_canvas.find_all()
+        #print(f"Map Item List: {map_item_list}")   # mDont need map item list it is redundent
+        #print(self.icon_f_list)
+        print(f"Icon Dictionary: {self.icon_dic}")
+        #print(f"Number of icons: {len(map_item_list)}")
+        #print(f"Number of Files: {len(self.icon_f_list)}")
+        #Probably a much cleaner and faster way to do this
+        map_dic["icons"] = {}   # Create the empty icon dictionary
+        for item in self.icon_dic:
+            print("Current Icon ID: ", item)
+            print(f"Item Dictionary{self.icon_dic[item]}")
+            map_dic["icons"][item] = {}
+            map_dic["icons"][item]["file"] = self.icon_dic[item]["file"]
+            map_dic["icons"][item]["pos_x"] = self.icon_dic[item]["pos_x"]
+            map_dic["icons"][item]["pos_y"] = self.icon_dic[item]["pos_y"]
+            map_dic["icons"][item]["tag"] = self.icon_dic[item]["tag"]
+        print("End of Create Map Dictionary")
+        print(f"New Map Dictionary: {map_dic}")
         return map_dic
 
     def save_file(self, json_file):
-        f = filedialog.asksaveasfile(mode='w', defaultextension=".json")
+        f = filedialog.asksaveasfile(mode='w', defaultextension=".json", initialdir="D:\Pan Galactic Engineering\MapMaster\saved_games",)
         if f is None:  # asksaveasfile return `None` if dialog closed with "cancel".
             return
         f.write(json_file)
@@ -273,17 +275,25 @@ class movingIconCanvas:
 
     def load_map_from_dic(self, map_dic):
         self.battle_map_title.config(text= map_dic["name"])
-        self.add_background(map_dic["background"])
-        print(map_dic["icons"])
-        for icons in map_dic["icons"]:      # Icons just returns a (list?) of the numbers of the dictionarys of items - AS A STRING
-            print(icons)
-            current_file = map_dic["icons"][icons]["file"]
-            print(f"Loading File: {current_file}")
-            object_id = self.add_icon(current_file)
-            icon_x =  int(map_dic["icons"][icons]["pos_x"])
-            icon_y =  int(map_dic["icons"][icons]["pos_y"])
-            self.place_icon(icon_x, icon_y, object_id)
-            #self.icon_f_list.append(icons["file"])
+        try:
+            self.add_background(map_dic["background"])
+        except:
+            print("No background found")
+        try:
+            print(map_dic["icons"])
+            for icons in map_dic["icons"]:      # Icons just returns a (list?) of the numbers of the dictionarys of items - AS A STRING
+                print(icons)
+                current_file = map_dic["icons"][icons]["file"]
+                print(f"Loading File: {current_file}")
+                icon_x = int(map_dic["icons"][icons]["pos_x"])
+                icon_y = int(map_dic["icons"][icons]["pos_y"])
+                try:
+                    object_id = self.add_place_icon(icon_x, icon_y, current_file)
+                except:
+                    print("Problem inserting Object into Canvas")
+        except:
+            print("Problem Loading Map from Dictionary")
+
 
 
 
@@ -313,18 +323,27 @@ class movingIconCanvas:
         resized_image = self.resize_map(file_path)
         bg_image = ImageTk.PhotoImage(resized_image)
         self.map_canvas.bg_image = bg_image
-        bg_id = self.map_canvas.create_image(654, 438, image=self.map_canvas.bg_image,
-                                             tags="background")  # ,anchor="s" # (Numbers specify the CENTER of the image- FFS NOT WELL DOCUMENTED AT ALL WANKERS)
+        bg_id = self.map_canvas.create_image(654, 438, image=self.map_canvas.bg_image, tags="background")  # ,anchor="s" # (Numbers specify the CENTER of the image- FFS NOT WELL DOCUMENTED AT ALL WANKERS)
         print(f"Background ID: {bg_id}")
-        self.map_canvas.tag_lower(bg_id, 1)  ## Lower the background to the lowest position
+        # This line is not working sometimes, its quitting here and going to except.
+        try:
+            items =  self.map_canvas.find_all()
+            print(items)
+            lowest_item_id = items[0]
+            print(f"Finding Lowest Item ID: {lowest_item_id}")
+            self.map_canvas.tag_lower(bg_id, lowest_item_id)
+            print(self.map_canvas.find_all())
+        except:
+            print("Problem tagging background lower")
+            return 0
         print("New Map Background Applied")
 
 
     # Opens image from passed filepath. Resizes image to fit background area
     def resize_map(self, filepath):
         img = Image.open(filepath)
-        print(filepath)
-        print(img.size[0], ", ", img.size[1])
+        #print(filepath)
+        #print(img.size[0], ", ", img.size[1])
         #resize_img = ImageOps.fit(img, (900,900),method=0,bleed=0.0,centering=(0.5,0.5))
         img.thumbnail((1000,850))    #Needs to be passed type tuple ## This does NOT RETURN IMAGE. it works on img object
         print("New Image Size")
@@ -341,6 +360,7 @@ class movingIconCanvas:
                 print(tag)
                 if (tag == "background"):
                     self.map_canvas.delete(item)
+                    self.background_file = "" # Also delete the file reference so that does not get saved in our JSON database
                     print(self.map_canvas.find_all())  # get all canvas objects ID
 
 
@@ -350,19 +370,19 @@ class movingIconCanvas:
     def add_icon_widget(self, container, item_row, item_column):
         self.add_icon_button = UE.selectButton(container, text="Add Icon", command=self.add_icon_dialog)
         self.add_icon_button.grid(padx=5, pady=5, row=item_row, column=item_column)
-        self.add_image_button = UE.selectButton(container, text="Add Image", command=self.add_icon_dialog)
+        self.add_image_button = UE.selectButton(container, text="Add Image", command=self.add_image_dialog)
         self.add_image_button.grid(padx=5, pady=5, row=item_row+1, column=item_column)
 
     # Same as add icon but does not resize image
     def add_image_dialog(self):
         try:
-            file_path = filedialog.askopenfilename(initialdir="D:\Pan Galactic Engineering\MapMaster\map_icons")
-            item_id = self.add_image(file_path)
-            print(f"Icon ID: {item_id}")
-            self.place_icon(self.init_x, self.init_y, item_id)
+            filepath = filedialog.askopenfilename(initialdir="D:\Pan Galactic Engineering\MapMaster\map_icons")
+            self.add_place_image(self.init_x, self.init_y, filepath)
             print("New Image Added")
         except:
             print("User Closed Dialogue Box")
+
+#https://www.digitalocean.com/community/tutorials/python-add-to-dictionary
 
     def add_image(self, filepath):
         img = Image.open(filepath)
@@ -378,44 +398,69 @@ class movingIconCanvas:
         item_id = item_id - 1  # Because its used in an indexed 0 list later
         return item_id
 
+    def add_place_image(self, x, y, filepath):
+        img = Image.open(filepath)
+        print(f"Opening Icon: {filepath}")
+        print(f"IconSize: {img.size[0]}, {img.size[1]}")
+        #if (img.size[0] > 50) or (img.size[1] > 50):
+        #    print("Icon Too Large: Resizing Icon")
+        #img = self.resize_image(filepath, 25, 25)
+        img_ref = ImageTk.PhotoImage(img)
+        print(f"img_ref: {img_ref}")
+        img_canvas_id = self.map_canvas.create_image(x, y, image=img_ref, tags="image")
+        print(f"img_canvas_id: {img_canvas_id}")
+        self.icon_dic[img_canvas_id] = {}
+        self.icon_dic[img_canvas_id].update({
+            "file": filepath,
+            "pos_x": x,
+            "pos_y": y,
+            "ref" : img_ref,                           # Even if img_ref isnt used it helps maintain it as global object to avoid garbage collection
+            "tag": "icon"})
+        print(self.icon_dic)
+        print(self.map_canvas.find_all())  # get all canvas objects ID
+
 
     def add_icon_dialog(self):
         try:
-            file_path = filedialog.askopenfilename(initialdir="D:\Pan Galactic Engineering\MapMaster\map_icons")
-            item_id = self.add_icon(file_path)
-            print(f"Icon ID: {item_id}")
-            self.place_icon(self.init_x, self.init_y , item_id)
+            filepath = filedialog.askopenfilename(initialdir="D:\Pan Galactic Engineering\MapMaster\map_icons")
+            self.add_place_icon(self.init_x, self.init_y, filepath)
             print("New Icon Added")
         except:
             print("User Closed Dialogue Box")
 
-    #Adds an icon from filepath - checks image is suitable size for icon, if too large - resizes
-    def add_icon(self, filepath):               ## This needs to return ID number of the added file
-        img = Image.open(filepath)
-        self.icon_f_list.append(filepath)
-        print(filepath)
-        print(img.size[0], ", ", img.size[1])
-        if (img.size[0] > 50) or (img.size[1] > 50):
-            img = self.resize_image(filepath, 25, 25, )
-        #self.icon_f_list.append(filepath)
-        img_ref = ImageTk.PhotoImage(img)
-        print(img_ref)
-        self.icon_list.append(img_ref)
-        item_id = len(self.icon_list)
-        item_id = item_id-1   #Because its used in an indexed 0 list later
-        return item_id
 
     #Places icon from list onto canvas
     def place_icon(self,  x, y, img_n):
         self.canvas_obj_list.append(self.map_canvas.create_image(x, y, image=self.icon_list[img_n], tags="icon"))
 
 
+    def add_place_icon(self, x, y, filepath):
+        img = Image.open(filepath)
+        print(f"Opening Icon: {filepath}")
+        print(f"IconSize: {img.size[0]}, {img.size[1]}")
+        if (img.size[0] > 50) or (img.size[1] > 50):
+            print("Icon Too Large: Resizing Icon")
+            img = self.resize_image(filepath, 25, 25)
+        img_ref = ImageTk.PhotoImage(img)
+        print(f"img_ref: {img_ref}")
+        img_canvas_id = self.map_canvas.create_image(x, y, image=img_ref, tags="icon")
+        print(f"img_canvas_id: {img_canvas_id}")
+        self.icon_dic[img_canvas_id] = {}
+        self.icon_dic[img_canvas_id].update({
+            "file": filepath,
+            "pos_x": x,
+            "pos_y": y,
+            "ref" : img_ref,                           # Even if img_ref isnt used it helps maintain it as global object to avoid garbage collection
+            "tag": "icon"})
+        print(self.icon_dic)
+        print(self.map_canvas.find_all())  # get all canvas objects ID
+
 
 
     def resize_image(self, filepath, Wmax, Hmax):
         img = Image.open(filepath)
-        print(filepath)
-        print(img.size[0], ", ", img.size[1])
+        #print(filepath)
+        #print(img.size[0], ", ", img.size[1])
         # resize_img = ImageOps.fit(img, (900,900),method=0,bleed=0.0,centering=(0.5,0.5))
         img.thumbnail((Wmax, Hmax))  # Needs to be passed type tuple ## This does NOT RETURN IMAGE. it works on img object
         print("New Image Size")
@@ -439,15 +484,20 @@ class movingIconCanvas:
 #Events
     #Delete an Icon - SEMI BROKEN works but only if move Icon to upper corner of canvas
     def delete_icon(self, event):
-        print("Deleting Icon")
-        item = self.map_canvas.find_closest(self.cursor_x, self.cursor_y, halo=1)  # get canvas object ID of where mouse pointer is  try [0] after this line? seen it on anothe solution
-        print(item)
-        for tag in self.map_canvas.gettags(item):                                    ## Check object isnt the background
-            print(tag)
-            if (tag == "icon"):
-                self.map_canvas.delete(item)
-                print(self.map_canvas.find_all())  # get all canvas objects ID
-
+        img_canvas_id = self.map_canvas.find_closest(self.cursor_x, self.cursor_y, halo=1)  # get canvas object ID of where mouse pointer is  try [0] after this line? seen it on anothe solution
+        img_id = img_canvas_id[0]                                                               ## Extract ID from tuple
+        print(f" Deleting Img: {img_id}")
+        for tag in self.map_canvas.gettags(img_id):                                    ## Check object isnt the background
+            print(f" Current Tags in {img_id}: {tag}")
+            if (tag == "icon" or tag == "image"):
+                self.map_canvas.delete(img_id)                                        ## Delete image in the canvas
+                print(f"Found Match for tag: {tag}, Deleting Item")
+                print(f"Remaining Items: {self.map_canvas.find_all()}")  # get all canvas objects ID
+                print("Icon Dictionary Original")
+                self.print_dictionary(self.icon_dic[img_id])
+                del self.icon_dic[img_id]  ## Also delete from dictionary
+                print("Icon Dictionary Item Removed")
+                self.print_dictionary(self.icon_dic)
             #if (tag == "background"):
             #    print("Background Selected - exiting")
             #    break
@@ -455,7 +505,25 @@ class movingIconCanvas:
             #    self.map_canvas.delete(item)
             #    print(self.map_canvas.find_all())  # get all canvas objects ID
 
+    def delete_all_icons(self):
+        print("Deleting All Icons & Images")
+        items = self.map_canvas.find_all()
+        print(f"Items, {items}")
+        for item_id in items:
+            #item_id = item[0]
+            print(f"Deleting Item: {item_id}")
+            self.map_canvas.delete(item_id)
+            del self.icon_dic[item_id]  ## Also delete from dictionary
+            print("Icon Dictionary Item Removed")
+        self.print_dictionary(self.icon_dic)
 
+
+
+
+
+    def print_dictionary(self, dictionary):
+        for key, value in dictionary.items():
+            print(key, " : ", value)
 
 
 
@@ -478,7 +546,7 @@ class movingIconCanvas:
                 self.__move = True  ## Moving this to avoid errors
                 self.movingimage = item  # get canvas object ID of where mouse pointer is
                 print(self.movingimage)
-                print(self.map_canvas.find_all())  # get all canvas objects ID
+                #print(self.map_canvas.find_all())  # get all canvas objects ID Just makes a mess of debug logs
 
     def stopMovement(self, event):
         self.__move = False
@@ -501,16 +569,6 @@ class movingIconCanvas:
             self.map_canvas["cursor"] = "hand2"
         self.cursor_x = event.x
         self.cursor_x = event.y
-
-
-
-
-
-
-
-
-
-
 
 
 
