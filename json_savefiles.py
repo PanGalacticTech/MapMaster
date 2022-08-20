@@ -157,7 +157,7 @@ proto_map_dic = {
 
 def return_json_str(map_object):
     map_name = map_object["name"]
-    json_str = json.dumps(saved_map, indent=4, separators=(',', ': '), ensure_ascii=False)  # sort_keys=True
+    json_str = json.dumps(map_object, indent=4, separators=(',', ': '), ensure_ascii=False)  # sort_keys=True
     return json_str
 
 '''

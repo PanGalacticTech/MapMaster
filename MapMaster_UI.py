@@ -206,7 +206,12 @@ class movingIconCanvas:
 
 
 
+
     def open_save_game(self):
+        print("Clearing Canvas")
+        self.delete_map()
+        self.delete_all_icons()
+        print("Map Cleared")
         print("Opening File Dialog")
         try:
             file_path = filedialog.askopenfilename(initialdir="D:\Pan Galactic Engineering\MapMaster\saved_games",
@@ -229,42 +234,40 @@ class movingIconCanvas:
             self.save_file(json_file)
             #save.save_json_map()
             #json_file = asksaveasfilename(initialdir="D:\Pan Galactic Engineering\MapMaster\saved_games",
-            #       defaultextension=[("Json File", "*.json")],
-             #      title = "Save Map as .json File")
+           #        defaultextension=[("Json File", "*.json")],
+           #        title = "Save Map as .json File")
         except:
-            print("problems recalling saved file")
+            print("problems saving file")
 
 
 
     def create_map_dic(self):
-        map_dic = save.proto_map_dic
+        #map_dic = save.proto_map_dic               ## Start with the prototype dictionary
+        map_dic = {}                               ## Does it even need prototype?
         map_dic["name"] = self.map_name_text
         map_dic["background"] = self.background_file
-        map_item_list = self.map_canvas.find_all()
-        print(map_item_list)
-        print(self.icon_f_list)
-        print(f"Number of icons: {len(map_item_list)}")
-        print(f"Number of Files: {len(self.icon_f_list)}")
-        for icon_id in map_item_list:
-            print("Current Icon ID: ", icon_id)
-            print(self.map_canvas.gettags(icon_id))
-            tags = self.map_canvas.gettags(icon_id)
-            if "icon" in tags:
-            #first we need to make empty dictionary entry for this icon
-                map_dic["icons"][icon_id] = {}
-                coords = self.map_canvas.coords(icon_id)                             # grab the coordinates of all objects in canvas
-                map_dic["icons"][icon_id]["file"] = self.icon_f_list[icon_id-1]     # subtract 1
-                map_dic["icons"][icon_id]["pos_x"] = coords[0]
-                map_dic["icons"][icon_id]["pos_y"] = coords[1]
-                print(map_dic["icons"][icon_id])
-            else:
-                print("No Icon Found")
+        #map_item_list = self.map_canvas.find_all()
+        #print(f"Map Item List: {map_item_list}")   # mDont need map item list it is redundent
+        #print(self.icon_f_list)
+        print(f"Icon Dictionary: {self.icon_dic}")
+        #print(f"Number of icons: {len(map_item_list)}")
+        #print(f"Number of Files: {len(self.icon_f_list)}")
+        #Probably a much cleaner and faster way to do this
+        map_dic["icons"] = {}   # Create the empty icon dictionary
+        for item in self.icon_dic:
+            print("Current Icon ID: ", item)
+            print(f"Item Dictionary{self.icon_dic[item]}")
+            map_dic["icons"][item] = {}
+            map_dic["icons"][item]["file"] = self.icon_dic[item]["file"]
+            map_dic["icons"][item]["pos_x"] = self.icon_dic[item]["pos_x"]
+            map_dic["icons"][item]["pos_y"] = self.icon_dic[item]["pos_y"]
+            map_dic["icons"][item]["tag"] = self.icon_dic[item]["tag"]
         print("End of Create Map Dictionary")
-        print(map_dic)
+        print(f"New Map Dictionary: {map_dic}")
         return map_dic
 
     def save_file(self, json_file):
-        f = filedialog.asksaveasfile(mode='w', defaultextension=".json")
+        f = filedialog.asksaveasfile(mode='w', defaultextension=".json", initialdir="D:\Pan Galactic Engineering\MapMaster\saved_games",)
         if f is None:  # asksaveasfile return `None` if dialog closed with "cancel".
             return
         f.write(json_file)
@@ -272,17 +275,25 @@ class movingIconCanvas:
 
     def load_map_from_dic(self, map_dic):
         self.battle_map_title.config(text= map_dic["name"])
-        self.add_background(map_dic["background"])
-        print(map_dic["icons"])
-        for icons in map_dic["icons"]:      # Icons just returns a (list?) of the numbers of the dictionarys of items - AS A STRING
-            print(icons)
-            current_file = map_dic["icons"][icons]["file"]
-            print(f"Loading File: {current_file}")
-            icon_x = int(map_dic["icons"][icons]["pos_x"])
-            icon_y = int(map_dic["icons"][icons]["pos_y"])
-            object_id = self.add_place_icon(icon_x, icon_y, current_file)
-            #self.place_icon(icon_x, icon_y, object_id)
-            #self.icon_f_list.append(icons["file"])
+        try:
+            self.add_background(map_dic["background"])
+        except:
+            print("No background found")
+        try:
+            print(map_dic["icons"])
+            for icons in map_dic["icons"]:      # Icons just returns a (list?) of the numbers of the dictionarys of items - AS A STRING
+                print(icons)
+                current_file = map_dic["icons"][icons]["file"]
+                print(f"Loading File: {current_file}")
+                icon_x = int(map_dic["icons"][icons]["pos_x"])
+                icon_y = int(map_dic["icons"][icons]["pos_y"])
+                try:
+                    object_id = self.add_place_icon(icon_x, icon_y, current_file)
+                except:
+                    print("Problem inserting Object into Canvas")
+        except:
+            print("Problem Loading Map from Dictionary")
+
 
 
 
@@ -316,10 +327,12 @@ class movingIconCanvas:
         print(f"Background ID: {bg_id}")
         # This line is not working sometimes, its quitting here and going to except.
         try:
-            self.map_canvas.tag_lower(bg_id, 1)  ## dont like this but it seems flakey at the moment
-            #print("Tagging lower \"1\" Worked")
-            #self.map_canvas.tag_lower(bg_id, "icon")  ## Lower the background to the lowest position WAS WORKING WITH 1 DOES NOT WORK WITH 0
-            #print("Tagging lower \"icon\" Worked")
+            items =  self.map_canvas.find_all()
+            print(items)
+            lowest_item_id = items[0]
+            print(f"Finding Lowest Item ID: {lowest_item_id}")
+            self.map_canvas.tag_lower(bg_id, lowest_item_id)
+            print(self.map_canvas.find_all())
         except:
             print("Problem tagging background lower")
             return 0
@@ -472,16 +485,17 @@ class movingIconCanvas:
     #Delete an Icon - SEMI BROKEN works but only if move Icon to upper corner of canvas
     def delete_icon(self, event):
         img_canvas_id = self.map_canvas.find_closest(self.cursor_x, self.cursor_y, halo=1)  # get canvas object ID of where mouse pointer is  try [0] after this line? seen it on anothe solution
-        print(f" Deleting Img: {img_canvas_id}")
-        for tag in self.map_canvas.gettags(img_canvas_id):                                    ## Check object isnt the background
-            print(f" Current Tags in {img_canvas_id}: {tag}")
+        img_id = img_canvas_id[0]                                                               ## Extract ID from tuple
+        print(f" Deleting Img: {img_id}")
+        for tag in self.map_canvas.gettags(img_id):                                    ## Check object isnt the background
+            print(f" Current Tags in {img_id}: {tag}")
             if (tag == "icon" or tag == "image"):
-                self.map_canvas.delete(img_canvas_id)                                        ## Delete image in the canvas
+                self.map_canvas.delete(img_id)                                        ## Delete image in the canvas
                 print(f"Found Match for tag: {tag}, Deleting Item")
                 print(f"Remaining Items: {self.map_canvas.find_all()}")  # get all canvas objects ID
-                print("Icon Dictionary Origional")
-                self.print_dictionary(self.icon_dic)
-                del self.icon_dic[img_canvas_id]  ## Also delete from dictionary
+                print("Icon Dictionary Original")
+                self.print_dictionary(self.icon_dic[img_id])
+                del self.icon_dic[img_id]  ## Also delete from dictionary
                 print("Icon Dictionary Item Removed")
                 self.print_dictionary(self.icon_dic)
             #if (tag == "background"):
@@ -490,6 +504,22 @@ class movingIconCanvas:
             #else:
             #    self.map_canvas.delete(item)
             #    print(self.map_canvas.find_all())  # get all canvas objects ID
+
+    def delete_all_icons(self):
+        print("Deleting All Icons & Images")
+        items = self.map_canvas.find_all()
+        print(f"Items, {items}")
+        for item_id in items:
+            #item_id = item[0]
+            print(f"Deleting Item: {item_id}")
+            self.map_canvas.delete(item_id)
+            del self.icon_dic[item_id]  ## Also delete from dictionary
+            print("Icon Dictionary Item Removed")
+        self.print_dictionary(self.icon_dic)
+
+
+
+
 
     def print_dictionary(self, dictionary):
         for key, value in dictionary.items():
@@ -516,7 +546,7 @@ class movingIconCanvas:
                 self.__move = True  ## Moving this to avoid errors
                 self.movingimage = item  # get canvas object ID of where mouse pointer is
                 print(self.movingimage)
-                print(self.map_canvas.find_all())  # get all canvas objects ID
+                #print(self.map_canvas.find_all())  # get all canvas objects ID Just makes a mess of debug logs
 
     def stopMovement(self, event):
         self.__move = False
