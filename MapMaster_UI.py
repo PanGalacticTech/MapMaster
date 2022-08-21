@@ -239,16 +239,16 @@ class movingIconCanvas:
         except:
             print("problems saving file")
 
-
+#TODO: add function to get map coordinates and update the item_dic before saving the map_dic
 
     def create_map_dic(self):
         #map_dic = save.proto_map_dic               ## Start with the prototype dictionary
         map_dic = {}                               ## Does it even need prototype?
         map_dic["name"] = self.map_name_text
         map_dic["background"] = self.background_file
-        #map_item_list = self.map_canvas.find_all()
-        #print(f"Map Item List: {map_item_list}")   # mDont need map item list it is redundent
-        #print(self.icon_f_list)
+        map_item_list = self.map_canvas.find_all()
+        print(f"Map Item List: {map_item_list}")
+
         print(f"Icon Dictionary: {self.icon_dic}")
         #print(f"Number of icons: {len(map_item_list)}")
         #print(f"Number of Files: {len(self.icon_f_list)}")
@@ -551,6 +551,7 @@ class movingIconCanvas:
     def stopMovement(self, event):
         self.__move = False
 
+#TODO: Add function to update item_dic with new map coordinates here - Or
     def movement(self, event):
         if self.__move:
             self.mouse_label.config(text="Mouse: " + str(event.x) + ", " + str(event.y))
