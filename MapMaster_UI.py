@@ -248,20 +248,27 @@ class movingIconCanvas:
         map_dic["background"] = self.background_file
         map_item_list = self.map_canvas.find_all()
         print(f"Map Item List: {map_item_list}")
+        #for item in map_item_list:
 
         print(f"Icon Dictionary: {self.icon_dic}")
-        #print(f"Number of icons: {len(map_item_list)}")
-        #print(f"Number of Files: {len(self.icon_f_list)}")
-        #Probably a much cleaner and faster way to do this
         map_dic["icons"] = {}   # Create the empty icon dictionary
         for item in self.icon_dic:
-            print("Current Icon ID: ", item)
-            print(f"Item Dictionary{self.icon_dic[item]}")
-            map_dic["icons"][item] = {}
-            map_dic["icons"][item]["file"] = self.icon_dic[item]["file"]
-            map_dic["icons"][item]["pos_x"] = self.icon_dic[item]["pos_x"]
-            map_dic["icons"][item]["pos_y"] = self.icon_dic[item]["pos_y"]
-            map_dic["icons"][item]["tag"] = self.icon_dic[item]["tag"]
+            tags = self.map_canvas.gettags(item)
+            print(f"tags: {tags[0]}")
+            if tags[0] == "icon":
+                print("Current Icon ID: ", item)
+                coords_tuple = self.map_canvas.coords(item)
+                print("coords tuple[0]")
+                print(f"Coords Tuple: {coords_tuple}")
+                self.icon_dic[item]["pos_x"] = round(coords_tuple[0])    ## Update item dictionaryu
+                self.icon_dic[item]["pos_y"] = round(coords_tuple[1])
+
+                print(f"Item Dictionary{self.icon_dic[item]}")
+                map_dic["icons"][item] = {}
+                map_dic["icons"][item]["file"] = self.icon_dic[item]["file"]
+                map_dic["icons"][item]["pos_x"] = self.icon_dic[item]["pos_x"]
+                map_dic["icons"][item]["pos_y"] = self.icon_dic[item]["pos_y"]
+                map_dic["icons"][item]["tag"] = self.icon_dic[item]["tag"]
         print("End of Create Map Dictionary")
         print(f"New Map Dictionary: {map_dic}")
         return map_dic
@@ -321,6 +328,7 @@ class movingIconCanvas:
 
     def add_background(self, file_path):
         resized_image = self.resize_map(file_path)
+        self.background_file = file_path
         bg_image = ImageTk.PhotoImage(resized_image)
         self.map_canvas.bg_image = bg_image
         bg_id = self.map_canvas.create_image(654, 438, image=self.map_canvas.bg_image, tags="background")  # ,anchor="s" # (Numbers specify the CENTER of the image- FFS NOT WELL DOCUMENTED AT ALL WANKERS)
