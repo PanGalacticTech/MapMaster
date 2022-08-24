@@ -200,18 +200,20 @@ class movingIconCanvas:
         self.open_button.grid(padx=10, pady=5)
         self.saveas_button = UE.selectButton(self.savebox, text="Save As", command=self.save_game)
         self.saveas_button .grid(padx=10, pady=5)
-        self.save_button = UE.selectButton(self.savebox, text="Save", command=self.open_save_game)
+        self.save_button = UE.selectButton(self.savebox, text="Save", command=self.save_game)
         self.save_button.grid(padx=10, pady=5)
+        self.rename_button = UE.selectButton(self.savebox, text="Rename Map", command=self.rename_map)
+        self.rename_button.grid(padx=10, pady=5)
 
 
+    def rename_map(self):
+        print("Enter Name for Map")
+        
 
 
 
     def open_save_game(self):
-        print("Clearing Canvas")
-        self.delete_map()
-        self.delete_all_icons()
-        print("Map Cleared")
+        print("Open Save Game")
         print("Opening File Dialog")
         try:
             file_path = filedialog.askopenfilename(initialdir="D:\Pan Galactic Engineering\MapMaster\saved_games",
@@ -219,6 +221,11 @@ class movingIconCanvas:
                     title = "Choose a Saved .json file")
             recalled_dic = save.recall_json_map(file_path)
             print(recalled_dic)
+            print("Clearing Canvas")
+            self.delete_map()
+            self.delete_all_icons()
+            print("Map Cleared")
+
             self.load_map_from_dic(recalled_dic)
         except:
             print("problems recalling saved file")
@@ -239,7 +246,7 @@ class movingIconCanvas:
         except:
             print("problems saving file")
 
-#TODO: add function to get map coordinates and update the item_dic before saving the map_dic
+
 
     def create_map_dic(self):
         #map_dic = save.proto_map_dic               ## Start with the prototype dictionary
@@ -262,7 +269,6 @@ class movingIconCanvas:
                 print(f"Coords Tuple: {coords_tuple}")
                 self.icon_dic[item]["pos_x"] = round(coords_tuple[0])    ## Update item dictionaryu
                 self.icon_dic[item]["pos_y"] = round(coords_tuple[1])
-
                 print(f"Item Dictionary{self.icon_dic[item]}")
                 map_dic["icons"][item] = {}
                 map_dic["icons"][item]["file"] = self.icon_dic[item]["file"]
