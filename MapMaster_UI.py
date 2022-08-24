@@ -1,13 +1,15 @@
 from tkinter import *
+import tkinter as tk
 from tkinter import filedialog
 from tkinter import ttk
 import UI_elements as UE
 from PIL import Image, ImageTk, ImageOps
 import tkinter.font as TkFont
 from tkinter.filedialog import asksaveasfile
+import tkinter.simpledialog as sd
 
 import json_savefiles as save
-
+from open_new_window import newWindow
 
 
 root = Tk()
@@ -138,13 +140,17 @@ class movingIconCanvas:
         self.background_image_widget(self.side_frame, 2, 0)
         self.add_icon_widget(self.side_frame, 4, 0)
 
-        self.map_name_text = "[BATTLE MAP TITLE]"
+        self.map_name_var = tk.StringVar()
+        self.map_name_var.set("[BATTLE MAP TITLE]")
+        self.map_name_text = "[BATTLE MAP TITLE]"    # still need this for dictionary
         self.background_file = ""
 
         ##Outer Frame (To help center map)
         #self.out_frame = UE.darkFrame(self.top_frame, bg=UE.BLACK)  # , text="MapMaster DMs Map & Resource Manager" , height=1000 #TODO: Dont need this frame?
         #self.out_frame.grid(row=0, column=1, padx=10, pady=10, sticky="NSEW")
-        self.battle_map_title = UE.darkLabelTitle(self.top_frame, text=self.map_name_text)
+
+        #self.battle_map_title = UE.darkLabelTitle(self.top_frame, text=self.map_name_text)
+        self.battle_map_title = UE.darkLabelTitle(self.top_frame, textvariable=self.map_name_var)
         self.battle_map_title.grid(padx=10, pady=5, row=0, column=1, columnspan=2, sticky="N")
          ## Map Frame
         self.map_frame = UE.darkFrame(self.top_frame, bg=UE.DARKER_GREY)  # , text="MapMaster DMs Map & Resource Manager" ,height=1000
@@ -207,8 +213,14 @@ class movingIconCanvas:
 
 
     def rename_map(self):
-        print("Enter Name for Map")
-        
+        print("Enter Map Title:")
+        new_name = sd.askstring(title='Rename Map', prompt="New Map Name", bg=UE.DARKER_GREY)   ## Worked but could not recolour
+        print(f"New Name: {new_name}")
+        self.map_name_var.set(new_name)
+        self.map_name_text = new_name
+
+
+
 
 
 
@@ -251,30 +263,32 @@ class movingIconCanvas:
     def create_map_dic(self):
         #map_dic = save.proto_map_dic               ## Start with the prototype dictionary
         map_dic = {}                               ## Does it even need prototype?
+        print(f"Saving Map: {self.map_name_text}")
         map_dic["name"] = self.map_name_text
         map_dic["background"] = self.background_file
-        map_item_list = self.map_canvas.find_all()
-        print(f"Map Item List: {map_item_list}")
-        #for item in map_item_list:
-
+        #map_item_list = self.map_canvas.find_all()
+        #print(f"Map Item List: {map_item_list}")
         print(f"Icon Dictionary: {self.icon_dic}")
         map_dic["icons"] = {}   # Create the empty icon dictionary
         for item in self.icon_dic:
-            tags = self.map_canvas.gettags(item)
-            print(f"tags: {tags[0]}")
-            if tags[0] == "icon":
-                print("Current Icon ID: ", item)
-                coords_tuple = self.map_canvas.coords(item)
-                print("coords tuple[0]")
-                print(f"Coords Tuple: {coords_tuple}")
-                self.icon_dic[item]["pos_x"] = round(coords_tuple[0])    ## Update item dictionaryu
-                self.icon_dic[item]["pos_y"] = round(coords_tuple[1])
-                print(f"Item Dictionary{self.icon_dic[item]}")
-                map_dic["icons"][item] = {}
-                map_dic["icons"][item]["file"] = self.icon_dic[item]["file"]
-                map_dic["icons"][item]["pos_x"] = self.icon_dic[item]["pos_x"]
-                map_dic["icons"][item]["pos_y"] = self.icon_dic[item]["pos_y"]
-                map_dic["icons"][item]["tag"] = self.icon_dic[item]["tag"]
+            try:
+                tags = self.map_canvas.gettags(item)
+                print(f"tags: {tags[0]}")
+                if tags[0] == "icon":
+                    print("Current Icon ID: ", item)
+                    coords_tuple = self.map_canvas.coords(item)
+                    print("coords tuple[0]")
+                    print(f"Coords Tuple: {coords_tuple}")
+                    self.icon_dic[item]["pos_x"] = round(coords_tuple[0])    ## Update item dictionaryu
+                    self.icon_dic[item]["pos_y"] = round(coords_tuple[1])
+                    print(f"Item Dictionary{self.icon_dic[item]}")
+                    map_dic["icons"][item] = {}
+                    map_dic["icons"][item]["file"] = self.icon_dic[item]["file"]
+                    map_dic["icons"][item]["pos_x"] = self.icon_dic[item]["pos_x"]
+                    map_dic["icons"][item]["pos_y"] = self.icon_dic[item]["pos_y"]
+                    map_dic["icons"][item]["tag"] = self.icon_dic[item]["tag"]
+            except:
+                print(f"Error Finding Tags for Object {item}.")
         print("End of Create Map Dictionary")
         print(f"New Map Dictionary: {map_dic}")
         return map_dic
@@ -287,7 +301,9 @@ class movingIconCanvas:
         f.close()
 
     def load_map_from_dic(self, map_dic):
-        self.battle_map_title.config(text= map_dic["name"])
+        #self.battle_map_title.config(text= map_dic["name"])
+        self.map_name_text = map_dic["name"]
+        self.map_name_var.set(self.map_name_text)
         try:
             self.add_background(map_dic["background"])
         except:
@@ -519,6 +535,14 @@ class movingIconCanvas:
             #    self.map_canvas.delete(item)
             #    print(self.map_canvas.find_all())  # get all canvas objects ID
 
+    def delete_icon_from_dic(self, img_id):
+        print("Icon Dictionary Original")
+        self.print_dictionary(self.icon_dic[img_id])
+        del self.icon_dic[img_id]  ## Also delete from dictionary
+        print("Icon Dictionary Item Removed")
+        self.print_dictionary(self.icon_dic)
+
+
     def delete_all_icons(self):
         print("Deleting All Icons & Images")
         items = self.map_canvas.find_all()
@@ -529,15 +553,23 @@ class movingIconCanvas:
             self.map_canvas.delete(item_id)
             del self.icon_dic[item_id]  ## Also delete from dictionary
             print("Icon Dictionary Item Removed")
-        self.print_dictionary(self.icon_dic)
-
+        try:
+            self.print_dictionary(self.icon_dic)
+            del self.icon_dic[1]  ## Also Delete entry 1 incase no other item was in dictionary
+            self.print_dictionary(self.icon_dic)
+        except:
+            print("Problem Deleting Items")
+        print("All Items Deleted")
 
 
 
 
     def print_dictionary(self, dictionary):
-        for key, value in dictionary.items():
-            print(key, " : ", value)
+        try:
+            for key, value in dictionary.items():
+                print(key, " : ", value)
+        except:
+            print("Unable to Print Dictionary")
 
 
 

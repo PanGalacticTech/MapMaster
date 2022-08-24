@@ -1,5 +1,5 @@
 {
-    "name": "[BATTLE MAP TITLE]",
+    "name": "Bullywug Cavern Test 2",
     "background": "D:\\Pan Galactic Engineering\\MapMaster\\map_backgrounds\\Froghemoth Bullywug Caverns.jpg",
     "icons": {
         "2": {
@@ -16,8 +16,8 @@
         },
         "4": {
             "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\Coal.png",
-            "pos_x": 878,
-            "pos_y": 442,
+            "pos_x": 360,
+            "pos_y": 360,
             "tag": "icon"
         },
         "5": {

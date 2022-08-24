@@ -1,89 +1,89 @@
 {
-    "name": "New Test Map",
-    "background": "D:\\Pan Galactic Engineering\\MapMaster\\map_backgrounds\\Froghemoth Bullywug Caverns.jpg",
+    "name": "The Prision Part [2]",
+    "background": "D:/Pan Galactic Engineering/MapMaster/map_backgrounds/Goblin Mine Parts/[1]Goblin Mine Jail.jpg",
     "icons": {
-        "61": {
+        "1": {
             "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\Silver.png",
-            "pos_x": 300,
-            "pos_y": 300,
+            "pos_x": 347,
+            "pos_y": 484,
             "tag": "icon"
         },
-        "62": {
+        "2": {
             "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\Meridith.png",
-            "pos_x": 1002,
-            "pos_y": 279,
+            "pos_x": 344,
+            "pos_y": 421,
             "tag": "icon"
         },
-        "63": {
+        "3": {
             "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\Coal.png",
-            "pos_x": 904,
-            "pos_y": 441,
+            "pos_x": 350,
+            "pos_y": 391,
             "tag": "icon"
         },
-        "64": {
+        "4": {
             "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\Faen.png",
-            "pos_x": 907,
-            "pos_y": 545,
+            "pos_x": 348,
+            "pos_y": 360,
             "tag": "icon"
         },
-        "65": {
+        "5": {
             "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\1_red.png",
-            "pos_x": 290,
-            "pos_y": 290,
+            "pos_x": 36,
+            "pos_y": 450,
             "tag": "icon"
         },
-        "66": {
+        "6": {
             "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\2_orange.png",
-            "pos_x": 290,
-            "pos_y": 290,
+            "pos_x": 347,
+            "pos_y": 451,
             "tag": "icon"
         },
-        "67": {
+        "7": {
             "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\3_yellow.png",
-            "pos_x": 290,
-            "pos_y": 290,
+            "pos_x": 863,
+            "pos_y": 554,
             "tag": "icon"
         },
-        "68": {
+        "8": {
             "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\4_lime.png",
-            "pos_x": 290,
-            "pos_y": 290,
+            "pos_x": 859,
+            "pos_y": 502,
             "tag": "icon"
         },
-        "69": {
+        "9": {
             "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\5_green.png",
-            "pos_x": 290,
-            "pos_y": 290,
+            "pos_x": 740,
+            "pos_y": 501,
             "tag": "icon"
         },
-        "70": {
+        "10": {
             "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\6_aqua.png",
-            "pos_x": 290,
-            "pos_y": 290,
+            "pos_x": 758,
+            "pos_y": 563,
             "tag": "icon"
         },
-        "71": {
+        "11": {
             "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\7_sky.png",
-            "pos_x": 290,
-            "pos_y": 290,
+            "pos_x": 793,
+            "pos_y": 331,
             "tag": "icon"
         },
-        "72": {
+        "12": {
             "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\8_blue.png",
-            "pos_x": 290,
-            "pos_y": 290,
+            "pos_x": 1097,
+            "pos_y": 62,
             "tag": "icon"
         },
-        "73": {
+        "13": {
             "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\9_purple.png",
-            "pos_x": 290,
-            "pos_y": 290,
+            "pos_x": 1069,
+            "pos_y": 58,
             "tag": "icon"
         },
-        "74": {
+        "14": {
             "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\10_pink.png",
-            "pos_x": 290,
-            "pos_y": 290,
+            "pos_x": 43,
+            "pos_y": 214,
             "tag": "icon"
         }
     }

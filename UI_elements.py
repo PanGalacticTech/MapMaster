@@ -9,6 +9,7 @@ MapMaster User Interface Elements
 import tkinter as tk
 from tkinter import ttk
 import tkinter.font as TkFont
+import tkinter.simpledialog
 
 
 #USER COLOURS:
@@ -56,6 +57,38 @@ def display_colour(color):
 
 
 #USER FONTS
+
+
+'''
+https://stackoverflow.com/questions/61566043/how-to-set-background-color-of-tk-simpledialog
+https://rszalski.github.io/magicmethods/
+'''
+
+#Dark Popup:
+
+'''
+class darkDialog(tk.simpledialog.Dialog):
+    def buttonbox(self):
+        value = self.entry_box()
+        print(value)
+        super().buttonbox()
+        for _ in self.children.values(): _.configure(bg=DARKER_GREY)
+        self.configure(bg=DARKER_GREY)
+
+
+    def entry_box(self):
+        self.new_name_text = darkLabel(self, text="Enter New Map Title")
+        self.new_name_text.pack(padx=10, pady=10)
+        self.new_name_entry = darkEntry(self)
+        self.new_name_entry.pack(padx=10, pady=5)
+
+        value = self.new_name_entry.get()
+        print(f"Input Box Value: {value}")
+        return value
+
+'''
+
+
 
 
 
