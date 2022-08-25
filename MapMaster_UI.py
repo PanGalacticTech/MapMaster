@@ -39,7 +39,7 @@ class movingIconCanvas:
         self.norm_font = TkFont.Font(family='Consolas', size=10)
         self.top_frame = UE.darkFrame(self.root, bg=UE.DARKER_GREY)
         self.top_frame.grid(row=0, column=0, sticky="NESW")
-
+        self.live_map_active = False
         # Setout all othe Frames
         self.setout_frames(self.top_frame)
         self.placeholder_text()
@@ -64,6 +64,7 @@ class movingIconCanvas:
 
 
 
+
         self.init_x = self.canvas_width // 2
         self.init_y = self.canvas_height // 2
 
@@ -84,7 +85,7 @@ class movingIconCanvas:
         self.cursor_y = 0
 
         # Uncomment to load default game on startup
-        #self.load_map_from_dic(save.saved_map)
+        self.load_map_from_dic(save.saved_map)
 
 
 
@@ -159,6 +160,8 @@ class movingIconCanvas:
         ## Live Map Control Frame
         self.live_frame = UE.darkFrame(self.top_frame, bg=UE.BLACK)
         self.live_frame.grid(padx=10, pady=10, sticky="W", row=4, column=0, columnspan=2)
+        self.live_buttons_wiget(self.live_frame)
+
         ## Range and Character Control Frame
         self.range_frame = UE.darkFrame(self.top_frame, bg=UE.BLACK)
         self.range_frame.grid(padx=10, pady=10, sticky="E", row=4, column=1, columnspan=2)
@@ -180,12 +183,7 @@ class movingIconCanvas:
         self.PLACEHOLDER_ICON4 = UE.darkLabel(self.object_frame, text="[Icon4]")
         self.PLACEHOLDER_ICON4.grid(column=1, row=2, padx=10, pady=10, sticky="NSEW")
 
-        self.PLACEHOLDER_BUTTON = UE.darkLabelTitle(self.live_frame, text="[Live Map Active]")
-        self.PLACEHOLDER_BUTTON.grid(padx=10, pady=10, row=0, column=0, sticky="S")
-        self.PLACEHOLDER_BUTTON1 = UE.darkLabelTitle(self.live_frame, text="[Blackout]")
-        self.PLACEHOLDER_BUTTON1.grid(padx=10, pady=10, row=0, column=1, sticky="S")
-        self.PLACEHOLDER_BUTTON2 = UE.darkLabelTitle(self.live_frame, text="[Show Mask]")
-        self.PLACEHOLDER_BUTTON2.grid(padx=10, pady=10, row=0, column=2, sticky="S")
+
 
         self.PLACEHOLDER_BUTTON3 = UE.darkLabelTitle(self.range_frame, text="[Cone & Areas]")
         self.PLACEHOLDER_BUTTON3.grid(padx=10, pady=10, row=0, column=0, sticky="S")
@@ -197,8 +195,27 @@ class movingIconCanvas:
         self.PLACEHOLDER_BUTTON5.grid(padx=10, pady=10, row=0, column=3, sticky="S")
 
 
+    def live_buttons_wiget(self, container):
+        self.livebox = UE.darkBorderless(container)
+        self.livebox.grid(padx=10, pady=5, sticky="N")
+        self.live_map_button = UE.selectButton(self.livebox, text="Activate Live Map", command=self.open_live_map)
+        self.live_map_button.grid(padx=10, pady=10, row=0, column=0, sticky="S")
+        self.PLACEHOLDER_BUTTON1 = UE.darkLabelTitle(self.livebox, text="[Blackout]")
+        self.PLACEHOLDER_BUTTON1.grid(padx=10, pady=10, row=0, column=1, sticky="S")
+        self.PLACEHOLDER_BUTTON2 = UE.darkLabelTitle(self.livebox, text="[Show Mask]")
+        self.PLACEHOLDER_BUTTON2.grid(padx=10, pady=10, row=0, column=2, sticky="S")
 
-        # Save Buttons
+    def open_live_map(self):
+        if self.live_map_active == True:
+            self.live_map_active = False
+            print("Live Map Closed")
+            self.live_map_button.config(text="Activate Live Map", bg=UE.DARKER_GREY, fg=UE.ACTIVE_BLUE )
+        else:
+            self.live_map_active = True
+            print("Live Map Active")
+            self.live_map_button.config(text="Close Live Map", bg=UE.ACTIVE_BLUE, fg=UE.DARKER_GREY )
+
+            # Save Buttons
     def save_buttons_widget(self, container, wiget_row, wiget_column):
         self.savebox = UE.darkBorderless(container)
         self.savebox.grid(padx=10, pady=5, sticky="N", row=wiget_row, column=wiget_column)

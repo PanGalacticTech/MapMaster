@@ -37,9 +37,13 @@ class newWindow:
         self.norm_font = TkFont.Font(family='Consolas', size=10)
         self.top_frame = UE.darkFrame(self.root, bg=UE.DARKER_GREY)
         #self.top_frame.grid(row=0, column=0, sticky="NESW")
-
+        self.map_frame = UE.darkFrame(self.top_frame, bg=UE.DARKER_GREY)  # , text="MapMaster DMs Map & Resource Manager" ,height=1000
+        self.map_frame.grid(padx=10, pady=10, sticky="NSEW", row=1, column=1, columnspan=2)
         #Button Wigets
-        self.text_input_wiget()
+        #self.text_input_wiget()
+        self.live_map_canvas = Canvas(self.map_frame, width=self.canvas_width, height=self.canvas_height, bg=UE.DARK_GREY)
+        self.live_map_canvas.grid(padx=10, pady=10)
+
 
         self.top_frame.grid(row=0, column=0, sticky="NESW")
         self.top_frame.grid_rowconfigure(0, weight=1)

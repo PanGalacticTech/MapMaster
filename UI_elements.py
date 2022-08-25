@@ -136,11 +136,11 @@ class radioButton(tk.Button):                            ## THIS IS A RADIO BUTT
 
 
 class selectButton(tk.Button):                            ## THIS IS A RADIO BUTTON WTF
-    def __init__(self, master=None, **kwargs):
+    def __init__(self, master=None, width=23, **kwargs,):
         self.var = tk.StringVar()
         self.bld_ft = TkFont.Font(family='Consolas', size=10, weight='bold')
         tk.Button.__init__(self, master, bg = BG_GREY, fg=TEXT_GREY, font=self.bld_ft,
-                                activebackground = FEATURE_GREY, **kwargs) #selectcolor="Black",
+                                activebackground = FEATURE_GREY, width=width, **kwargs) #selectcolor="Black",
 
 
 
