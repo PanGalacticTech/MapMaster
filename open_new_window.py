@@ -11,7 +11,7 @@ import json_savefiles as save
 
 
 WINDOW_TITLE = "Enter Map Name"
-NEW_WIN_GEOMETRY = "300x100"
+NEW_WIN_GEOMETRY = "1600x1000"
 WIN_ICON = "D:\Pan Galactic Engineering\MapMaster\Icons\MapMaster_Icon256.ico"
 
 PLACEHOLDER = "Placeholder"
@@ -37,15 +37,20 @@ class newWindow:
         self.norm_font = TkFont.Font(family='Consolas', size=10)
         self.top_frame = UE.darkFrame(self.root, bg=UE.DARKER_GREY)
         #self.top_frame.grid(row=0, column=0, sticky="NESW")
-        self.map_frame = UE.darkFrame(self.top_frame, bg=UE.DARKER_GREY)  # , text="MapMaster DMs Map & Resource Manager" ,height=1000
-        self.map_frame.grid(padx=10, pady=10, sticky="NSEW", row=1, column=1, columnspan=2)
+        #self.map_frame = UE.darkFrame(self.top_frame, bg=UE.DARKER_GREY)  # , text="MapMaster DMs Map & Resource Manager" ,height=1000
+        #self.map_frame.grid(padx=10, pady=10, sticky="NSEW") #row=1, column=1, columnspan=2
         #Button Wigets
         #self.text_input_wiget()
-        self.live_map_canvas = Canvas(self.map_frame, width=self.canvas_width, height=self.canvas_height, bg=UE.DARK_GREY)
+
+        self.canvas_width = 1308
+        self.canvas_width = 876
+
+        self.live_map_canvas = Canvas(self.top_frame, width=self.canvas_width, height=self.canvas_width, bg=UE.DARK_GREY)
         self.live_map_canvas.grid(padx=10, pady=10)
 
 
-        self.top_frame.grid(row=0, column=0, sticky="NESW")
+        #self.top_frame.grid(row=0, column=0, sticky="NESW")
+        self.top_frame.grid(padx=10, pady=10, sticky="NSEW", row=0, column=0, columnspan=2)
         self.top_frame.grid_rowconfigure(0, weight=1)
         self.top_frame.grid_columnconfigure(0, weight=1)
         self.root.grid_rowconfigure(0, weight=1)
@@ -80,8 +85,8 @@ class newWindow:
         self.root.destroy()
 
 
-
-
+    def load_map_dic(self, map_dic):
+        print("Ahhh")
 '''
 def openNewWindow():
     # Toplevel object which will

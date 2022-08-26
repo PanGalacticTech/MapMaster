@@ -209,11 +209,20 @@ class movingIconCanvas:
         if self.live_map_active == True:
             self.live_map_active = False
             print("Live Map Closed")
-            self.live_map_button.config(text="Activate Live Map", bg=UE.DARKER_GREY, fg=UE.ACTIVE_BLUE )
+            self.live_map_button.config(text="Activate Live Map", bg=UE.DARKER_GREY, fg=UE.ACTIVE_BLUE)
+            self.close_live_window()
         else:
             self.live_map_active = True
             print("Live Map Active")
             self.live_map_button.config(text="Close Live Map", bg=UE.ACTIVE_BLUE, fg=UE.DARKER_GREY )
+            self.open_live_window()
+
+    def open_live_window(self):
+        self.live_map = newWindow()
+
+
+    def close_live_window(self):
+        self.live_map.close_window()
 
             # Save Buttons
     def save_buttons_widget(self, container, wiget_row, wiget_column):
