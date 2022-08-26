@@ -26,6 +26,7 @@ the 2nd canvas.
 
 class newWindow:
     def __init__(self):
+        print("newWindow Open \n\n\n\n")
         self.root = Tk()
         self.s = ttk.Style()
         self.s.theme_use('classic')
@@ -36,6 +37,7 @@ class newWindow:
         self.title_font = TkFont.Font(family='Consolas', size=24, weight='bold')
         self.norm_font = TkFont.Font(family='Consolas', size=10)
         self.top_frame = UE.darkFrame(self.root, bg=UE.DARKER_GREY)
+        self.background_file = ""
         #self.top_frame.grid(row=0, column=0, sticky="NESW")
         #self.map_frame = UE.darkFrame(self.top_frame, bg=UE.DARKER_GREY)  # , text="MapMaster DMs Map & Resource Manager" ,height=1000
         #self.map_frame.grid(padx=10, pady=10, sticky="NSEW") #row=1, column=1, columnspan=2
@@ -85,8 +87,139 @@ class newWindow:
         self.root.destroy()
 
 
-    def load_map_dic(self, map_dic):
-        print("Ahhh")
+
+    def load_map_from_dic(self, map_dic, item_dic, background_ref):
+        # self.battle_map_title.config(text= map_dic["name"])
+        #self.map_name_text = map_dic["name"]
+        #self.map_name_var.set(self.map_name_text)
+        try:
+            self.add_background_ref(background_ref)
+            self.background_file = map_dic["background"]
+            print(f"Background File Found: {self.background_file}")
+            self.add_background(self.background_file)
+        except:
+            print("No background found [0]")
+        try:
+            print(map_dic["icons"])
+            for icons in map_dic[ "icons"]:  # Icons just returns a (list?) of the numbers of the dictionarys of items - AS A STRING
+                print(icons)
+                print(item_dic[icons]) # Testing using the reference saved in item dic instead of file saved in map dic
+                current_file = map_dic["icons"][icons]["file"]
+                print(f"Loading File: {current_file}")
+                icon_x = int(map_dic["icons"][icons]["pos_x"])
+                icon_y = int(map_dic["icons"][icons]["pos_y"])
+                ref = item_dic[icons]["ref"]
+                try:
+                    object_id = self.add_place_icon_obj(icon_x, icon_y, ref)
+                    #object_id = self.add_place_icon(icon_x, icon_y, current_file)
+                except:
+                    print("Problem inserting Object into Canvas")
+        except:
+            print("Problem Loading Map from Dictionary")
+
+
+    def add_background(self, file_path):
+        resized_image = self.resize_map(file_path)
+        #self.background_file = file_path
+        bg_image = ImageTk.PhotoImage(resized_image)
+        self.live_map_canvas.bg_image = bg_image
+        bg_id = self.live_map_canvas.create_image(654, 438, image=self.live_map_canvas.bg_image, tags="background")  # ,anchor="s" # (Numbers specify the CENTER of the image- FFS NOT WELL DOCUMENTED AT ALL WANKERS)
+        print(f"Background ID: {bg_id}")
+        # This line is not working sometimes, its quitting here and going to except.
+        try:
+            items = self.live_map_canvas.find_all()
+            print(items)
+            lowest_item_id = items[0]
+            print(f"Finding Lowest Item ID: {lowest_item_id}")
+            self.live_map_canvas.tag_lower(bg_id, lowest_item_id)
+            print(self.live_map_canvas.find_all())
+        except:
+            print("Problem tagging background lower")
+            return 0
+        print("New Map Background Applied")
+
+    def add_background_ref(self, img_ref):
+        bg_image = ImageTk.PhotoImage(img_ref)
+        self.live_map_canvas.bg_image = bg_image
+        bg_id = self.live_map_canvas.create_image(654, 438, image=self.live_map_canvas.bg_image,
+                                                  tags="background")  # ,anchor="s" # (Numbers specify the CENTER of the image- FFS NOT WELL DOCUMENTED AT ALL WANKERS)
+        print(f"Background ID: {bg_id}")
+        # This line is not working sometimes, its quitting here and going to except.
+        try:
+            items = self.live_map_canvas.find_all()
+            print(items)
+            lowest_item_id = items[0]
+            print(f"Finding Lowest Item ID: {lowest_item_id}")
+            self.live_map_canvas.tag_lower(bg_id, lowest_item_id)
+            print(self.live_map_canvas.find_all())
+        except:
+            print("Problem tagging background lower")
+            return 0
+        print("New Map Background Applied")
+
+
+# Opens image from passed filepath. Resizes image to fit background area
+    def resize_map(self, filepath):
+        img = Image.open(filepath)
+        img.thumbnail((1000,850))    #Needs to be passed type tuple ## This does NOT RETURN IMAGE. it works on img object
+        print("New Image Size")
+        print(img.size[0],img.size[1])
+        return img
+
+    def add_place_icon_obj(self, x, y, img_ref):
+        #img = Image.open(filepath)
+        #print(f"Opening Icon: {filepath}")
+        #print(f"IconSize: {img.size[0]}, {img.size[1]}")
+        #if (img.size[0] > 50) or (img.size[1] > 50):
+         #   print("Icon Too Large: Resizing Icon")
+        #    img = self.resize_image(filepath, 25, 25)
+        #img_ref = ImageTk.PhotoImage(img)
+        print(f"img_ref: {ref}")
+        img_canvas_id = self.live_map_canvas.create_image(x, y, image=img_ref, tags="icon")
+        print(f"img_canvas_id: {img_canvas_id}")
+        # self.icon_dic[img_canvas_id] = {}             ### Do not need to update item dic as we are using the
+        # self.icon_dic[img_canvas_id].update({
+        #    "file": filepath,
+        #    "pos_x": x,
+        #   "pos_y": y,
+        #   "ref" : img_ref,                           # Even if img_ref isnt used it helps maintain it as global object to avoid garbage collection
+        #    "tag": "icon"})
+        # print(self.icon_dic)
+        print(self.live_map_canvas.find_all())  # get all canvas objects ID
+
+
+    def add_place_icon(self, x, y, filepath):
+        img = Image.open(filepath)
+        print(f"Opening Icon: {filepath}")
+        print(f"IconSize: {img.size[0]}, {img.size[1]}")
+        if (img.size[0] > 50) or (img.size[1] > 50):
+            print("Icon Too Large: Resizing Icon")
+            img = self.resize_image(filepath, 25, 25)
+        img_ref = ImageTk.PhotoImage(img)
+        print(f"img_ref: {img_ref}")
+        img_canvas_id = self.live_map_canvas.create_image(x, y, image=img_ref, tags="icon")
+        print(f"img_canvas_id: {img_canvas_id}")
+        #self.icon_dic[img_canvas_id] = {}             ### Do not need to update item dic as we are using the
+        #self.icon_dic[img_canvas_id].update({
+        #    "file": filepath,
+        #    "pos_x": x,
+         #   "pos_y": y,
+         #   "ref" : img_ref,                           # Even if img_ref isnt used it helps maintain it as global object to avoid garbage collection
+        #    "tag": "icon"})
+        #print(self.icon_dic)
+        print(self.live_map_canvas.find_all())  # get all canvas objects ID
+
+    def resize_image(self, filepath, Wmax, Hmax):
+        img = Image.open(filepath)
+        #print(filepath)
+        #print(img.size[0], ", ", img.size[1])
+        # resize_img = ImageOps.fit(img, (900,900),method=0,bleed=0.0,centering=(0.5,0.5))
+        img.thumbnail((Wmax, Hmax))  # Needs to be passed type tuple ## This does NOT RETURN IMAGE. it works on img object
+        print("New Image Size")
+        print(img.size[0], img.size[1])
+        return img
+
+
 '''
 def openNewWindow():
     # Toplevel object which will

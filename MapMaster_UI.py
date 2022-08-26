@@ -10,6 +10,7 @@ import tkinter.simpledialog as sd
 
 import json_savefiles as save
 from open_new_window import newWindow
+import mirrorCanvas
 
 
 root = Tk()
@@ -55,6 +56,7 @@ class movingIconCanvas:
 
 
         self.map_canvas = Canvas(self.map_frame, width=self.canvas_width, height=self.canvas_height, bg=UE.DARK_GREY)
+        #self.map_canvas = mirrorCanvas(self.map_frame, width=self.canvas_width, height=self.canvas_height, bg=UE.DARK_GREY)
         self.map_canvas.grid(padx=10, pady=10)
         self.__move = False
         # Label to output xy of mouse
@@ -218,7 +220,16 @@ class movingIconCanvas:
             self.open_live_window()
 
     def open_live_window(self):
-        self.live_map = newWindow()
+        map_dic = self.create_map_dic()   ## Update the map dictionary
+        print(f"Map Dictionary Being Passed to LIVE CANVAS \n{map_dic}")
+        self.live_map = newWindow()   # Open a new window
+        self.live_map.load_map_from_dic(map_dic, self.icon_dic, self.map_canvas.bg_image )  # Load the map from the map_dic
+
+    def set_live_canvas(self, map_dic):
+        print(f"Set Live Canvas")
+
+    def update_live_canvas(self):
+        print(f"Update Live Canvas")
 
 
     def close_live_window(self):
@@ -331,7 +342,9 @@ class movingIconCanvas:
         self.map_name_text = map_dic["name"]
         self.map_name_var.set(self.map_name_text)
         try:
-            self.add_background(map_dic["background"])
+            self.background_file = map_dic["background"]
+            print(f"Background File Found: {self.background_file}")
+            self.add_background(self.background_file)
         except:
             print("No background found")
         try:
@@ -398,9 +411,6 @@ class movingIconCanvas:
     # Opens image from passed filepath. Resizes image to fit background area
     def resize_map(self, filepath):
         img = Image.open(filepath)
-        #print(filepath)
-        #print(img.size[0], ", ", img.size[1])
-        #resize_img = ImageOps.fit(img, (900,900),method=0,bleed=0.0,centering=(0.5,0.5))
         img.thumbnail((1000,850))    #Needs to be passed type tuple ## This does NOT RETURN IMAGE. it works on img object
         print("New Image Size")
         print(img.size[0],img.size[1])
