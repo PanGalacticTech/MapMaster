@@ -72,11 +72,12 @@ class movingIconCanvas:
 
         #List to hold images/references
 
-        self.icon_f_list = []    # Holds Filelinks to images
+        #self.icon_f_list = []    # Holds Filelinks to images
         self.icon_list = []      # hold img_refs
-        self.icon_xy = []        # holds list of list of xy positions
+        self.live_map_list = []   # holds more img_refs  I think only useful for avoiding garbage collection,m might be a better way of doing this like declairing global but I dont understand that atm
+        #self.icon_xy = []        # holds list of list of xy positions
         self.canvas_obj_list = [] #??? Holds objects once in canvas? IDK
-        self.icon_no = 0           # Dont like this but currently used to track new items into the array // Actually dont think this ever got used
+        #self.icon_no = 0           # Dont like this but currently used to track new items into the array // Actually dont think this ever got used
 
         # The above is stupid. Why use lists and have to match and do all kinds of crazy complicated stuff. Just use a dictionary!
 
@@ -217,7 +218,9 @@ class movingIconCanvas:
             self.live_map_active = True
             print("Live Map Active")
             self.live_map_button.config(text="Close Live Map", bg=UE.ACTIVE_BLUE, fg=UE.DARKER_GREY )
-            self.open_live_window()
+            #self.open_live_window()
+            self.live_canvas()
+
 
     def open_live_window(self):
         map_dic = self.create_map_dic()   ## Update the map dictionary
@@ -225,15 +228,30 @@ class movingIconCanvas:
         self.live_map = newWindow()   # Open a new window
         self.live_map.load_map_from_dic(map_dic, self.icon_dic, self.map_canvas.bg_image )  # Load the map from the map_dic
 
-    def set_live_canvas(self, map_dic):
+
+    def live_canvas(self):
+        print("Opening Live Canvas")
+        self.live_map_win = Toplevel(self.root)
+        self.live_map_win.configure(background=UE.DARK_GREY)
+        self.live_map_canvas = Canvas(self.live_map_win, width=self.canvas_width, height=self.canvas_height, bg=UE.DARK_GREY)
+        self.live_map_canvas.grid(padx=10, pady=10, sticky="NESW")
+        self.set_live_canvas()
+
+
+    def set_live_canvas(self):
+        map_dic = self.create_map_dic()  ## Update the map dictionary
+        self.load_live_map_from_dic(map_dic)
         print(f"Set Live Canvas")
 
     def update_live_canvas(self):
         print(f"Update Live Canvas")
 
 
+
     def close_live_window(self):
-        self.live_map.close_window()
+        #self.live_map.close_window()
+        self.live_map_win.destroy()
+        self.live_map_canvas.destroy()
 
             # Save Buttons
     def save_buttons_widget(self, container, wiget_row, wiget_column):
@@ -337,6 +355,33 @@ class movingIconCanvas:
         f.write(json_file)
         f.close()
 
+
+    def load_live_map_from_dic(self, map_dic):
+        try:
+            background_file = map_dic["background"]
+            print(f"Background File Found: {background_file}")
+            self.add_bg_live_map(background_file)
+        except:
+            print("No background found")
+        try:
+            print(map_dic["icons"])
+            for icons in map_dic["icons"]:      # Icons just returns a (list?) of the numbers of the dictionarys of items - AS A STRING
+                print(icons)
+                current_file = map_dic["icons"][icons]["file"]
+                print(f"Loading File: {current_file}")
+                icon_x = int(map_dic["icons"][icons]["pos_x"])
+                icon_y = int(map_dic["icons"][icons]["pos_y"])
+                print(f"Placing Icon at: X[{icon_x}], Y[{icon_y }]")
+                try:
+                    object_id = self.add_place_live_map(icon_x, icon_y, current_file)
+                    print(f"Placing Icon at: X[{icon_x}], Y[{icon_y}]")
+                except:
+                    print("Problem inserting Object into Canvas")
+        except:
+            print("Problem Loading Map from Dictionary")
+
+
+
     def load_map_from_dic(self, map_dic):
         #self.battle_map_title.config(text= map_dic["name"])
         self.map_name_text = map_dic["name"]
@@ -376,7 +421,7 @@ class movingIconCanvas:
         self.delete_map_button = UE.selectButton(container, text="Delete Background Map", command=self.delete_map)
         self.delete_map_button.grid(padx=5, pady=5, row=item_row+1, column=item_column)
 
-        #self.canvas = Canvas(self.map_frame, width=1200, height=850, bg=UE.DARKER_GREY, highlightcolor=UE.ACTIVE_BLUE, bd=0, relief="sunken") #TODO change canvas border colour
+        #self.canvas = Canvas(self.map_frame, width=1200, height=850, bg=UE.DARKER_GREY, highlightcolor=UE.ACTIVE_BLUE, bd=0, relief="sunken")
         #self.canvas.grid(sticky="NSEW", padx=5, pady=5)
 
 
@@ -402,6 +447,26 @@ class movingIconCanvas:
             print(f"Finding Lowest Item ID: {lowest_item_id}")
             self.map_canvas.tag_lower(bg_id, lowest_item_id)
             print(self.map_canvas.find_all())
+        except:
+            print("Problem tagging background lower")
+            return 0
+        print("New Map Background Applied")
+
+    def add_bg_live_map(self, file_path):
+        resized_image = self.resize_map(file_path)
+        self.background_file = file_path
+        bg_image = ImageTk.PhotoImage(resized_image)
+        self.live_map_canvas.bg_image = bg_image
+        bg_id = self.live_map_canvas.create_image(654, 438, image=self.live_map_canvas.bg_image, tags="background")  # ,anchor="s" # (Numbers specify the CENTER of the image- FFS NOT WELL DOCUMENTED AT ALL WANKERS)
+        print(f"Background ID: {bg_id}")
+        # This line is not working sometimes, its quitting here and going to except.
+        try:
+            items = self.live_map_canvas.find_all()
+            print(items)
+            lowest_item_id = items[0]
+            print(f"Finding Lowest Item ID: {lowest_item_id}")
+            self.live_map_canvas.tag_lower(bg_id, lowest_item_id)
+            print(self.live_map_canvas.find_all())
         except:
             print("Problem tagging background lower")
             return 0
@@ -445,24 +510,14 @@ class movingIconCanvas:
             filepath = filedialog.askopenfilename(initialdir="D:\Pan Galactic Engineering\MapMaster\map_icons")
             self.add_place_image(self.init_x, self.init_y, filepath)
             print("New Image Added")
+            if self.live_map_active:
+                self.add_place_live_image(self.init_x, self.init_y, filepath)
         except:
             print("User Closed Dialogue Box")
 
 #https://www.digitalocean.com/community/tutorials/python-add-to-dictionary
 
-    def add_image(self, filepath):
-        img = Image.open(filepath)
-        print(filepath)
-        print(img.size[0], ", ", img.size[1])
-        #if (img.size[0] > 50) or (img.size[1] > 50):
-        #    img = self.resize_image(filepath, 25, 25, )
-        # self.icon_f_list.append(filepath)
-        img_ref = ImageTk.PhotoImage(img)
-        print(img_ref)
-        self.icon_list.append(img_ref)
-        item_id = len(self.icon_list)
-        item_id = item_id - 1  # Because its used in an indexed 0 list later
-        return item_id
+
 
     def add_place_image(self, x, y, filepath):
         img = Image.open(filepath)
@@ -485,19 +540,31 @@ class movingIconCanvas:
         print(self.icon_dic)
         print(self.map_canvas.find_all())  # get all canvas objects ID
 
+    def add_place_live_image(self, x, y, filepath):
+        img = Image.open(filepath)
+        print(f"Opening Icon: {filepath}")
+        print(f"IconSize: {img.size[0]}, {img.size[1]}")
+        #if (img.size[0] > 50) or (img.size[1] > 50):
+        #    print("Icon Too Large: Resizing Icon")
+        #img = self.resize_image(filepath, 25, 25)
+        img_ref = ImageTk.PhotoImage(img)
+        self.live_map_list.append(img_ref)
+        print(f"img_ref: {img_ref}")
+        img_canvas_id = self.live_map_canvas.create_image(x, y, image=img_ref, tags="image")
+        print(f"img_canvas_id: {img_canvas_id}")
+        print(self.map_canvas.find_all())  # get all canvas objects ID
+
 
     def add_icon_dialog(self):
         try:
             filepath = filedialog.askopenfilename(initialdir="D:\Pan Galactic Engineering\MapMaster\map_icons")
             self.add_place_icon(self.init_x, self.init_y, filepath)
             print("New Icon Added")
+            if self.live_map_active:
+                self.add_place_live_map(self.init_x, self.init_y, filepath)
         except:
             print("User Closed Dialogue Box")
 
-
-    #Places icon from list onto canvas
-    def place_icon(self,  x, y, img_n):
-        self.canvas_obj_list.append(self.map_canvas.create_image(x, y, image=self.icon_list[img_n], tags="icon"))
 
 
     def add_place_icon(self, x, y, filepath):
@@ -521,7 +588,19 @@ class movingIconCanvas:
         print(self.icon_dic)
         print(self.map_canvas.find_all())  # get all canvas objects ID
 
-
+    def add_place_live_map(self,  x, y, filepath):
+        img = Image.open(filepath)
+        print(f"Opening Icon: {filepath}")
+        print(f"IconSize: {img.size[0]}, {img.size[1]}")
+        if (img.size[0] > 50) or (img.size[1] > 50):
+            print("Icon Too Large: Resizing Icon")
+            img = self.resize_image(filepath, 25, 25)
+        img_ref = ImageTk.PhotoImage(img)     # I think this imageref needs to be saved as a global to avoid garbage collection
+        self.live_map_list.append(img_ref)
+        print(f"img_ref: {img_ref}")
+        img_canvas_id = self.live_map_canvas.create_image(x, y, image=img_ref, tags="icon")
+        print(f"img_LIVE_canvas_id: {img_canvas_id}")
+        print(self.live_map_canvas.find_all())  # get all canvas objects ID):
 
     def resize_image(self, filepath, Wmax, Hmax):
         img = Image.open(filepath)
@@ -557,6 +636,8 @@ class movingIconCanvas:
             print(f" Current Tags in {img_id}: {tag}")
             if (tag == "icon" or tag == "image"):
                 self.map_canvas.delete(img_id)                                        ## Delete image in the canvas
+                if self.live_map_active:
+                    self.live_map_canvas.delete(img_id)
                 print(f"Found Match for tag: {tag}, Deleting Item")
                 print(f"Remaining Items: {self.map_canvas.find_all()}")  # get all canvas objects ID
                 print("Icon Dictionary Original")
@@ -618,6 +699,7 @@ class movingIconCanvas:
         self.initi_y = event.y
         #print('startMovement init', self.initi_x, self.initi_y)
         item = self.map_canvas.find_closest(self.initi_x, self.initi_y, halo=1)  # get canvas object ID of where mouse pointer is  try [0] after this line? seen it on anothe solution
+        #live_item = self.live_map_canvas.find_closest(self.initi_x, self.initi_y, halo=1)
         for tag in self.map_canvas.gettags(item):                                    ## Check object isnt the background
             print(tag)
             if (tag == "background"):
@@ -633,7 +715,7 @@ class movingIconCanvas:
     def stopMovement(self, event):
         self.__move = False
 
-#TODO: Add function to update item_dic with new map coordinates here - Or
+
     def movement(self, event):
         if self.__move:
             self.mouse_label.config(text="Mouse: " + str(event.x) + ", " + str(event.y))
@@ -649,6 +731,8 @@ class movingIconCanvas:
             self.initi_y = end_y
             #print('movement init', self.initi_x, self.initi_y)
             self.map_canvas.move(self.movingimage, deltax, deltay)  # move object
+            if self.live_map_active:
+                self.live_map_canvas.move(self.movingimage, deltax, deltay)
             self.map_canvas["cursor"] = "hand2"
         self.cursor_x = event.x
         self.cursor_x = event.y
