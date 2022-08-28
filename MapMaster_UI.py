@@ -50,18 +50,11 @@ class movingIconCanvas:
 
 
 
-        # Canvas Width
-        self.canvas_width = 1308
-        self.canvas_height = 876
+        # Create Canvas
+        self.create_dm_canvas(self.map_frame)
 
-
-        self.map_canvas = Canvas(self.map_frame, width=self.canvas_width, height=self.canvas_height, bg=UE.DARK_GREY)
-        #self.map_canvas = mirrorCanvas(self.map_frame, width=self.canvas_width, height=self.canvas_height, bg=UE.DARK_GREY)
-        self.map_canvas.grid(padx=10, pady=10)
         self.__move = False
-        # Label to output xy of mouse
-        self.mouse_label = UE.colorLabel(self.map_frame, text="Mouse: ", bg=UE.DARKER_GREY, fg=UE.grey_picker(0.65))
-        self.mouse_label.grid(padx=10, pady=10, sticky="SE")
+
 
 
 
@@ -104,10 +97,7 @@ class movingIconCanvas:
         #self.root.bind("<Up>", self.up)
         #self.map_canvas.bind("<Down>", self.down)
 
-        self.map_canvas.bind("<Button-1>", self.startMovement)
-        self.map_canvas.bind("<ButtonRelease-1>", self.stopMovement)
-        self.map_canvas.bind("<Motion>", self.movement)
-        self.root.bind("<Delete>", self.delete_icon)
+
 
         #self.m_canvas.bind("<Double-B1", self.move)  # Double click binding (We will use this later)
 
@@ -125,6 +115,50 @@ class movingIconCanvas:
 
 
         self.root.mainloop()
+
+
+    def create_dm_canvas(self, container):
+        print("Creating DM Canvas")
+        self.canvas_width = 1308
+        self.canvas_height = 876
+        self.map_canvas = Canvas(container, width=self.canvas_width, height=self.canvas_height, bg=UE.DARK_GREY)
+        # self.map_canvas = mirrorCanvas(self.map_frame, width=self.canvas_width, height=self.canvas_height, bg=UE.DARK_GREY)
+        self.map_canvas.grid(padx=10, pady=10)
+        # Label to output xy of mouse
+        self.mouse_label = UE.colorLabel(container, text="Mouse: ", bg=UE.DARKER_GREY, fg=UE.grey_picker(0.65))
+        self.mouse_label.grid(padx=10, pady=10, sticky="SE")
+
+        #Also need to re-bind everything to new canvas (of course hehe)
+        self.map_canvas.bind("<Button-1>", self.startMovement)
+        self.map_canvas.bind("<ButtonRelease-1>", self.stopMovement)
+        self.map_canvas.bind("<Motion>", self.movement)
+        self.root.bind("<Delete>", self.delete_icon)
+
+
+    def destroy_dm_canvas(self):
+        print("Destroying DM Canvas")
+        try:
+            self.map_canvas.destroy()
+            self.map_canvas = None      ## This seems nessissary to clean the object
+            self.mouse_label.destroy()
+            self.mouse_label = None
+        except:
+            print("No DM Canvas Found")
+
+    def create_live_canvas(self, container):
+        print("Creating Live Canvas")
+        self.live_map_canvas = Canvas(container, width=self.canvas_width, height=self.canvas_height, bg=UE.DARK_GREY)
+        self.live_map_canvas.grid(padx=10, pady=10, sticky="NESW")
+
+    def destroy_live_canvas(self):
+        print("Destroying Live Canvas")
+        try:
+            self.live_map_canvas.destroy()
+            self.live_map_canvas = None
+        except:
+            print("No Live Canvas Found")
+
+
 
     def setout_frames(self, root_container):
         ## Assuming existance of top_frame
@@ -222,19 +256,14 @@ class movingIconCanvas:
             self.live_canvas()
 
 
-    def open_live_window(self):
-        map_dic = self.create_map_dic()   ## Update the map dictionary
-        print(f"Map Dictionary Being Passed to LIVE CANVAS \n{map_dic}")
-        self.live_map = newWindow()   # Open a new window
-        self.live_map.load_map_from_dic(map_dic, self.icon_dic, self.map_canvas.bg_image )  # Load the map from the map_dic
+
 
 
     def live_canvas(self):
         print("Opening Live Canvas")
         self.live_map_win = Toplevel(self.root)
         self.live_map_win.configure(background=UE.DARK_GREY)
-        self.live_map_canvas = Canvas(self.live_map_win, width=self.canvas_width, height=self.canvas_height, bg=UE.DARK_GREY)
-        self.live_map_canvas.grid(padx=10, pady=10, sticky="NESW")
+        self.create_live_canvas(self.live_map_win)
         self.set_live_canvas()
 
 
@@ -247,11 +276,10 @@ class movingIconCanvas:
         print(f"Update Live Canvas")
 
 
-
     def close_live_window(self):
-        #self.live_map.close_window()
-        self.live_map_win.destroy()
         self.live_map_canvas.destroy()
+        self.live_map_win.destroy()
+
 
             # Save Buttons
     def save_buttons_widget(self, container, wiget_row, wiget_column):
@@ -292,8 +320,15 @@ class movingIconCanvas:
             self.delete_map()
             self.delete_all_icons()
             print("Map Cleared")
-
+            print("Destroying Canvases")
+            self.destroy_dm_canvas()
+            self.destroy_live_canvas()
+            print("Creating Canvases")
+            self.create_dm_canvas(self.map_frame)
             self.load_map_from_dic(recalled_dic)
+            if self.live_map_active:
+                self.create_live_canvas(self.live_map_win)
+                self.set_live_canvas()
         except:
             print("problems recalling saved file")
 
@@ -379,6 +414,9 @@ class movingIconCanvas:
                     print("Problem inserting Object into Canvas")
         except:
             print("Problem Loading Map from Dictionary")
+        print(f"All Items Added to Live Map")
+        print("The following lists should match")
+        self.print_all_live_items()
 
 
 
@@ -738,6 +776,14 @@ class movingIconCanvas:
         self.cursor_x = event.y
 
 
+    def print_all_live_items(self):   # Prints all items on both live map and DM map
+        try:
+            map_items = self.map_canvas.find_all()
+            live_map_items = self.live_map_canvas.find_all()
+            print(f"DM's Map: \n{map_items}")
+            print(f"Live Map: \n{live_map_items}")
+        except:
+            print("ERROR: Canvas Objects missing or not found")
 
 
 GUI = movingIconCanvas(root)
