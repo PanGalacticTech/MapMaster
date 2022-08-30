@@ -45,6 +45,7 @@ class movingIconCanvas:
         self.live_show_mask = True
         self.drawing_active = False
         self.add_mask = True
+        self.grid_lines = []
         # Setout all othe Frames
         self.setout_frames(self.top_frame)
         self.placeholder_text()
@@ -138,6 +139,8 @@ class movingIconCanvas:
         self.background_center_x = self.init_x
         self.background_center_y = self.init_y
 
+
+#TODO DONT THINK THIS WORKS AHHH
     def create_mask_window(self):
         # https://stackoverflow.com/questions/53021603/how-to-make-a-tkinter-canvas-background-transparent
         # https://www.reddit.com/r/Tkinter/comments/tw74cq/can_i_create_a_transparent_background_in_a_canvas/
@@ -294,6 +297,8 @@ class movingIconCanvas:
             self.show_mask_button.config(text="Show Mask", fg=UE.TEXT_GREY)
             self.add_tomask_button.grid_forget()
             self.subtract_button.grid_forget()
+            self.hide_grid()
+            self.delete_items_with_tag("mask")   ##TODO We will need to grab all the coordinates of the mask before deleteing
             self.unbind_drawing_events()
             self.bind_movement_events()
         else:
@@ -303,8 +308,36 @@ class movingIconCanvas:
             self.show_mask_button.config(text="Hide Mask", fg=UE.YELLOW_ORANGE)
             self.add_tomask_button.grid(padx=10, pady=10, row=0, column=0, sticky="S")
             self.subtract_button.grid(padx=10, pady=10, row=1, column=0, sticky="S")
+            self.show_grid(50, UE.grey_picker(0.6))
             self.unbind_movement_events()
             self.bind_drawing_events()
+            #TODO We will need to use the record of the added mask to reapply it when opened
+
+    def show_grid(self, spacing, colour):
+        quantity_y = int(self.canvas_height/spacing)
+        quantity_x = int(self.canvas_width/spacing)
+        print(f"Line Spacing: {spacing}, Quantity_x: {quantity_x}, Quantity_Y: {quantity_y}")
+        for n in range(0, quantity_x):
+            grid_line = (self.map_canvas.create_line(spacing*n, 0, spacing*n, self.canvas_height, fill=colour, tag="grid"))
+        for m in range(0, quantity_y):
+            grid_line = (self.map_canvas.create_line(0, spacing*m,self.canvas_width ,spacing*m , fill=colour, tag="grid"))
+
+        #TODO This grid returns quantity of X and Y lines, this can be used to make a dictionary of tuples that either store a 1 or 0
+
+    def hide_grid(self):
+        self.delete_items_with_tag("grid")
+
+
+    def delete_items_with_tag(self, in_tag):
+        items = self.map_canvas.find_all()
+        print(F"Searching Items: \n {items} \n for tag: \n{in_tag}")
+        for item in items:
+            for tag in self.map_canvas.gettags(item):  ## Check object isnt the background
+                print(f" Current Tags for Item: {item}: {tag}")
+                if (tag == in_tag):
+                    self.map_canvas.delete(item)  ## Delete image in the canvas
+                    #if self.live_map_active:
+                        #self.live_map_canvas.delete(img_id)
 
 
 
@@ -337,7 +370,7 @@ class movingIconCanvas:
             if self.add_mask == True:
                 print("Drawing Mask")
                 # Draw a Circle
-                circle_icons = self.map_canvas.create_oval(event.x, event.y, event.x+50, event.y+50, width=0, fill=UE.grey_picker(0.1))
+                circle_icons = self.map_canvas.create_oval(event.x, event.y, event.x+50, event.y+50, width=0, fill=UE.grey_picker(0.1), tag="mask")
             else:
                 #print("Erasing Mask")
                 self.delete_mask_object()
@@ -349,10 +382,11 @@ class movingIconCanvas:
         mask_id = self.map_canvas.find_above(img_id)
         for tag in self.map_canvas.gettags(mask_id):  ## Check object isnt the background
             print(f" Current Tags in {mask_id}: {tag}")
-            if (tag != "oval"):
+            if (tag == "mask"):
                 mask_id = self.map_canvas.find_above(img_id)
-                #self.map_canvas.delete(img_id)
-        print(f" Deleting Img: {mask_id}")
+                self.map_canvas.delete(img_id)
+                print(f" Deleting Img: {mask_id}")
+
 
     def mask_wiget(self, container):
         self.add_tomask_button = UE.selectButton(container, text="Add Mask", command=self.add_to_mask)
