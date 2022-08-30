@@ -14,7 +14,7 @@ import mirrorCanvas
 
 
 root = Tk()
-root.geometry("1600x1100")
+root.geometry("1600x980")
 root.title("MapMaster DM's Tool")
 root.iconbitmap("D:\Pan Galactic Engineering\MapMaster\Icons\MapMaster_Icon256.ico")
                   # self.s ?!/ no idea
@@ -64,8 +64,7 @@ class movingIconCanvas:
 
 
 
-        self.init_x = self.canvas_width // 2
-        self.init_y = self.canvas_height // 2
+
 
         #List to hold images/references
 
@@ -124,16 +123,36 @@ class movingIconCanvas:
     def create_dm_canvas(self, container):
         print("Creating DM Canvas")
         self.canvas_width = 1308
-        self.canvas_height = 876
+        self.canvas_height = 800
         self.map_canvas = Canvas(container, width=self.canvas_width, height=self.canvas_height, bg=UE.DARK_GREY)
         # self.map_canvas = mirrorCanvas(self.map_frame, width=self.canvas_width, height=self.canvas_height, bg=UE.DARK_GREY)
-        self.map_canvas.grid(padx=10, pady=10)
-        # Label to output xy of mouse
-        self.mouse_label = UE.colorLabel(container, text="Mouse: ", bg=UE.DARKER_GREY, fg=UE.grey_picker(0.65))
-        self.mouse_label.grid(padx=10, pady=10, sticky="SE")
+        self.map_canvas.grid(padx=10, pady=10, row=0, column=0)
+
+
+        #self.create_mask_window()
 
         #Also need to re-bind everything to new canvas (of course hehe)
         self.bind_movement_events()
+        self.init_x = self.canvas_width // 2
+        self.init_y = self.canvas_height // 2
+        self.background_center_x = self.init_x
+        self.background_center_y = self.init_y
+
+    def create_mask_window(self):
+        # https://stackoverflow.com/questions/53021603/how-to-make-a-tkinter-canvas-background-transparent
+        # https://www.reddit.com/r/Tkinter/comments/tw74cq/can_i_create_a_transparent_background_in_a_canvas/
+
+        self.mask_win = tk.Tk()
+        self.mask_win.config(highlightbackground = "#000000")
+        self.mask_canvas = Canvas(self.mask_win, width=self.canvas_width, height=self.canvas_height, background="#000000")
+        self.mask_canvas.pack()
+        self.mask_win.overrideredirect(True)
+        self.mask_win.wm_attributes('-transparentcolor', '#000000')
+        self.mask_win.wm_attributes('-topmost', True)
+
+
+        #self.dm_mask_canvas = Canvas(container, width=self.canvas_width, height=self.canvas_height, bg=UE.DARK_GREY)
+        #self.map_canvas.grid(padx=10, pady=10, row=0, column=0)
 
 
     def bind_movement_events(self):
@@ -195,6 +214,9 @@ class movingIconCanvas:
 
         self.side_frame_two = UE.darkBorderless(self.side_frame, height=1400)  # , text="MapMaster DMs Map & Resource Manager" ,
         self.side_frame_two.grid(padx=10, pady=10, row=9, column=0)
+
+        self.mouse_label = UE.colorLabel(self.side_frame, text="Mouse: ", bg=UE.DARKER_GREY, fg=UE.grey_picker(0.65))
+        self.mouse_label.grid(padx=10, pady=10, row=10, column=0)    #sticky="SE"
 
         self.map_name_var = tk.StringVar()
         self.map_name_var.set("[BATTLE MAP TITLE]")
@@ -596,7 +618,7 @@ class movingIconCanvas:
         self.background_file = file_path
         bg_image = ImageTk.PhotoImage(resized_image)
         self.map_canvas.bg_image = bg_image
-        bg_id = self.map_canvas.create_image(654, 438, image=self.map_canvas.bg_image, tags="background")  # ,anchor="s" # (Numbers specify the CENTER of the image- FFS NOT WELL DOCUMENTED AT ALL WANKERS)
+        bg_id = self.map_canvas.create_image(self.background_center_x, self.background_center_y, image=self.map_canvas.bg_image, tags="background")  # ,anchor="s" # (Numbers specify the CENTER of the image- FFS NOT WELL DOCUMENTED AT ALL WANKERS)
         print(f"Background ID: {bg_id}")
         # This line is not working sometimes, its quitting here and going to except.
         try:
@@ -616,7 +638,7 @@ class movingIconCanvas:
         self.background_file = file_path
         bg_image = ImageTk.PhotoImage(resized_image)
         self.live_map_canvas.bg_image = bg_image
-        bg_id = self.live_map_canvas.create_image(654, 438, image=self.live_map_canvas.bg_image, tags="background")  # ,anchor="s" # (Numbers specify the CENTER of the image- FFS NOT WELL DOCUMENTED AT ALL WANKERS)
+        bg_id = self.live_map_canvas.create_image(self.background_center_x, self.background_center_y, image=self.live_map_canvas.bg_image, tags="background")  # ,anchor="s" # (Numbers specify the CENTER of the image- FFS NOT WELL DOCUMENTED AT ALL WANKERS)
         print(f"Background ID: {bg_id}")
         # This line is not working sometimes, its quitting here and going to except.
         try:
