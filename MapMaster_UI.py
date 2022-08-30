@@ -43,6 +43,8 @@ class movingIconCanvas:
         self.live_map_active = False
         self.dm_show_mask = False
         self.live_show_mask = True
+        self.drawing_active = False
+        self.add_mask = True
         # Setout all othe Frames
         self.setout_frames(self.top_frame)
         self.placeholder_text()
@@ -131,10 +133,21 @@ class movingIconCanvas:
         self.mouse_label.grid(padx=10, pady=10, sticky="SE")
 
         #Also need to re-bind everything to new canvas (of course hehe)
+        self.bind_movement_events()
+
+
+    def bind_movement_events(self):
+        # Also need to re-bind everything to new canvas (of course hehe)
         self.map_canvas.bind("<Button-1>", self.startMovement)
         self.map_canvas.bind("<ButtonRelease-1>", self.stopMovement)
         self.map_canvas.bind("<Motion>", self.movement)
         self.root.bind("<Delete>", self.delete_icon)
+
+    def unbind_movement_events(self):
+        self.map_canvas.unbind("<Button-1>")
+        self.map_canvas.unbind("<ButtonRelease-1>")
+        self.map_canvas.unbind("<Motion>")
+        self.root.unbind("<Delete>")
 
 
     def destroy_dm_canvas(self):
@@ -259,22 +272,78 @@ class movingIconCanvas:
             self.show_mask_button.config(text="Show Mask", fg=UE.TEXT_GREY)
             self.add_tomask_button.grid_forget()
             self.subtract_button.grid_forget()
+            self.unbind_drawing_events()
+            self.bind_movement_events()
         else:
-            self.dm_show_mask = True
+            self.dm_show_mask = True    ## This might not be needed as we are binding and unbinding the correct events now
+            self.add_mask = True
             print("Showing DM's Mask")
             self.show_mask_button.config(text="Hide Mask", fg=UE.YELLOW_ORANGE)
             self.add_tomask_button.grid(padx=10, pady=10, row=0, column=0, sticky="S")
             self.subtract_button.grid(padx=10, pady=10, row=1, column=0, sticky="S")
+            self.unbind_movement_events()
+            self.bind_drawing_events()
 
-            #self.mask_wiget_box = self.mask_wiget()
 
+
+
+    def bind_drawing_events(self):
+        print("Binding Drawing Events")
+        self.map_canvas.bind("<Button-1>", self.startDrawing)
+        self.map_canvas.bind("<ButtonRelease-1>", self.stopDrawing)
+        self.map_canvas.bind("<Motion>", self.do_drawing)
+
+
+    def unbind_drawing_events(self):
+        print("Unbinding Drawing Events")
+        self.map_canvas.unbind("<Button-1>")
+        self.map_canvas.unbind("<ButtonRelease-1>")
+        self.map_canvas.unbind("<Motion>")
+
+    def startDrawing(self, event):
+        print("Starting Drawing")
+        self.drawing_active = True
+
+
+    def stopDrawing(self, event):
+        print("Stopping Drawing")
+        self.drawing_active = False
+
+
+    def do_drawing(self, event):
+        if self.drawing_active == True:
+            if self.add_mask == True:
+                print("Drawing Mask")
+                # Draw a Circle
+                circle_icons = self.map_canvas.create_oval(event.x, event.y, event.x+50, event.y+50, width=0, fill=UE.grey_picker(0.1))
+            else:
+                #print("Erasing Mask")
+                self.delete_mask_object()
+
+#TODO Fix this delete mask objects shite
+    def delete_mask_object(self):
+        img_canvas_id = self.map_canvas.find_closest(self.cursor_x, self.cursor_y, halo=5)  # get canvas object ID of where mouse pointer is  try [0] after this line? seen it on anothe solution
+        img_id = img_canvas_id[0]  ## Extract ID from tuple
+        mask_id = self.map_canvas.find_above(img_id)
+        for tag in self.map_canvas.gettags(mask_id):  ## Check object isnt the background
+            print(f" Current Tags in {mask_id}: {tag}")
+            if (tag != "oval"):
+                mask_id = self.map_canvas.find_above(img_id)
+                #self.map_canvas.delete(img_id)
+        print(f" Deleting Img: {mask_id}")
 
     def mask_wiget(self, container):
-        self.add_tomask_button = UE.selectButton(container, text="Add Mask", command=self.add_mask)
+        self.add_tomask_button = UE.selectButton(container, text="Add Mask", command=self.add_to_mask)
         self.subtract_button = UE.selectButton(container, text="Subtract Mask", command=self.subtract_mask)
 
+        if self.add_mask == True:
+            self.add_tomask_button.config(fg=UE.YELLOW_ORANGE)
+        else:
+            self.subtract_button.config(fg=UE.YELLOW_ORANGE)
 
-    def add_mask(self):
+
+
+    def add_to_mask(self):
         print("Adding to Mask")
         self.add_mask = True
         self.add_tomask_button.config(fg=UE.YELLOW_ORANGE)
@@ -286,6 +355,13 @@ class movingIconCanvas:
         self.add_mask = False
         self.add_tomask_button.config(fg=UE.TEXT_GREY)
         self.subtract_button.config(fg=UE.YELLOW_ORANGE)
+
+
+
+    def apply_mask_live_map(self):
+        print("Applying Mask to Live Map")
+
+
 
 
     def open_live_map(self):
@@ -751,8 +827,11 @@ class movingIconCanvas:
             #item_id = item[0]
             print(f"Deleting Item: {item_id}")
             self.map_canvas.delete(item_id)
-            del self.icon_dic[item_id]  ## Also delete from dictionary
-            print("Icon Dictionary Item Removed")
+            try:
+                del self.icon_dic[item_id]  ## Also delete from dictionary
+                print("Icon Dictionary Item Removed")
+            except:
+                print("Item Not Found In Dictionary")
         try:
             self.print_dictionary(self.icon_dic)
             del self.icon_dic[1]  ## Also Delete entry 1 incase no other item was in dictionary
