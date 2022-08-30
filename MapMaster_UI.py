@@ -41,6 +41,8 @@ class movingIconCanvas:
         self.top_frame = UE.darkFrame(self.root, bg=UE.DARKER_GREY)
         self.top_frame.grid(row=0, column=0, sticky="NESW")
         self.live_map_active = False
+        self.dm_show_mask = False
+        self.live_show_mask = True
         # Setout all othe Frames
         self.setout_frames(self.top_frame)
         self.placeholder_text()
@@ -178,6 +180,9 @@ class movingIconCanvas:
         self.background_image_widget(self.side_frame, 2, 0)
         self.add_icon_widget(self.side_frame, 4, 0)
 
+        self.side_frame_two = UE.darkBorderless(self.side_frame, height=1400)  # , text="MapMaster DMs Map & Resource Manager" ,
+        self.side_frame_two.grid(padx=10, pady=10, row=9, column=0)
+
         self.map_name_var = tk.StringVar()
         self.map_name_var.set("[BATTLE MAP TITLE]")
         self.map_name_text = "[BATTLE MAP TITLE]"    # still need this for dictionary
@@ -199,9 +204,14 @@ class movingIconCanvas:
         self.live_frame.grid(padx=10, pady=10, sticky="W", row=4, column=0, columnspan=2)
         self.live_buttons_wiget(self.live_frame)
 
+        ## Mask Manipulation Frame
+        self.mask_box = UE.darkBorderless(self.side_frame_two)
+        self.mask_box.grid(padx=10, pady=5, row=0, column=0)
+        self.mask_wiget(self.mask_box)
+
         ## Range and Character Control Frame
         self.range_frame = UE.darkFrame(self.top_frame, bg=UE.BLACK)
-        self.range_frame.grid(padx=10, pady=10, sticky="E", row=4, column=1, columnspan=2)
+        self.range_frame.grid(padx=10, pady=10, sticky="E", row=4, column=2, columnspan=2)
 
     def placeholder_text(self):
         # Button Placeholders
@@ -239,8 +249,44 @@ class movingIconCanvas:
         self.live_map_button.grid(padx=10, pady=10, row=0, column=0, sticky="S")
         self.PLACEHOLDER_BUTTON1 = UE.darkLabelTitle(self.livebox, text="[Blackout]")
         self.PLACEHOLDER_BUTTON1.grid(padx=10, pady=10, row=0, column=1, sticky="S")
-        self.PLACEHOLDER_BUTTON2 = UE.darkLabelTitle(self.livebox, text="[Show Mask]")
-        self.PLACEHOLDER_BUTTON2.grid(padx=10, pady=10, row=0, column=2, sticky="S")
+        self.show_mask_button = UE.selectButton(self.livebox, text="Show Mask", command=self.show_mask)
+        self.show_mask_button.grid(padx=10, pady=10, row=0, column=2, sticky="S")
+
+    def show_mask(self):
+        if self.dm_show_mask == True:
+            self.dm_show_mask = False
+            print("Hiding DM's Mask")
+            self.show_mask_button.config(text="Show Mask", fg=UE.TEXT_GREY)
+            self.add_tomask_button.grid_forget()
+            self.subtract_button.grid_forget()
+        else:
+            self.dm_show_mask = True
+            print("Showing DM's Mask")
+            self.show_mask_button.config(text="Hide Mask", fg=UE.YELLOW_ORANGE)
+            self.add_tomask_button.grid(padx=10, pady=10, row=0, column=0, sticky="S")
+            self.subtract_button.grid(padx=10, pady=10, row=1, column=0, sticky="S")
+
+            #self.mask_wiget_box = self.mask_wiget()
+
+
+    def mask_wiget(self, container):
+        self.add_tomask_button = UE.selectButton(container, text="Add Mask", command=self.add_mask)
+        self.subtract_button = UE.selectButton(container, text="Subtract Mask", command=self.subtract_mask)
+
+
+    def add_mask(self):
+        print("Adding to Mask")
+        self.add_mask = True
+        self.add_tomask_button.config(fg=UE.YELLOW_ORANGE)
+        self.subtract_button.config(fg=UE.TEXT_GREY)
+
+
+    def subtract_mask(self):
+        print("Subtracting from Mask")
+        self.add_mask = False
+        self.add_tomask_button.config(fg=UE.TEXT_GREY)
+        self.subtract_button.config(fg=UE.YELLOW_ORANGE)
+
 
     def open_live_map(self):
         if self.live_map_active == True:
@@ -252,7 +298,6 @@ class movingIconCanvas:
             self.live_map_active = True
             print("Live Map Active")
             self.live_map_button.config(text="Close Live Map", bg=UE.ACTIVE_BLUE, fg=UE.DARKER_GREY )
-            #self.open_live_window()
             self.live_canvas()
 
 

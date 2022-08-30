@@ -123,7 +123,7 @@ class darkEntry(tk.Entry):
 class darkBorderless(tk.Frame):
     def __init__(self, master=None, **kwargs):
         self.lbl_ft = TkFont.Font(family='Consolas', size=12, weight='bold')
-        tk.Frame.__init__(self, master, bg=DARK_GREY, relief="ridge", **kwargs)
+        tk.Frame.__init__(self, master, bg=DARKER_GREY, relief="ridge", **kwargs)
 
 
 
