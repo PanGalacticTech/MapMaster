@@ -11,6 +11,7 @@ import tkinter.simpledialog as sd
 import json_savefiles as save
 from open_new_window import newWindow
 import mirrorCanvas
+import math
 
 
 root = Tk()
@@ -24,6 +25,7 @@ root.iconbitmap("D:\Pan Galactic Engineering\MapMaster\Icons\MapMaster_Icon256.i
 
 ICON_SIZE = 25   # pixel val for new icons
 MAIN_WINDOW_BACKGROUND = UE.DARK_GREY
+GRID_SPACING_PIX = 50     ## Spacing for grid drawn by mask function
 
 '''
 Using Method from:
@@ -40,12 +42,19 @@ class movingIconCanvas:
         self.norm_font = TkFont.Font(family='Consolas', size=10)
         self.top_frame = UE.darkFrame(self.root, bg=UE.DARKER_GREY)
         self.top_frame.grid(row=0, column=0, sticky="NESW")
+
+        self.canvas_width = 1308
+        self.canvas_height = 800
+
         self.live_map_active = False
         self.dm_show_mask = False
         self.live_show_mask = True
         self.drawing_active = False
         self.add_mask = True
-        self.grid_lines = []
+        #self.create_grid_matrix(GRID_SPACING_PIX)
+
+        self.mask_list = []
+
         # Setout all othe Frames
         self.setout_frames(self.top_frame)
         self.placeholder_text()
@@ -123,11 +132,12 @@ class movingIconCanvas:
 
     def create_dm_canvas(self, container):
         print("Creating DM Canvas")
-        self.canvas_width = 1308
-        self.canvas_height = 800
         self.map_canvas = Canvas(container, width=self.canvas_width, height=self.canvas_height, bg=UE.DARK_GREY)
         # self.map_canvas = mirrorCanvas(self.map_frame, width=self.canvas_width, height=self.canvas_height, bg=UE.DARK_GREY)
         self.map_canvas.grid(padx=10, pady=10, row=0, column=0)
+
+        # THIS IS ESOTERIC BUT MIGHT HELP
+        #Create a second canvas which ONLY has mask objects on it, this is NEVER printed using .grid, but can be used to .findnearest for ONLY mask items, problem is the tags will be different
 
 
         #self.create_mask_window()
@@ -297,21 +307,27 @@ class movingIconCanvas:
             self.show_mask_button.config(text="Show Mask", fg=UE.TEXT_GREY)
             self.add_tomask_button.grid_forget()
             self.subtract_button.grid_forget()
+            self.clear_mask_button.grid_forget()
             self.hide_grid()
             self.delete_items_with_tag("mask")   ##TODO We will need to grab all the coordinates of the mask before deleteing
             self.unbind_drawing_events()
             self.bind_movement_events()
+            self.apply_mask_to_live()           ## Mask is applied to live map when mask is cloed on DMs map
         else:
             self.dm_show_mask = True    ## This might not be needed as we are binding and unbinding the correct events now
-            self.add_mask = True
             print("Showing DM's Mask")
             self.show_mask_button.config(text="Hide Mask", fg=UE.YELLOW_ORANGE)
             self.add_tomask_button.grid(padx=10, pady=10, row=0, column=0, sticky="S")
             self.subtract_button.grid(padx=10, pady=10, row=1, column=0, sticky="S")
-            self.show_grid(50, UE.grey_picker(0.6))
+            self.clear_mask_button.grid(padx=10, pady=10, row=2, column=0, sticky="S")
+            self.show_grid(GRID_SPACING_PIX, UE.grey_picker(0.6))
+            self.recall_mask_from_matrix()   # HIGHLY EXPERIMENTAL
             self.unbind_movement_events()
             self.bind_drawing_events()
             #TODO We will need to use the record of the added mask to reapply it when opened
+
+
+
 
     def show_grid(self, spacing, colour):
         quantity_y = int(self.canvas_height/spacing)
@@ -319,10 +335,68 @@ class movingIconCanvas:
         print(f"Line Spacing: {spacing}, Quantity_x: {quantity_x}, Quantity_Y: {quantity_y}")
         for n in range(0, quantity_x):
             grid_line = (self.map_canvas.create_line(spacing*n, 0, spacing*n, self.canvas_height, fill=colour, tag="grid"))
+            x_axis = self.map_canvas.create_text((spacing*n)+(int(spacing/2)), (self.canvas_height-13), text=n, fill=UE.grey_picker(0.66), tag="grid")
         for m in range(0, quantity_y):
             grid_line = (self.map_canvas.create_line(0, spacing*m,self.canvas_width ,spacing*m , fill=colour, tag="grid"))
+            y_axis = self.map_canvas.create_text(13,(spacing*(quantity_y-(m+1)))+(int(spacing/2)), text=m, fill=UE.grey_picker(0.66), tag="grid")
 
-        #TODO This grid returns quantity of X and Y lines, this can be used to make a dictionary of tuples that either store a 1 or 0
+
+
+
+    def which_grid_square(self, pix_x, pix_y, spacing):
+        print(f"Pix_X: {pix_x}, Pix_Y: {pix_y}")
+        x = math.floor(pix_x/spacing)
+        y = math.floor((self.canvas_height-pix_y)/spacing)
+        print(f" X:{x}, Y: {y}")
+        return (x,y)
+
+    def pixel_box_from_grid(self, grid_square, spacing):
+        x1 = grid_square[0]*spacing
+        y1 = self.canvas_height - ((grid_square[1])*spacing)
+        x2 = (grid_square[0]*spacing)+spacing
+        y2 = self.canvas_height - ((grid_square[1])*spacing)-spacing
+        print((x1, y1), (x2, y2))
+        self.map_canvas.create_rectangle(x1,y1,x2,y2,fill=UE.grey_picker(0.22), tag="mask")
+
+
+    def apply_mask_to_live(self):
+        print("Applying Mask to Live Map")
+        self.delete_live_with_tag("mask")
+        for square in self.mask_list:
+            print(f"Mask Found at: {square}")
+            self.live_mask_from_grid(square, GRID_SPACING_PIX)
+
+    def live_mask_from_grid(self, grid_square, spacing):
+        if self.live_map_active:
+            x1 = grid_square[0] * spacing
+            y1 = self.canvas_height - ((grid_square[1]) * spacing)
+            x2 = (grid_square[0] * spacing) + spacing
+            y2 = self.canvas_height - ((grid_square[1]) * spacing) - spacing
+            print((x1, y1), (x2, y2))
+            try:
+                self.live_map_canvas.create_rectangle(x1, y1, x2, y2, fill=UE.grey_picker(0.22), tag="mask")
+            except:
+                print("ERROR: Problem applying mask to live canvas")
+
+
+
+
+    def add_mask_to_list(self, grid_square):
+        if grid_square not in self.mask_list:
+            self.mask_list.append(grid_square)
+            print(f"Added to Mask List: {self.mask_list}")
+        else:
+            print("Value already found in Mask List")
+
+
+    def delete_mask_from_list(self, grid_square):
+        print(f" Previous Mask List: \n{self.mask_list}")
+        try:
+            self.mask_list.remove(grid_square)
+            print(f"Removing Mask at {grid_square}")
+        except:
+            print(f"No Mask Found at{grid_square}")
+        print(f"Current Mask List: \n{self.mask_list}")
 
     def hide_grid(self):
         self.delete_items_with_tag("grid")
@@ -339,6 +413,19 @@ class movingIconCanvas:
                     #if self.live_map_active:
                         #self.live_map_canvas.delete(img_id)
 
+    def delete_live_with_tag(self, in_tag):
+        if (self.live_map_active):
+            try:
+                items = self.live_map_canvas.find_all()
+                print(F"Searching Items: \n {items} \n for tag: \n{in_tag}")
+                for item in items:
+                    for tag in self.live_map_canvas.gettags(item):  ## Check object isnt the background
+                        print(f" Current Tags for Item: {item}: {tag}")
+                        if (tag == in_tag):
+                            self.live_map_canvas.delete(item)  ## Delete image in the canvas
+            except:
+                print("ERROR: Finding items in live_map_canvas")
+            print("Live Map Inactive")
 
 
 
@@ -358,6 +445,7 @@ class movingIconCanvas:
     def startDrawing(self, event):
         print("Starting Drawing")
         self.drawing_active = True
+        self.do_drawing(event)
 
 
     def stopDrawing(self, event):
@@ -369,34 +457,61 @@ class movingIconCanvas:
         if self.drawing_active == True:
             if self.add_mask == True:
                 print("Drawing Mask")
+                grid_square = self.which_grid_square(event.x, event.y, GRID_SPACING_PIX)
                 # Draw a Circle
-                circle_icons = self.map_canvas.create_oval(event.x, event.y, event.x+50, event.y+50, width=0, fill=UE.grey_picker(0.1), tag="mask")
+                #circle_icons = self.map_canvas.create_oval(event.x, event.y, event.x+50, event.y+50, width=0, fill=UE.grey_picker(0.1), tag="mask")
+                #draw a box in a grid square
+                self.pixel_box_from_grid(grid_square,GRID_SPACING_PIX)
+                self.add_mask_to_list(grid_square)
             else:
-                #print("Erasing Mask")
-                self.delete_mask_object()
+                print("Erasing Mask")
+                self.delete_mask_square(event.x, event.y)
+                grid_square = self.which_grid_square(event.x, event.y, GRID_SPACING_PIX)
+                self.delete_mask_from_list(grid_square)
 
-#TODO Fix this delete mask objects shite
-    def delete_mask_object(self):
-        img_canvas_id = self.map_canvas.find_closest(self.cursor_x, self.cursor_y, halo=5)  # get canvas object ID of where mouse pointer is  try [0] after this line? seen it on anothe solution
-        img_id = img_canvas_id[0]  ## Extract ID from tuple
-        mask_id = self.map_canvas.find_above(img_id)
-        for tag in self.map_canvas.gettags(mask_id):  ## Check object isnt the background
-            print(f" Current Tags in {mask_id}: {tag}")
-            if (tag == "mask"):
-                mask_id = self.map_canvas.find_above(img_id)
-                self.map_canvas.delete(img_id)
-                print(f" Deleting Img: {mask_id}")
+
+
+
+    def delete_overlapping_tag(self, x, y, len, by_tag):
+        len = int(len/2)
+        itm_list = self.map_canvas.find_overlapping(x-len, y-len, x+len, y+len)
+        for item in itm_list:
+            for tag in self.map_canvas.gettags(item):  ## Check object isnt the background
+                print(f" Current Tags in {item}: {tag}")
+                if (tag == by_tag):
+                    # img_id = self.map_canvas.find_above(img_id)
+                    self.map_canvas.delete(item)
+                    print(f" Deleting Img: {item}")
+
+
+
+
+    def delete_mask_square(self, x, y):
+        self.delete_overlapping_tag(x, y, 10, "mask")
+        grid_square = self.which_grid_square(x, y,GRID_SPACING_PIX)
+        #self.grid_matrix[grid_square[0]][grid_square[1]] = 0
+
+    def recall_mask_from_matrix(self):
+        print("Recalling Mask from Matrix")
+        for square in self.mask_list:
+            print(f"Mask Found at: {square}")
+            self.pixel_box_from_grid(square, GRID_SPACING_PIX)
+
 
 
     def mask_wiget(self, container):
         self.add_tomask_button = UE.selectButton(container, text="Add Mask", command=self.add_to_mask)
         self.subtract_button = UE.selectButton(container, text="Subtract Mask", command=self.subtract_mask)
-
+        self.clear_mask_button = UE.selectButton(container, text="Clear Mask", command=self.clear_mask)
         if self.add_mask == True:
             self.add_tomask_button.config(fg=UE.YELLOW_ORANGE)
         else:
             self.subtract_button.config(fg=UE.YELLOW_ORANGE)
 
+    def clear_mask(self):
+        self.mask_list = []
+        print(f"Mask List: {self.mask_list}")
+        self.show_mask()
 
 
     def add_to_mask(self):
@@ -447,6 +562,7 @@ class movingIconCanvas:
     def set_live_canvas(self):
         map_dic = self.create_map_dic()  ## Update the map dictionary
         self.load_live_map_from_dic(map_dic)
+        self.apply_mask_to_live()
         print(f"Set Live Canvas")
 
     def update_live_canvas(self):
@@ -556,6 +672,7 @@ class movingIconCanvas:
                     map_dic["icons"][item]["tag"] = self.icon_dic[item]["tag"]
             except:
                 print(f"Error Finding Tags for Object {item}.")
+        map_dic["mask"] = self.mask_list    #TODO CHECK THIS LINE WORKS
         print("End of Create Map Dictionary")
         print(f"New Map Dictionary: {map_dic}")
         return map_dic
@@ -620,7 +737,12 @@ class movingIconCanvas:
                 except:
                     print("Problem inserting Object into Canvas")
         except:
-            print("Problem Loading Map from Dictionary")
+            print("Problem Recalling Icons from Dictionary")
+        try:
+            self.mask_list = map_dic["mask"]
+        except:
+            print("Problem Recalling Mask from Dictionary")
+
 
 
 
