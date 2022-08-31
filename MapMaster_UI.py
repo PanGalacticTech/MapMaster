@@ -20,9 +20,7 @@ root.title("MapMaster DM's Tool")
 root.iconbitmap("D:\Pan Galactic Engineering\MapMaster\Icons\MapMaster_Icon256.ico")
                   # self.s ?!/ no idea
 
-
-
-
+MASK_BOARDER = 0
 ICON_SIZE = 25   # pixel val for new icons
 MAIN_WINDOW_BACKGROUND = UE.DARK_GREY
 GRID_SPACING_PIX = 50     ## Spacing for grid drawn by mask function
@@ -51,6 +49,7 @@ class movingIconCanvas:
         self.live_show_mask = True
         self.drawing_active = False
         self.add_mask = True
+        self.blackout_active = False
         #self.create_grid_matrix(GRID_SPACING_PIX)
 
         self.mask_list = []
@@ -150,24 +149,6 @@ class movingIconCanvas:
         self.background_center_y = self.init_y
 
 
-#TODO DONT THINK THIS WORKS AHHH
-    def create_mask_window(self):
-        # https://stackoverflow.com/questions/53021603/how-to-make-a-tkinter-canvas-background-transparent
-        # https://www.reddit.com/r/Tkinter/comments/tw74cq/can_i_create_a_transparent_background_in_a_canvas/
-
-        self.mask_win = tk.Tk()
-        self.mask_win.config(highlightbackground = "#000000")
-        self.mask_canvas = Canvas(self.mask_win, width=self.canvas_width, height=self.canvas_height, background="#000000")
-        self.mask_canvas.pack()
-        self.mask_win.overrideredirect(True)
-        self.mask_win.wm_attributes('-transparentcolor', '#000000')
-        self.mask_win.wm_attributes('-topmost', True)
-
-
-        #self.dm_mask_canvas = Canvas(container, width=self.canvas_width, height=self.canvas_height, bg=UE.DARK_GREY)
-        #self.map_canvas.grid(padx=10, pady=10, row=0, column=0)
-
-
     def bind_movement_events(self):
         # Also need to re-bind everything to new canvas (of course hehe)
         self.map_canvas.bind("<Button-1>", self.startMovement)
@@ -236,11 +217,7 @@ class movingIconCanvas:
         self.map_name_text = "[BATTLE MAP TITLE]"    # still need this for dictionary
         self.background_file = ""
 
-        ##Outer Frame (To help center map)
-        #self.out_frame = UE.darkFrame(self.top_frame, bg=UE.BLACK)  # , text="MapMaster DMs Map & Resource Manager" , height=1000 #TODO: Dont need this frame?
-        #self.out_frame.grid(row=0, column=1, padx=10, pady=10, sticky="NSEW")
 
-        #self.battle_map_title = UE.darkLabelTitle(self.top_frame, text=self.map_name_text)
         self.battle_map_title = UE.darkLabelTitle(self.top_frame, textvariable=self.map_name_var)
         self.battle_map_title.grid(padx=10, pady=5, row=0, column=1, columnspan=2, sticky="N")
          ## Map Frame
@@ -295,10 +272,37 @@ class movingIconCanvas:
         self.livebox.grid(padx=10, pady=5, sticky="N")
         self.live_map_button = UE.selectButton(self.livebox, text="Activate Live Map", command=self.open_live_map)
         self.live_map_button.grid(padx=10, pady=10, row=0, column=0, sticky="S")
-        self.PLACEHOLDER_BUTTON1 = UE.darkLabelTitle(self.livebox, text="[Blackout]")
-        self.PLACEHOLDER_BUTTON1.grid(padx=10, pady=10, row=0, column=1, sticky="S")
+        self.blackout_button = UE.selectButton(self.livebox, text="Blackout", command=self.blackout)
+        self.blackout_button.grid(padx=10, pady=10, row=0, column=1, sticky="S")
+        if (self.blackout_active):
+            self.blackout_button.configure(fg=UE.YELLOW_ORANGE)
+        else:
+            self.blackout_button.configure(fg=UE.TEXT_GREY)
         self.show_mask_button = UE.selectButton(self.livebox, text="Show Mask", command=self.show_mask)
         self.show_mask_button.grid(padx=10, pady=10, row=0, column=2, sticky="S")
+
+
+    def blackout(self):
+        if self.blackout_active == True:
+            self.blackout_active = False
+            self.blackout_button.configure(fg=UE.TEXT_GREY)
+        else:
+            self.blackout_active = True
+            self.blackout_button.configure(fg=UE.YELLOW_ORANGE)
+        self.apply_blackout()
+
+
+    def apply_blackout(self):
+        if self.live_map_active:
+            if self.blackout_active == True:
+                self.live_map_canvas.create_rectangle(0, 0, self.canvas_width, self.canvas_height, fill=UE.grey_picker(0.03), tag="blackout")
+                items = self.live_map_canvas.find_all()
+                print(f"Items on Live Canvas: {items}")
+                highest_item_id = items[-1]                                    #-1 finds last element in tuple
+                print(f"Finding HighestItem ID: {highest_item_id}")
+                self.map_canvas.tag_lower("blackout", highest_item_id)
+            else:
+                self.live_map_canvas.delete("blackout")
 
     def show_mask(self):
         if self.dm_show_mask == True:
@@ -317,9 +321,9 @@ class movingIconCanvas:
             self.dm_show_mask = True    ## This might not be needed as we are binding and unbinding the correct events now
             print("Showing DM's Mask")
             self.show_mask_button.config(text="Hide Mask", fg=UE.YELLOW_ORANGE)
-            self.add_tomask_button.grid(padx=10, pady=10, row=0, column=0, sticky="S")
-            self.subtract_button.grid(padx=10, pady=10, row=1, column=0, sticky="S")
-            self.clear_mask_button.grid(padx=10, pady=10, row=2, column=0, sticky="S")
+            self.add_tomask_button.grid(padx=0, pady=10, row=0, column=0, sticky="S")
+            self.subtract_button.grid(padx=0, pady=10, row=1, column=0, sticky="S")
+            self.clear_mask_button.grid(padx=00, pady=10, row=2, column=0, sticky="S")
             self.show_grid(GRID_SPACING_PIX, UE.grey_picker(0.6))
             self.recall_mask_from_matrix()   # HIGHLY EXPERIMENTAL
             self.unbind_movement_events()
@@ -341,8 +345,6 @@ class movingIconCanvas:
             y_axis = self.map_canvas.create_text(13,(spacing*(quantity_y-(m+1)))+(int(spacing/2)), text=m, fill=UE.grey_picker(0.66), tag="grid")
 
 
-
-
     def which_grid_square(self, pix_x, pix_y, spacing):
         print(f"Pix_X: {pix_x}, Pix_Y: {pix_y}")
         x = math.floor(pix_x/spacing)
@@ -356,7 +358,7 @@ class movingIconCanvas:
         x2 = (grid_square[0]*spacing)+spacing
         y2 = self.canvas_height - ((grid_square[1])*spacing)-spacing
         print((x1, y1), (x2, y2))
-        self.map_canvas.create_rectangle(x1,y1,x2,y2,fill=UE.grey_picker(0.22), tag="mask")
+        self.map_canvas.create_rectangle(x1,y1,x2,y2,fill=UE.grey_picker(0.22),activefill=UE.grey_picker(0.33), tag="mask",activeoutline=UE.ACTIVE_BLUE )
 
 
     def apply_mask_to_live(self):
@@ -374,7 +376,7 @@ class movingIconCanvas:
             y2 = self.canvas_height - ((grid_square[1]) * spacing) - spacing
             print((x1, y1), (x2, y2))
             try:
-                self.live_map_canvas.create_rectangle(x1, y1, x2, y2, fill=UE.grey_picker(0.22), tag="mask")
+                self.live_map_canvas.create_rectangle(x1, y1, x2, y2, width=MASK_BOARDER,fill=UE.grey_picker(0.11), tag="mask")
             except:
                 print("ERROR: Problem applying mask to live canvas")
 
@@ -425,7 +427,8 @@ class movingIconCanvas:
                             self.live_map_canvas.delete(item)  ## Delete image in the canvas
             except:
                 print("ERROR: Finding items in live_map_canvas")
-            print("Live Map Inactive")
+        #else:
+            #print("Live Map Inactive")
 
 
 
@@ -563,6 +566,7 @@ class movingIconCanvas:
         map_dic = self.create_map_dic()  ## Update the map dictionary
         self.load_live_map_from_dic(map_dic)
         self.apply_mask_to_live()
+        self.apply_blackout()
         print(f"Set Live Canvas")
 
     def update_live_canvas(self):
@@ -656,7 +660,7 @@ class movingIconCanvas:
         for item in self.icon_dic:
             try:
                 tags = self.map_canvas.gettags(item)
-                print(f"tags: {tags[0]}")
+                print(f"tags: {tags}")
                 if tags[0] == "icon":
                     print("Current Icon ID: ", item)
                     coords_tuple = self.map_canvas.coords(item)
@@ -670,6 +674,7 @@ class movingIconCanvas:
                     map_dic["icons"][item]["pos_x"] = self.icon_dic[item]["pos_x"]
                     map_dic["icons"][item]["pos_y"] = self.icon_dic[item]["pos_y"]
                     map_dic["icons"][item]["tag"] = self.icon_dic[item]["tag"]
+                    map_dic["icons"][item]["id_tag"] = self.icon_dic[item]["id_tag"]
             except:
                 print(f"Error Finding Tags for Object {item}.")
         map_dic["mask"] = self.mask_list    #TODO CHECK THIS LINE WORKS
@@ -686,6 +691,7 @@ class movingIconCanvas:
 
 
     def load_live_map_from_dic(self, map_dic):
+        print("\n\nloading Live Map from Dictionary")
         try:
             background_file = map_dic["background"]
             print(f"Background File Found: {background_file}")
@@ -693,21 +699,30 @@ class movingIconCanvas:
         except:
             print("No background found")
         try:
-            print(map_dic["icons"])
+            temp_dic = map_dic["icons"]
+            print(f" Map Dictionary \"Icons\": \n{temp_dic}")
             for icons in map_dic["icons"]:      # Icons just returns a (list?) of the numbers of the dictionarys of items - AS A STRING
-                print(icons)
+                print(f"Icon in map_dic[\"icons\"]: {icons}")
                 current_file = map_dic["icons"][icons]["file"]
                 print(f"Loading File: {current_file}")
                 icon_x = int(map_dic["icons"][icons]["pos_x"])
                 icon_y = int(map_dic["icons"][icons]["pos_y"])
-                print(f"Placing Icon at: X[{icon_x}], Y[{icon_y }]")
                 try:
-                    object_id = self.add_place_live_map(icon_x, icon_y, current_file)
+                    id_tag = map_dic["icons"][icons]["id_tag"]
+                    print(f"found id_tag: {id_tag}")
+                except:
+                    id_tag = "oops"
+                    print(f"Can not find id_tag for icon, setting to {id_tag}")   # This may not matter, as images without a tag can be found by matching ID, well this probably will matter because the lookup has to change from ID to tag.
+                #TODO: solution, except will not really work here, you need to remove the item dic, make EVERYTHING function from map_dic, then if tag is not found it will have to reload map_dic by remaking it from canvas objects. hmm
+                #TODO: SEE self.create dic
+
+                try:
+                    object_id = self.add_place_live_map(icon_x, icon_y, current_file, id_tag)
                     print(f"Placing Icon at: X[{icon_x}], Y[{icon_y}]")
                 except:
-                    print("Problem inserting Object into Canvas")
+                    print("Problem inserting Object into Live Canvas")
         except:
-            print("Problem Loading Map from Dictionary")
+            print("Problem Loading Live Map from Dictionary")
         print(f"All Items Added to Live Map")
         print("The following lists should match")
         self.print_all_live_items()
@@ -732,10 +747,11 @@ class movingIconCanvas:
                 print(f"Loading File: {current_file}")
                 icon_x = int(map_dic["icons"][icons]["pos_x"])
                 icon_y = int(map_dic["icons"][icons]["pos_y"])
+                id_tag = map_dic["icons"][icons]["id_tag"]
                 try:
-                    object_id = self.add_place_icon(icon_x, icon_y, current_file)
+                    object_id = self.add_place_icon(icon_x, icon_y, current_file, id_tag)
                 except:
-                    print("Problem inserting Object into Canvas")
+                    print("Problem inserting Object into Canvas CODE: [0001]")
         except:
             print("Problem Recalling Icons from Dictionary")
         try:
@@ -845,10 +861,10 @@ class movingIconCanvas:
     def add_image_dialog(self):
         try:
             filepath = filedialog.askopenfilename(initialdir="D:\Pan Galactic Engineering\MapMaster\map_icons")
-            self.add_place_image(self.init_x, self.init_y, filepath)
+            new_tag = self.add_place_image(self.init_x, self.init_y, filepath)
             print("New Image Added")
             if self.live_map_active:
-                self.add_place_live_image(self.init_x, self.init_y, filepath)
+                self.add_place_live_image(self.init_x, self.init_y, filepath, new_tag)
         except:
             print("User Closed Dialogue Box")
 
@@ -895,16 +911,17 @@ class movingIconCanvas:
     def add_icon_dialog(self):
         try:
             filepath = filedialog.askopenfilename(initialdir="D:\Pan Galactic Engineering\MapMaster\map_icons")
-            self.add_place_icon(self.init_x, self.init_y, filepath)
+            new_tag = self.add_place_icon(self.init_x, self.init_y, filepath, None)
             print("New Icon Added")
             if self.live_map_active:
-                self.add_place_live_map(self.init_x, self.init_y, filepath)
+                self.add_place_live_map(self.init_x, self.init_y, filepath, new_tag)
         except:
             print("User Closed Dialogue Box")
 
 
 
-    def add_place_icon(self, x, y, filepath):
+    def add_place_icon(self, x, y, filepath, id_tag):
+        print("\n\n Add Place Icon")
         img = Image.open(filepath)
         print(f"Opening Icon: {filepath}")
         print(f"IconSize: {img.size[0]}, {img.size[1]}")
@@ -915,17 +932,30 @@ class movingIconCanvas:
         print(f"img_ref: {img_ref}")
         img_canvas_id = self.map_canvas.create_image(x, y, image=img_ref, tags="icon")
         print(f"img_canvas_id: {img_canvas_id}")
+        if id_tag == None:
+            tag_string = ("icon" + str(img_canvas_id))
+        else:
+            tag_string = id_tag
+        print(f"Tag String: {tag_string}")
         self.icon_dic[img_canvas_id] = {}
         self.icon_dic[img_canvas_id].update({
             "file": filepath,
             "pos_x": x,
             "pos_y": y,
             "ref" : img_ref,                           # Even if img_ref isnt used it helps maintain it as global object to avoid garbage collection
-            "tag": "icon"})
+            "id_tag" : tag_string,
+            "tag": "icon",
+        })
         print(self.icon_dic)
+        print(f"adding New tags to Item: {img_canvas_id}, Tag:{tag_string}")
+        self.map_canvas.addtag_withtag(tag_string, img_canvas_id)
+        check_tags = self.map_canvas.gettags(img_canvas_id)
+        print(f"Checking Tags: {check_tags}")
         print(self.map_canvas.find_all())  # get all canvas objects ID
+        return tag_string
 
-    def add_place_live_map(self,  x, y, filepath):
+    def add_place_live_map(self,  x, y, filepath, id_tag):
+        print("Adding to live map")
         img = Image.open(filepath)
         print(f"Opening Icon: {filepath}")
         print(f"IconSize: {img.size[0]}, {img.size[1]}")
@@ -936,6 +966,7 @@ class movingIconCanvas:
         self.live_map_list.append(img_ref)
         print(f"img_ref: {img_ref}")
         img_canvas_id = self.live_map_canvas.create_image(x, y, image=img_ref, tags="icon")
+        self.live_map_canvas.addtag_withtag(id_tag, img_canvas_id )
         print(f"img_LIVE_canvas_id: {img_canvas_id}")
         print(self.live_map_canvas.find_all())  # get all canvas objects ID):
 
@@ -1037,19 +1068,21 @@ class movingIconCanvas:
     def startMovement(self, event):
         self.initi_x = event.x
         self.initi_y = event.y
-        #print('startMovement init', self.initi_x, self.initi_y)
         item = self.map_canvas.find_closest(self.initi_x, self.initi_y, halo=1)  # get canvas object ID of where mouse pointer is  try [0] after this line? seen it on anothe solution
         #live_item = self.live_map_canvas.find_closest(self.initi_x, self.initi_y, halo=1)
-        for tag in self.map_canvas.gettags(item):                                    ## Check object isnt the background
-            print(tag)
-            if (tag == "background"):
-                print("Background Selected - exiting")
-                self.__move = False
-                break
-            else:
-                self.__move = True  ## Moving this to avoid errors
-                self.movingimage = item  # get canvas object ID of where mouse pointer is
-                print(self.movingimage)
+        tags = self.map_canvas.gettags(item)    # tags should only ever have 3 max, first is general, 2nd is specific
+        print(f"Item Tags: {tags}")
+        #for tag in tags:                                   ## Check object isnt the background
+        #    print(f"Current Tag: {tag}")
+        if (tags[0] == "background"):
+            print("Background Selected - exiting")
+            self.__move = False
+            #break
+        else:
+            self.__move = True  ## Moving this to avoid errors
+            #self.movingimage = item  # get canvas object ID of where mouse pointer is  #TODO MAJOR CHANGE HERE ID TO TAG
+            self.movingimage = tags[1]
+            print(f"moving Image: {self.movingimage}")
                 #print(self.map_canvas.find_all())  # get all canvas objects ID Just makes a mess of debug logs
 
     def stopMovement(self, event):
