@@ -18,7 +18,7 @@ _The mask can be set on the DM's screen, then applied to the Live Map._
 ##### Setting the Mask DM's View
 <img width="1199" alt="image" src="https://user-images.githubusercontent.com/53580358/187763344-93782c36-8850-483e-850b-ba7e16ba25d5.png">
 ##### Applied Mask on Players Window
-![live_map_mask](https://user-images.githubusercontent.com/53580358/187764725-d6034b7a-d337-4e55-b162-6a0a41ab41c8.jpg)
+<img width="1199" alt="image" src="(https://user-images.githubusercontent.com/53580358/187764725-d6034b7a-d337-4e55-b162-6a0a41ab41c8.jpg">
 
 
 
