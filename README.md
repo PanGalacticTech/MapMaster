@@ -1,6 +1,6 @@
 # MapMaster
 ## DM's Virtual Tabletop Tool
-_This *free* and *Open Source* virtual tabletop software currently has the following functions:
+_This **free** and **Open Source** virtual tabletop software currently has the following functions._
 
 ### Virtual Tabletop
 - Set Image generated with online or offline mapmaking tools as background
@@ -11,6 +11,7 @@ _This *free* and *Open Source* virtual tabletop software currently has the follo
 - Designed to make sharing maps over discord or video conferenceing easy and clean using window share
 - Easy intergration into live streaming setups. Clean interface for streaming.
 
+If you use/enjoy this software, consider [buying me a coffee](https://ko-fi.com/imogenwren).
 
 ## Features
 ### Map Mask
