@@ -16,7 +16,7 @@ import math
 
 root = Tk()
 root.geometry("1600x980")
-root.title("MapMaster DM's Tool")
+root.title("MapMaster DM's Screen")
 root.iconbitmap("D:\Pan Galactic Engineering\MapMaster\Icons\MapMaster_Icon256.ico")
                   # self.s ?!/ no idea
 
@@ -192,7 +192,7 @@ class movingIconCanvas:
         ## Assuming existance of top_frame
         self.titlebox = UE.darkBorderless(root_container)
         self.titlebox.grid(padx=10, pady=5, sticky="NW", row=0, column=0)
-        self.sidebar_title = UE.darkLabelTitle(self.titlebox, text="MapMaster DM's Tool")
+        self.sidebar_title = UE.darkLabelTitle(self.titlebox, text="MapMaster DM's Screen")
         self.sidebar_title.grid(padx=10, pady=5, sticky="NSEW", row=0)
 
         self.side_frame = UE.darkFrame(root_container, bg=UE.DARKER_GREY, height=1400)  # , text="MapMaster DMs Map & Resource Manager" ,
