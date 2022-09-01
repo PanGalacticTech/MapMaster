@@ -42,7 +42,10 @@ Adding new icons using image files is accomplished by selecting `Add Icon` and s
 - TODO: Later I want to include a slider to increase or decrease the size of player Icons.
 
 #### Images
-Adding images is a similar process to Icons, select `Add Image` and select an image file to insert. Images are NOT resized to fit the window. I wish to add this feature in the future. But for now, either use the python script included in SOURCE `XXXXXX(Coming Soon)` To quickly resize and save images at a suitable size, or resize them using your favourite image editor. I tend to use images to show players artwork, eg of a monster they have just encountered, but then use Icons for combat encounters.
+Adding images is a similar process to Icons, select `Add Image` and select an image file to insert. Images are NOT resized to fit the window. I wish to add this feature in the future. But for now, either use the python script included in SOURCE `XXXXXX(Coming Soon)` To quickly resize and save images at a suitable size, or resize them using your favourite image editor. I tend to use images to show players artwork, eg of a monster they have just encountered, but then use Icons for combat encounters. I mostly added this to avoid having to drop images into group chat.
+
+![image](https://user-images.githubusercontent.com/53580358/187944880-311692dc-4197-458a-9181-c292dbcb8e78.png)
+_Insert an image of a large troll to shock your players into running away like cowards_
 
 #### Deleting Icons and Images
 Deleting an icon or image is done by dragging it towards the top left hand corner of the DM's map, and pressing the delete button. I wish to improve the function of this in later releases.
@@ -51,13 +54,37 @@ Deleting an icon or image is done by dragging it towards the top left hand corne
 The live map is intended as the window the players can view. It lets the DM hide parts of the map, images and tokens they may be arranging out of sight of the players.
 If using MapMaster for Discord or Zoom games, or for Streaming Setups, the Live Map should be activated with `Activate Live Map`, and this window can be set as the source for Video Conferencing or Window Capture in streaming setups.
 
+#### Live Map View with Mask Set
+If your players are trapped in a dungeon, make sure they can only see as far as the nearest doorway.
+![image](https://user-images.githubusercontent.com/53580358/187944434-8859e05e-5b4c-4073-8d90-077abfb3ba01.png)
+
+
 ### Map Mask
 To set a map mask, click the `Show Mask` button. This will show a grid and the current applied mask on the DM's Screen map. The Current Applied Mask will ALWAYS be visible on the Live Map, letting the DM pre-select a mask, ensuring the players dont get to see a dungeon layout or hidden trap that they shouldnt be able to see yet.
 The live map mask will update when the DM's Screen Map Mask is closed using `Hide Mask` 
 Use the `Add Mask` and `Subtract Mask` buttons to add or remove mask squares. `Clear Mask` will both clear the entire mask, and update the live map, so use with care. I will change the function of this later to avoid mistakes.
+_Have enemies lurking just out of sight for a more realistic reveal of the world around your players_
+__Players View__
+![image](https://user-images.githubusercontent.com/53580358/187945792-f96c449a-1f56-4ba7-a6c4-3144d002152b.png)
+__DM's View__
+![image](https://user-images.githubusercontent.com/53580358/187946089-9fb7aeb6-7123-48ab-bb25-e4905859dbae.png)
+
+_The mask can be set on the DM's screen, then applied to the Live Map._
+##### Setting the Mask DM's View
+![image](https://user-images.githubusercontent.com/53580358/187763344-93782c36-8850-483e-850b-ba7e16ba25d5.png)
+##### Applied Mask on Players Window
+![image](https://user-images.githubusercontent.com/53580358/187764725-d6034b7a-d337-4e55-b162-6a0a41ab41c8.jpg)
+
 
 ### Blackout
 Blackout is set with the `Blackout` button. It applies a black mask to the entire Live Map screen, allowing for scene changes out of sight of the players.
+
+### Rename Map
+`Rename Map` Button to change the text at the top of the map. Thats it thats all it does.
+
+### Saving Map
+`Save As` and `Save` Buttons both open a file dialogue to name and save the file in JSON format. 
+`Open File` will let you recall saved maps. Ensuring that you can save progress mid encounter to resume at a later session.
 
 ### Range and Scale Functions
 _Coming in a later release_
@@ -68,22 +95,16 @@ _Any opened icons should be visible here to avoid opening a new file each time a
 ### Create Token
 _Create player Icons and Meeples with basic graphical shapes and text. To be added in a later release._
 
-## Features
-### Map Mask
-_The mask can be set on the DM's screen, then applied to the Live Map._
-##### Setting the Mask DM's View
-![image](https://user-images.githubusercontent.com/53580358/187763344-93782c36-8850-483e-850b-ba7e16ba25d5.png)
-##### Applied Mask on Players Window
-![image](https://user-images.githubusercontent.com/53580358/187764725-d6034b7a-d337-4e55-b162-6a0a41ab41c8.jpg)
-
-
-
-Save and Load maps with masked areas and inserted map icons, allowing play state to be saved untill the next session.
 
 
 
 
 
+# Known issues
+- On Hiding Mask after using Subtract Mask function, some mask squares occasionally do not clear. Showing the mask and removing them again will clear them from the live map.
+- Sometimes Live map does not update with a newly inserted background map. Reinserting the image usually works the 2nd time.
+- Occasional exception errors. If found- Please save log and [Email Me](emailto:imogen.wren91@gmail.com)
+- Images may not always save with the saved game. This does not seem to affect Icons
 
 
 
@@ -94,7 +115,7 @@ Save and Load maps with masked areas and inserted map icons, allowing play state
 
 
 
-## Features
+## Desired Features
 
 - Open image as background
 - Open image and save to object palette
