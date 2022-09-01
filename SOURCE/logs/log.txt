@@ -1,0 +1,313 @@
+MapMaster DM's Screen: Runtime Log
+
+
+Loading Map from Dictionary
+Background File Found: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_backgrounds\Froghemoth Bullywug Caverns.jpg
+New Map Background Applied
+
+
+ Add Place Icon
+Opening Icon: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_icons\Silver.png
+Icon Too Large: Resizing Icon
+New Image Size
+{1: {'file': '', 'ref': '', 'pos_x': 0, 'pos_y': 0, 'tag': ''}, 2: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Silver.png', 'pos_x': 970, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE3D00>, 'id_tag': 'icon1', 'tag': 'icon'}}
+Attempting tagging 2 lower
+No Mask Layer Found
+No Blackout Layer Found
+Placing Icon at: X[970], Y[700]
+
+
+ Add Place Icon
+Opening Icon: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_icons\Meridith.png
+Icon Too Large: Resizing Icon
+New Image Size
+{1: {'file': '', 'ref': '', 'pos_x': 0, 'pos_y': 0, 'tag': ''}, 2: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Silver.png', 'pos_x': 970, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE3D00>, 'id_tag': 'icon1', 'tag': 'icon'}, 3: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Meridith.png', 'pos_x': 1000, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2F80>, 'id_tag': 'icon2', 'tag': 'icon'}}
+Attempting tagging 3 lower
+No Mask Layer Found
+No Blackout Layer Found
+Placing Icon at: X[1000], Y[700]
+
+
+ Add Place Icon
+Opening Icon: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_icons\Coal.png
+Icon Too Large: Resizing Icon
+New Image Size
+{1: {'file': '', 'ref': '', 'pos_x': 0, 'pos_y': 0, 'tag': ''}, 2: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Silver.png', 'pos_x': 970, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE3D00>, 'id_tag': 'icon1', 'tag': 'icon'}, 3: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Meridith.png', 'pos_x': 1000, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2F80>, 'id_tag': 'icon2', 'tag': 'icon'}, 4: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Coal.png', 'pos_x': 1030, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0A90>, 'id_tag': 'icon3', 'tag': 'icon'}}
+Attempting tagging 4 lower
+No Mask Layer Found
+No Blackout Layer Found
+Placing Icon at: X[1030], Y[700]
+
+
+ Add Place Icon
+Opening Icon: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_icons\Faen.png
+Icon Too Large: Resizing Icon
+New Image Size
+{1: {'file': '', 'ref': '', 'pos_x': 0, 'pos_y': 0, 'tag': ''}, 2: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Silver.png', 'pos_x': 970, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE3D00>, 'id_tag': 'icon1', 'tag': 'icon'}, 3: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Meridith.png', 'pos_x': 1000, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2F80>, 'id_tag': 'icon2', 'tag': 'icon'}, 4: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Coal.png', 'pos_x': 1030, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0A90>, 'id_tag': 'icon3', 'tag': 'icon'}, 5: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Faen.png', 'pos_x': 1060, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2770>, 'id_tag': 'icon4', 'tag': 'icon'}}
+Attempting tagging 5 lower
+No Mask Layer Found
+No Blackout Layer Found
+Placing Icon at: X[1060], Y[700]
+
+
+ Add Place Icon
+Opening Icon: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_icons\1_red.png
+Icon Too Large: Resizing Icon
+New Image Size
+{1: {'file': '', 'ref': '', 'pos_x': 0, 'pos_y': 0, 'tag': ''}, 2: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Silver.png', 'pos_x': 970, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE3D00>, 'id_tag': 'icon1', 'tag': 'icon'}, 3: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Meridith.png', 'pos_x': 1000, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2F80>, 'id_tag': 'icon2', 'tag': 'icon'}, 4: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Coal.png', 'pos_x': 1030, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0A90>, 'id_tag': 'icon3', 'tag': 'icon'}, 5: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Faen.png', 'pos_x': 1060, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2770>, 'id_tag': 'icon4', 'tag': 'icon'}, 6: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\1_red.png', 'pos_x': 20, 'pos_y': 60, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2A40>, 'id_tag': 'icon5', 'tag': 'icon'}}
+Attempting tagging 6 lower
+No Mask Layer Found
+No Blackout Layer Found
+Placing Icon at: X[20], Y[60]
+
+
+ Add Place Icon
+Opening Icon: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_icons\2_orange.png
+Icon Too Large: Resizing Icon
+New Image Size
+{1: {'file': '', 'ref': '', 'pos_x': 0, 'pos_y': 0, 'tag': ''}, 2: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Silver.png', 'pos_x': 970, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE3D00>, 'id_tag': 'icon1', 'tag': 'icon'}, 3: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Meridith.png', 'pos_x': 1000, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2F80>, 'id_tag': 'icon2', 'tag': 'icon'}, 4: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Coal.png', 'pos_x': 1030, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0A90>, 'id_tag': 'icon3', 'tag': 'icon'}, 5: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Faen.png', 'pos_x': 1060, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2770>, 'id_tag': 'icon4', 'tag': 'icon'}, 6: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\1_red.png', 'pos_x': 20, 'pos_y': 60, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2A40>, 'id_tag': 'icon5', 'tag': 'icon'}, 7: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\2_orange.png', 'pos_x': 20, 'pos_y': 80, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2CE0>, 'id_tag': 'icon6', 'tag': 'icon'}}
+Attempting tagging 7 lower
+No Mask Layer Found
+No Blackout Layer Found
+Placing Icon at: X[20], Y[80]
+
+
+ Add Place Icon
+Opening Icon: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_icons\3_yellow.png
+Icon Too Large: Resizing Icon
+New Image Size
+{1: {'file': '', 'ref': '', 'pos_x': 0, 'pos_y': 0, 'tag': ''}, 2: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Silver.png', 'pos_x': 970, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE3D00>, 'id_tag': 'icon1', 'tag': 'icon'}, 3: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Meridith.png', 'pos_x': 1000, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2F80>, 'id_tag': 'icon2', 'tag': 'icon'}, 4: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Coal.png', 'pos_x': 1030, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0A90>, 'id_tag': 'icon3', 'tag': 'icon'}, 5: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Faen.png', 'pos_x': 1060, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2770>, 'id_tag': 'icon4', 'tag': 'icon'}, 6: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\1_red.png', 'pos_x': 20, 'pos_y': 60, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2A40>, 'id_tag': 'icon5', 'tag': 'icon'}, 7: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\2_orange.png', 'pos_x': 20, 'pos_y': 80, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2CE0>, 'id_tag': 'icon6', 'tag': 'icon'}, 8: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\3_yellow.png', 'pos_x': 20, 'pos_y': 100, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0040>, 'id_tag': 'icon7', 'tag': 'icon'}}
+Attempting tagging 8 lower
+No Mask Layer Found
+No Blackout Layer Found
+Placing Icon at: X[20], Y[100]
+
+
+ Add Place Icon
+Opening Icon: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_icons\4_lime.png
+Icon Too Large: Resizing Icon
+New Image Size
+{1: {'file': '', 'ref': '', 'pos_x': 0, 'pos_y': 0, 'tag': ''}, 2: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Silver.png', 'pos_x': 970, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE3D00>, 'id_tag': 'icon1', 'tag': 'icon'}, 3: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Meridith.png', 'pos_x': 1000, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2F80>, 'id_tag': 'icon2', 'tag': 'icon'}, 4: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Coal.png', 'pos_x': 1030, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0A90>, 'id_tag': 'icon3', 'tag': 'icon'}, 5: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Faen.png', 'pos_x': 1060, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2770>, 'id_tag': 'icon4', 'tag': 'icon'}, 6: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\1_red.png', 'pos_x': 20, 'pos_y': 60, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2A40>, 'id_tag': 'icon5', 'tag': 'icon'}, 7: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\2_orange.png', 'pos_x': 20, 'pos_y': 80, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2CE0>, 'id_tag': 'icon6', 'tag': 'icon'}, 8: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\3_yellow.png', 'pos_x': 20, 'pos_y': 100, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0040>, 'id_tag': 'icon7', 'tag': 'icon'}, 9: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\4_lime.png', 'pos_x': 20, 'pos_y': 120, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE1630>, 'id_tag': 'icon8', 'tag': 'icon'}}
+Attempting tagging 9 lower
+No Mask Layer Found
+No Blackout Layer Found
+Placing Icon at: X[20], Y[120]
+
+
+ Add Place Icon
+Opening Icon: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_icons\5_green.png
+Icon Too Large: Resizing Icon
+New Image Size
+{1: {'file': '', 'ref': '', 'pos_x': 0, 'pos_y': 0, 'tag': ''}, 2: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Silver.png', 'pos_x': 970, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE3D00>, 'id_tag': 'icon1', 'tag': 'icon'}, 3: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Meridith.png', 'pos_x': 1000, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2F80>, 'id_tag': 'icon2', 'tag': 'icon'}, 4: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Coal.png', 'pos_x': 1030, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0A90>, 'id_tag': 'icon3', 'tag': 'icon'}, 5: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Faen.png', 'pos_x': 1060, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2770>, 'id_tag': 'icon4', 'tag': 'icon'}, 6: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\1_red.png', 'pos_x': 20, 'pos_y': 60, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2A40>, 'id_tag': 'icon5', 'tag': 'icon'}, 7: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\2_orange.png', 'pos_x': 20, 'pos_y': 80, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2CE0>, 'id_tag': 'icon6', 'tag': 'icon'}, 8: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\3_yellow.png', 'pos_x': 20, 'pos_y': 100, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0040>, 'id_tag': 'icon7', 'tag': 'icon'}, 9: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\4_lime.png', 'pos_x': 20, 'pos_y': 120, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE1630>, 'id_tag': 'icon8', 'tag': 'icon'}, 10: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\5_green.png', 'pos_x': 20, 'pos_y': 140, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0AF0>, 'id_tag': 'icon9', 'tag': 'icon'}}
+Attempting tagging 10 lower
+No Mask Layer Found
+No Blackout Layer Found
+Placing Icon at: X[20], Y[140]
+
+
+ Add Place Icon
+Opening Icon: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_icons\6_aqua.png
+Icon Too Large: Resizing Icon
+New Image Size
+{1: {'file': '', 'ref': '', 'pos_x': 0, 'pos_y': 0, 'tag': ''}, 2: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Silver.png', 'pos_x': 970, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE3D00>, 'id_tag': 'icon1', 'tag': 'icon'}, 3: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Meridith.png', 'pos_x': 1000, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2F80>, 'id_tag': 'icon2', 'tag': 'icon'}, 4: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Coal.png', 'pos_x': 1030, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0A90>, 'id_tag': 'icon3', 'tag': 'icon'}, 5: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Faen.png', 'pos_x': 1060, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2770>, 'id_tag': 'icon4', 'tag': 'icon'}, 6: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\1_red.png', 'pos_x': 20, 'pos_y': 60, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2A40>, 'id_tag': 'icon5', 'tag': 'icon'}, 7: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\2_orange.png', 'pos_x': 20, 'pos_y': 80, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2CE0>, 'id_tag': 'icon6', 'tag': 'icon'}, 8: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\3_yellow.png', 'pos_x': 20, 'pos_y': 100, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0040>, 'id_tag': 'icon7', 'tag': 'icon'}, 9: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\4_lime.png', 'pos_x': 20, 'pos_y': 120, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE1630>, 'id_tag': 'icon8', 'tag': 'icon'}, 10: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\5_green.png', 'pos_x': 20, 'pos_y': 140, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0AF0>, 'id_tag': 'icon9', 'tag': 'icon'}, 11: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\6_aqua.png', 'pos_x': 20, 'pos_y': 160, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2950>, 'id_tag': 'icon10', 'tag': 'icon'}}
+Attempting tagging 11 lower
+No Mask Layer Found
+No Blackout Layer Found
+Placing Icon at: X[20], Y[160]
+
+
+ Add Place Icon
+Opening Icon: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_icons\7_sky.png
+Icon Too Large: Resizing Icon
+New Image Size
+{1: {'file': '', 'ref': '', 'pos_x': 0, 'pos_y': 0, 'tag': ''}, 2: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Silver.png', 'pos_x': 970, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE3D00>, 'id_tag': 'icon1', 'tag': 'icon'}, 3: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Meridith.png', 'pos_x': 1000, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2F80>, 'id_tag': 'icon2', 'tag': 'icon'}, 4: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Coal.png', 'pos_x': 1030, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0A90>, 'id_tag': 'icon3', 'tag': 'icon'}, 5: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Faen.png', 'pos_x': 1060, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2770>, 'id_tag': 'icon4', 'tag': 'icon'}, 6: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\1_red.png', 'pos_x': 20, 'pos_y': 60, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2A40>, 'id_tag': 'icon5', 'tag': 'icon'}, 7: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\2_orange.png', 'pos_x': 20, 'pos_y': 80, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2CE0>, 'id_tag': 'icon6', 'tag': 'icon'}, 8: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\3_yellow.png', 'pos_x': 20, 'pos_y': 100, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0040>, 'id_tag': 'icon7', 'tag': 'icon'}, 9: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\4_lime.png', 'pos_x': 20, 'pos_y': 120, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE1630>, 'id_tag': 'icon8', 'tag': 'icon'}, 10: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\5_green.png', 'pos_x': 20, 'pos_y': 140, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0AF0>, 'id_tag': 'icon9', 'tag': 'icon'}, 11: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\6_aqua.png', 'pos_x': 20, 'pos_y': 160, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2950>, 'id_tag': 'icon10', 'tag': 'icon'}, 12: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\7_sky.png', 'pos_x': 20, 'pos_y': 180, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE3010>, 'id_tag': 'icon11', 'tag': 'icon'}}
+Attempting tagging 12 lower
+No Mask Layer Found
+No Blackout Layer Found
+Placing Icon at: X[20], Y[180]
+
+
+ Add Place Icon
+Opening Icon: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_icons\8_blue.png
+Icon Too Large: Resizing Icon
+New Image Size
+{1: {'file': '', 'ref': '', 'pos_x': 0, 'pos_y': 0, 'tag': ''}, 2: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Silver.png', 'pos_x': 970, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE3D00>, 'id_tag': 'icon1', 'tag': 'icon'}, 3: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Meridith.png', 'pos_x': 1000, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2F80>, 'id_tag': 'icon2', 'tag': 'icon'}, 4: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Coal.png', 'pos_x': 1030, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0A90>, 'id_tag': 'icon3', 'tag': 'icon'}, 5: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Faen.png', 'pos_x': 1060, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2770>, 'id_tag': 'icon4', 'tag': 'icon'}, 6: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\1_red.png', 'pos_x': 20, 'pos_y': 60, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2A40>, 'id_tag': 'icon5', 'tag': 'icon'}, 7: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\2_orange.png', 'pos_x': 20, 'pos_y': 80, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2CE0>, 'id_tag': 'icon6', 'tag': 'icon'}, 8: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\3_yellow.png', 'pos_x': 20, 'pos_y': 100, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0040>, 'id_tag': 'icon7', 'tag': 'icon'}, 9: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\4_lime.png', 'pos_x': 20, 'pos_y': 120, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE1630>, 'id_tag': 'icon8', 'tag': 'icon'}, 10: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\5_green.png', 'pos_x': 20, 'pos_y': 140, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0AF0>, 'id_tag': 'icon9', 'tag': 'icon'}, 11: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\6_aqua.png', 'pos_x': 20, 'pos_y': 160, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2950>, 'id_tag': 'icon10', 'tag': 'icon'}, 12: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\7_sky.png', 'pos_x': 20, 'pos_y': 180, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE3010>, 'id_tag': 'icon11', 'tag': 'icon'}, 13: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\8_blue.png', 'pos_x': 20, 'pos_y': 200, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE09D0>, 'id_tag': 'icon12', 'tag': 'icon'}}
+Attempting tagging 13 lower
+No Mask Layer Found
+No Blackout Layer Found
+Placing Icon at: X[20], Y[200]
+
+
+ Add Place Icon
+Opening Icon: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_icons\9_purple.png
+Icon Too Large: Resizing Icon
+New Image Size
+{1: {'file': '', 'ref': '', 'pos_x': 0, 'pos_y': 0, 'tag': ''}, 2: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Silver.png', 'pos_x': 970, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE3D00>, 'id_tag': 'icon1', 'tag': 'icon'}, 3: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Meridith.png', 'pos_x': 1000, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2F80>, 'id_tag': 'icon2', 'tag': 'icon'}, 4: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Coal.png', 'pos_x': 1030, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0A90>, 'id_tag': 'icon3', 'tag': 'icon'}, 5: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Faen.png', 'pos_x': 1060, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2770>, 'id_tag': 'icon4', 'tag': 'icon'}, 6: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\1_red.png', 'pos_x': 20, 'pos_y': 60, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2A40>, 'id_tag': 'icon5', 'tag': 'icon'}, 7: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\2_orange.png', 'pos_x': 20, 'pos_y': 80, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2CE0>, 'id_tag': 'icon6', 'tag': 'icon'}, 8: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\3_yellow.png', 'pos_x': 20, 'pos_y': 100, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0040>, 'id_tag': 'icon7', 'tag': 'icon'}, 9: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\4_lime.png', 'pos_x': 20, 'pos_y': 120, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE1630>, 'id_tag': 'icon8', 'tag': 'icon'}, 10: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\5_green.png', 'pos_x': 20, 'pos_y': 140, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0AF0>, 'id_tag': 'icon9', 'tag': 'icon'}, 11: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\6_aqua.png', 'pos_x': 20, 'pos_y': 160, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2950>, 'id_tag': 'icon10', 'tag': 'icon'}, 12: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\7_sky.png', 'pos_x': 20, 'pos_y': 180, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE3010>, 'id_tag': 'icon11', 'tag': 'icon'}, 13: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\8_blue.png', 'pos_x': 20, 'pos_y': 200, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE09D0>, 'id_tag': 'icon12', 'tag': 'icon'}, 14: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\9_purple.png', 'pos_x': 20, 'pos_y': 220, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2BC0>, 'id_tag': 'icon13', 'tag': 'icon'}}
+Attempting tagging 14 lower
+No Mask Layer Found
+No Blackout Layer Found
+Placing Icon at: X[20], Y[220]
+
+
+ Add Place Icon
+Opening Icon: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_icons\10_pink.png
+Icon Too Large: Resizing Icon
+New Image Size
+{1: {'file': '', 'ref': '', 'pos_x': 0, 'pos_y': 0, 'tag': ''}, 2: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Silver.png', 'pos_x': 970, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE3D00>, 'id_tag': 'icon1', 'tag': 'icon'}, 3: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Meridith.png', 'pos_x': 1000, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2F80>, 'id_tag': 'icon2', 'tag': 'icon'}, 4: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Coal.png', 'pos_x': 1030, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0A90>, 'id_tag': 'icon3', 'tag': 'icon'}, 5: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Faen.png', 'pos_x': 1060, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2770>, 'id_tag': 'icon4', 'tag': 'icon'}, 6: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\1_red.png', 'pos_x': 20, 'pos_y': 60, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2A40>, 'id_tag': 'icon5', 'tag': 'icon'}, 7: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\2_orange.png', 'pos_x': 20, 'pos_y': 80, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2CE0>, 'id_tag': 'icon6', 'tag': 'icon'}, 8: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\3_yellow.png', 'pos_x': 20, 'pos_y': 100, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0040>, 'id_tag': 'icon7', 'tag': 'icon'}, 9: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\4_lime.png', 'pos_x': 20, 'pos_y': 120, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE1630>, 'id_tag': 'icon8', 'tag': 'icon'}, 10: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\5_green.png', 'pos_x': 20, 'pos_y': 140, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0AF0>, 'id_tag': 'icon9', 'tag': 'icon'}, 11: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\6_aqua.png', 'pos_x': 20, 'pos_y': 160, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2950>, 'id_tag': 'icon10', 'tag': 'icon'}, 12: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\7_sky.png', 'pos_x': 20, 'pos_y': 180, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE3010>, 'id_tag': 'icon11', 'tag': 'icon'}, 13: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\8_blue.png', 'pos_x': 20, 'pos_y': 200, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE09D0>, 'id_tag': 'icon12', 'tag': 'icon'}, 14: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\9_purple.png', 'pos_x': 20, 'pos_y': 220, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2BC0>, 'id_tag': 'icon13', 'tag': 'icon'}, 15: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\10_pink.png', 'pos_x': 20, 'pos_y': 240, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0BB0>, 'id_tag': 'icon14', 'tag': 'icon'}}
+Attempting tagging 15 lower
+No Mask Layer Found
+No Blackout Layer Found
+Placing Icon at: X[20], Y[240]
+Problem Recalling Mask from Dictionary
+Live Map Active
+Opening Live Canvas
+
+
+Creating Map Dictionary
+
+Saving Map: Bullywug Cavern
+Background File (relative): \map_backgrounds\Froghemoth Bullywug Caverns.jpg
+Icon Dictionary: {1: {'file': '', 'ref': '', 'pos_x': 0, 'pos_y': 0, 'tag': ''}, 2: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Silver.png', 'pos_x': 970, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE3D00>, 'id_tag': 'icon1', 'tag': 'icon'}, 3: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Meridith.png', 'pos_x': 1000, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2F80>, 'id_tag': 'icon2', 'tag': 'icon'}, 4: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Coal.png', 'pos_x': 1030, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0A90>, 'id_tag': 'icon3', 'tag': 'icon'}, 5: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Faen.png', 'pos_x': 1060, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2770>, 'id_tag': 'icon4', 'tag': 'icon'}, 6: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\1_red.png', 'pos_x': 20, 'pos_y': 60, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2A40>, 'id_tag': 'icon5', 'tag': 'icon'}, 7: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\2_orange.png', 'pos_x': 20, 'pos_y': 80, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2CE0>, 'id_tag': 'icon6', 'tag': 'icon'}, 8: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\3_yellow.png', 'pos_x': 20, 'pos_y': 100, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0040>, 'id_tag': 'icon7', 'tag': 'icon'}, 9: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\4_lime.png', 'pos_x': 20, 'pos_y': 120, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE1630>, 'id_tag': 'icon8', 'tag': 'icon'}, 10: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\5_green.png', 'pos_x': 20, 'pos_y': 140, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0AF0>, 'id_tag': 'icon9', 'tag': 'icon'}, 11: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\6_aqua.png', 'pos_x': 20, 'pos_y': 160, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2950>, 'id_tag': 'icon10', 'tag': 'icon'}, 12: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\7_sky.png', 'pos_x': 20, 'pos_y': 180, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE3010>, 'id_tag': 'icon11', 'tag': 'icon'}, 13: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\8_blue.png', 'pos_x': 20, 'pos_y': 200, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE09D0>, 'id_tag': 'icon12', 'tag': 'icon'}, 14: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\9_purple.png', 'pos_x': 20, 'pos_y': 220, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2BC0>, 'id_tag': 'icon13', 'tag': 'icon'}, 15: {'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\10_pink.png', 'pos_x': 20, 'pos_y': 240, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0BB0>, 'id_tag': 'icon14', 'tag': 'icon'}}
+Item Dictionary{'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Silver.png', 'pos_x': 970, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE3D00>, 'id_tag': 'icon1', 'tag': 'icon'}
+Item Dictionary{'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Meridith.png', 'pos_x': 1000, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2F80>, 'id_tag': 'icon2', 'tag': 'icon'}
+Item Dictionary{'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Coal.png', 'pos_x': 1030, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0A90>, 'id_tag': 'icon3', 'tag': 'icon'}
+Item Dictionary{'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\Faen.png', 'pos_x': 1060, 'pos_y': 700, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2770>, 'id_tag': 'icon4', 'tag': 'icon'}
+Item Dictionary{'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\1_red.png', 'pos_x': 20, 'pos_y': 60, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2A40>, 'id_tag': 'icon5', 'tag': 'icon'}
+Item Dictionary{'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\2_orange.png', 'pos_x': 20, 'pos_y': 80, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2CE0>, 'id_tag': 'icon6', 'tag': 'icon'}
+Item Dictionary{'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\3_yellow.png', 'pos_x': 20, 'pos_y': 100, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0040>, 'id_tag': 'icon7', 'tag': 'icon'}
+Item Dictionary{'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\4_lime.png', 'pos_x': 20, 'pos_y': 120, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE1630>, 'id_tag': 'icon8', 'tag': 'icon'}
+Item Dictionary{'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\5_green.png', 'pos_x': 20, 'pos_y': 140, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0AF0>, 'id_tag': 'icon9', 'tag': 'icon'}
+Item Dictionary{'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\6_aqua.png', 'pos_x': 20, 'pos_y': 160, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2950>, 'id_tag': 'icon10', 'tag': 'icon'}
+Item Dictionary{'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\7_sky.png', 'pos_x': 20, 'pos_y': 180, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE3010>, 'id_tag': 'icon11', 'tag': 'icon'}
+Item Dictionary{'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\8_blue.png', 'pos_x': 20, 'pos_y': 200, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE09D0>, 'id_tag': 'icon12', 'tag': 'icon'}
+Item Dictionary{'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\9_purple.png', 'pos_x': 20, 'pos_y': 220, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE2BC0>, 'id_tag': 'icon13', 'tag': 'icon'}
+Item Dictionary{'file': 'D:\\Pan Galactic Engineering\\MapMaster\\SOURCE\\map_icons\\10_pink.png', 'pos_x': 20, 'pos_y': 240, 'ref': <PIL.ImageTk.PhotoImage object at 0x000002506FAE0BB0>, 'id_tag': 'icon14', 'tag': 'icon'}
+End of Create Map Dictionary
+New Map Dictionary: {'name': 'Bullywug Cavern', 'background': '\\map_backgrounds\\Froghemoth Bullywug Caverns.jpg', 'icons': {2: {'file': '\\map_icons\\Silver.png', 'pos_x': 970, 'pos_y': 700, 'tag': 'icon', 'id_tag': 'icon1'}, 3: {'file': '\\map_icons\\Meridith.png', 'pos_x': 1000, 'pos_y': 700, 'tag': 'icon', 'id_tag': 'icon2'}, 4: {'file': '\\map_icons\\Coal.png', 'pos_x': 1030, 'pos_y': 700, 'tag': 'icon', 'id_tag': 'icon3'}, 5: {'file': '\\map_icons\\Faen.png', 'pos_x': 1060, 'pos_y': 700, 'tag': 'icon', 'id_tag': 'icon4'}, 6: {'file': '\\map_icons\\1_red.png', 'pos_x': 20, 'pos_y': 60, 'tag': 'icon', 'id_tag': 'icon5'}, 7: {'file': '\\map_icons\\2_orange.png', 'pos_x': 20, 'pos_y': 80, 'tag': 'icon', 'id_tag': 'icon6'}, 8: {'file': '\\map_icons\\3_yellow.png', 'pos_x': 20, 'pos_y': 100, 'tag': 'icon', 'id_tag': 'icon7'}, 9: {'file': '\\map_icons\\4_lime.png', 'pos_x': 20, 'pos_y': 120, 'tag': 'icon', 'id_tag': 'icon8'}, 10: {'file': '\\map_icons\\5_green.png', 'pos_x': 20, 'pos_y': 140, 'tag': 'icon', 'id_tag': 'icon9'}, 11: {'file': '\\map_icons\\6_aqua.png', 'pos_x': 20, 'pos_y': 160, 'tag': 'icon', 'id_tag': 'icon10'}, 12: {'file': '\\map_icons\\7_sky.png', 'pos_x': 20, 'pos_y': 180, 'tag': 'icon', 'id_tag': 'icon11'}, 13: {'file': '\\map_icons\\8_blue.png', 'pos_x': 20, 'pos_y': 200, 'tag': 'icon', 'id_tag': 'icon12'}, 14: {'file': '\\map_icons\\9_purple.png', 'pos_x': 20, 'pos_y': 220, 'tag': 'icon', 'id_tag': 'icon13'}, 15: {'file': '\\map_icons\\10_pink.png', 'pos_x': 20, 'pos_y': 240, 'tag': 'icon', 'id_tag': 'icon14'}}, 'mask': []}
+
+
+loading Live Map from Dictionary
+Background File Found: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_backgrounds\Froghemoth Bullywug Caverns.jpg
+New Map Live Background Applied
+found id_tag: icon1
+Adding icon to live map
+Opening Icon: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_icons\Silver.png
+Icon Too Large: Resizing Icon
+New Image Size
+Attempting tagging 2 lower
+No Mask Layer Found
+No Blackout Layer Found
+found id_tag: icon2
+Adding icon to live map
+Opening Icon: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_icons\Meridith.png
+Icon Too Large: Resizing Icon
+New Image Size
+Attempting tagging 3 lower
+No Mask Layer Found
+No Blackout Layer Found
+found id_tag: icon3
+Adding icon to live map
+Opening Icon: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_icons\Coal.png
+Icon Too Large: Resizing Icon
+New Image Size
+Attempting tagging 4 lower
+No Mask Layer Found
+No Blackout Layer Found
+found id_tag: icon4
+Adding icon to live map
+Opening Icon: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_icons\Faen.png
+Icon Too Large: Resizing Icon
+New Image Size
+Attempting tagging 5 lower
+No Mask Layer Found
+No Blackout Layer Found
+found id_tag: icon5
+Adding icon to live map
+Opening Icon: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_icons\1_red.png
+Icon Too Large: Resizing Icon
+New Image Size
+Attempting tagging 6 lower
+No Mask Layer Found
+No Blackout Layer Found
+found id_tag: icon6
+Adding icon to live map
+Opening Icon: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_icons\2_orange.png
+Icon Too Large: Resizing Icon
+New Image Size
+Attempting tagging 7 lower
+No Mask Layer Found
+No Blackout Layer Found
+found id_tag: icon7
+Adding icon to live map
+Opening Icon: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_icons\3_yellow.png
+Icon Too Large: Resizing Icon
+New Image Size
+Attempting tagging 8 lower
+No Mask Layer Found
+No Blackout Layer Found
+found id_tag: icon8
+Adding icon to live map
+Opening Icon: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_icons\4_lime.png
+Icon Too Large: Resizing Icon
+New Image Size
+Attempting tagging 9 lower
+No Mask Layer Found
+No Blackout Layer Found
+found id_tag: icon9
+Adding icon to live map
+Opening Icon: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_icons\5_green.png
+Icon Too Large: Resizing Icon
+New Image Size
+Attempting tagging 10 lower
+No Mask Layer Found
+No Blackout Layer Found
+found id_tag: icon10
+Adding icon to live map
+Opening Icon: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_icons\6_aqua.png
+Icon Too Large: Resizing Icon
+New Image Size
+Attempting tagging 11 lower
+No Mask Layer Found
+No Blackout Layer Found
+found id_tag: icon11
+Adding icon to live map
+Opening Icon: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_icons\7_sky.png
+Icon Too Large: Resizing Icon
+New Image Size
+Attempting tagging 12 lower
+No Mask Layer Found
+No Blackout Layer Found
+found id_tag: icon12
+Adding icon to live map
+Opening Icon: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_icons\8_blue.png
+Icon Too Large: Resizing Icon
+New Image Size
+Attempting tagging 13 lower
+No Mask Layer Found
+No Blackout Layer Found
+found id_tag: icon13
+Adding icon to live map
+Opening Icon: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_icons\9_purple.png
+Icon Too Large: Resizing Icon
+New Image Size
+Attempting tagging 14 lower
+No Mask Layer Found
+No Blackout Layer Found
+found id_tag: icon14
+Adding icon to live map
+Opening Icon: D:\Pan Galactic Engineering\MapMaster\SOURCE\map_icons\10_pink.png
+Icon Too Large: Resizing Icon
+New Image Size
+Attempting tagging 15 lower
+No Mask Layer Found
+No Blackout Layer Found
+All Items Added to Live Map
+The following lists should match
+DM's Map: 
+(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)
+Live Map: 
+(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)
+Applying Mask to Live Map
+Set Live Canvas
+Live Map Closed
+Closing MapMaster Program
