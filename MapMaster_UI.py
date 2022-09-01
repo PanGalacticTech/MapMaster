@@ -9,16 +9,21 @@ from tkinter.filedialog import asksaveasfile
 import tkinter.simpledialog as sd
 
 import json_savefiles as save
-from open_new_window import newWindow
-import mirrorCanvas
+
 import math
+import os
+
+#directory = os.getcwd()
+#print(f"Working Directiory: {directory}")
+
+#icon_filepath = directory + "\Icons\MapMaster_Icon256.ico"
+
+ROOT_GEOMETRY = "1620x980"
+ROOT_TITLE = "MapMaster DM's Screen"
+#ROOT_ICON_FILE = "D:\Pan Galactic Engineering\MapMaster\Icons\MapMaster_Icon256.ico"
+ROOT_ICON_FILE = "\Icons\MapMaster_Icon256.ico"
 
 
-root = Tk()
-root.geometry("1620x980")
-root.title("MapMaster DM's Screen")
-root.iconbitmap("D:\Pan Galactic Engineering\MapMaster\Icons\MapMaster_Icon256.ico")
-                  # self.s ?!/ no idea
 
 MASK_BOARDER = 0
 ICON_SIZE = 25   # pixel val for new icons
@@ -30,9 +35,19 @@ Using Method from:
 https://stackoverflow.com/questions/42322966/how-to-display-and-move-multiple-images-as-same-image-in-same-time-python-tkinte
 '''
 
-class movingIconCanvas:
-    def __init__(self, root):
-        self.root = root
+
+
+
+class MapMaster_UI:
+    def __init__(self):
+        self.root = Tk()
+        self.root.geometry(ROOT_GEOMETRY)
+        self.root.title(ROOT_TITLE)
+        self.directory = os.getcwd()
+        self.root.iconbitmap(self.directory + ROOT_ICON_FILE )
+
+
+        #self.root = root
         self.s = ttk.Style()
         self.s.theme_use('classic')
         self.root.configure(background=UE.DARK_GREY)
@@ -262,6 +277,7 @@ class movingIconCanvas:
         if self.live_map_active:
             if self.blackout_active == True:
                 self.live_map_canvas.create_rectangle(0, 0, self.canvas_width, self.canvas_height, fill=UE.grey_picker(0.03), tag="blackout")
+                #TODO Insert MapMaster_Icon_Large.jpg here
                 self.live_map_canvas.tag_raise("blackout", "icon")
                 self.live_map_canvas.tag_raise("blackout", "mask")
             else:
@@ -571,7 +587,7 @@ class movingIconCanvas:
         print("Open Save Game")
         print("Opening File Dialog")
         try:
-            file_path = filedialog.askopenfilename(initialdir="D:\Pan Galactic Engineering\MapMaster\saved_games",
+            file_path = filedialog.askopenfilename(initialdir=self.directory + "\saved_games",
                     filetypes = [("Json File", "*.json")],
                     title = "Choose a Saved .json file")
             recalled_dic = save.recall_json_map(file_path)
@@ -611,13 +627,14 @@ class movingIconCanvas:
 
 
     def create_map_dic(self):
-        #map_dic = save.proto_map_dic               ## Start with the prototype dictionary
-        map_dic = {}                               ## Does it even need prototype?
+        print("\n\nCreating Map Dictionary\n")
+        map_dic = {}
         print(f"Saving Map: {self.map_name_text}")
         map_dic["name"] = self.map_name_text
-        map_dic["background"] = self.background_file
-        #map_item_list = self.map_canvas.find_all()
-        #print(f"Map Item List: {map_item_list}")
+        background_file_relative = self.background_file.replace(self.directory, "")
+        print(f"Background File (relative): {background_file_relative}")
+        map_dic["background"] = background_file_relative
+
         print(f"Icon Dictionary: {self.icon_dic}")
         map_dic["icons"] = {}   # Create the empty icon dictionary
         for item in self.icon_dic:
@@ -633,7 +650,10 @@ class movingIconCanvas:
                     self.icon_dic[item]["pos_y"] = round(coords_tuple[1])
                     print(f"Item Dictionary{self.icon_dic[item]}")
                     map_dic["icons"][item] = {}
-                    map_dic["icons"][item]["file"] = self.icon_dic[item]["file"]
+                    file_string = self.icon_dic[item]["file"]
+                    relative_filestring = file_string.replace(self.directory, "")
+                    print(f"New Relative String: {relative_filestring }")
+                    map_dic["icons"][item]["file"] = relative_filestring
                     map_dic["icons"][item]["pos_x"] = self.icon_dic[item]["pos_x"]
                     map_dic["icons"][item]["pos_y"] = self.icon_dic[item]["pos_y"]
                     map_dic["icons"][item]["tag"] = self.icon_dic[item]["tag"]
@@ -656,7 +676,7 @@ class movingIconCanvas:
     def load_live_map_from_dic(self, map_dic):
         print("\n\nloading Live Map from Dictionary")
         try:
-            background_file = map_dic["background"]
+            background_file = self.directory + map_dic["background"]
             print(f"Background File Found: {background_file}")
             self.add_bg_live_map(background_file)
         except:
@@ -666,7 +686,7 @@ class movingIconCanvas:
             print(f" Map Dictionary \"Icons\": \n{temp_dic}")
             for icons in map_dic["icons"]:      # Icons just returns a (list?) of the numbers of the dictionarys of items - AS A STRING
                 print(f"Icon in map_dic[\"icons\"]: {icons}")
-                current_file = map_dic["icons"][icons]["file"]
+                current_file = self.directory + map_dic["icons"][icons]["file"]
                 print(f"Loading File: {current_file}")
                 icon_x = int(map_dic["icons"][icons]["pos_x"])
                 icon_y = int(map_dic["icons"][icons]["pos_y"])
@@ -696,11 +716,10 @@ class movingIconCanvas:
 
 
     def load_map_from_dic(self, map_dic):
-        #self.battle_map_title.config(text= map_dic["name"])
         self.map_name_text = map_dic["name"]
         self.map_name_var.set(self.map_name_text)
         try:
-            self.background_file = map_dic["background"]
+            self.background_file = self.directory + map_dic["background"]
             print(f"Background File Found: {self.background_file}")
             self.add_background(self.background_file)
         except:
@@ -709,7 +728,7 @@ class movingIconCanvas:
             print(map_dic["icons"])
             for icons in map_dic["icons"]:      # Icons just returns a (list?) of the numbers of the dictionarys of items - AS A STRING
                 print(icons)
-                current_file = map_dic["icons"][icons]["file"]
+                current_file = self.directory + map_dic["icons"][icons]["file"]
                 print(f"Loading File: {current_file}")
                 icon_x = int(map_dic["icons"][icons]["pos_x"])
                 icon_y = int(map_dic["icons"][icons]["pos_y"])
@@ -757,7 +776,7 @@ class movingIconCanvas:
 
     def select_bg_dialog(self):
         try:
-            self.background_file = filedialog.askopenfilename(initialdir="D:\Pan Galactic Engineering\MapMaster\map_backgrounds")
+            self.background_file = filedialog.askopenfilename(initialdir=self.directory + "\map_backgrounds")
             self.add_background(self.background_file)
             if self.live_map_active:
                 try:
@@ -853,7 +872,7 @@ class movingIconCanvas:
     # Same as add icon but does not resize image
     def add_image_dialog(self):
         try:
-            filepath = filedialog.askopenfilename(initialdir="D:\Pan Galactic Engineering\MapMaster\map_icons")
+            filepath = filedialog.askopenfilename(initialdir=self.directory + "\map_icons")
             new_tag = self.add_place_image(self.init_x, self.init_y, filepath, None)
             print("New Image Added")
             if self.live_map_active:
@@ -869,7 +888,6 @@ class movingIconCanvas:
         img = Image.open(filepath)
         print(f"Opening Icon: {filepath}")
         print(f"IconSize: {img.size[0]}, {img.size[1]}")
-
         img_ref = ImageTk.PhotoImage(img)
         print(f"img_ref: {img_ref}")
         img_canvas_id = self.map_canvas.create_image(x, y, image=img_ref, tags="img")
@@ -878,9 +896,10 @@ class movingIconCanvas:
             tag_string = ("img" + str(img_canvas_id))
         else:
             tag_string = id_tag
+        relative_filepath = filepath.replace(self.directory, "")
         self.icon_dic[img_canvas_id] = {}
         self.icon_dic[img_canvas_id].update({
-            "file": filepath,
+            "file": relative_filepath,
             "pos_x": x,
             "pos_y": y,
             "ref": img_ref,
@@ -913,7 +932,7 @@ class movingIconCanvas:
 
     def add_icon_dialog(self):
         try:
-            filepath = filedialog.askopenfilename(initialdir="D:\Pan Galactic Engineering\MapMaster\map_icons")
+            filepath = filedialog.askopenfilename(initialdir=self.directory + "\map_icons")
             new_tag = self.add_place_icon(self.init_x, self.init_y, filepath, None)
             print("New Icon Added")
             if self.live_map_active:
@@ -1008,7 +1027,7 @@ class movingIconCanvas:
         img.thumbnail((Wmax, Hmax))  # Needs to be passed type tuple ## This does NOT RETURN IMAGE. it works on img object
         print("New Image Size")
         print(img.size[0], img.size[1])
-        new_filepath = "D:\Pan Galactic Engineering\MapMaster\map_icons\\" + new_filename + ".png"
+        new_filepath = self.directory + "\map_icons" + new_filename + ".png"
         print(new_filepath)
         img.save(new_filepath)
         return new_filepath
@@ -1134,7 +1153,7 @@ class movingIconCanvas:
             print("ERROR: Canvas Objects missing or not found")
 
 
-GUI = movingIconCanvas(root)
+
 
 
 

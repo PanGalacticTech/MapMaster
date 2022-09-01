@@ -1,100 +1,100 @@
 {
     "name": "The Prison",
-    "background": "D:/Pan Galactic Engineering/MapMaster/map_backgrounds/Goblin Mine Jail.jpg",
+    "background": "/map_backgrounds/Goblin Mine Jail.jpg",
     "icons": {
         "2": {
-            "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\Silver.png",
+            "file": "\\map_icons\\Silver.png",
             "pos_x": 238,
             "pos_y": 262,
             "tag": "icon",
             "id_tag": "icon1"
         },
         "3": {
-            "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\Meridith.png",
+            "file": "\\map_icons\\Meridith.png",
             "pos_x": 230,
             "pos_y": 380,
             "tag": "icon",
             "id_tag": "icon2"
         },
         "4": {
-            "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\Coal.png",
+            "file": "\\map_icons\\Coal.png",
             "pos_x": 237,
             "pos_y": 300,
             "tag": "icon",
             "id_tag": "icon3"
         },
         "5": {
-            "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\Faen.png",
+            "file": "\\map_icons\\Faen.png",
             "pos_x": 238,
             "pos_y": 338,
             "tag": "icon",
             "id_tag": "icon4"
         },
         "6": {
-            "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\1_red.png",
+            "file": "\\1_red.png",
             "pos_x": 682,
             "pos_y": 205,
             "tag": "icon",
             "id_tag": "icon5"
         },
         "7": {
-            "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\2_orange.png",
+            "file": "\\map_icons\\2_orange.png",
             "pos_x": 651,
             "pos_y": 374,
             "tag": "icon",
             "id_tag": "icon6"
         },
         "8": {
-            "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\3_yellow.png",
+            "file": "\\map_icons\\3_yellow.png",
             "pos_x": 275,
             "pos_y": 221,
             "tag": "icon",
             "id_tag": "icon7"
         },
         "9": {
-            "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\4_lime.png",
+            "file": "\\MapMaster\\map_icons\\4_lime.png",
             "pos_x": 747,
             "pos_y": 424,
             "tag": "icon",
             "id_tag": "icon8"
         },
         "10": {
-            "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\5_green.png",
+            "file": "\\map_icons\\5_green.png",
             "pos_x": 744,
             "pos_y": 373,
             "tag": "icon",
             "id_tag": "icon9"
         },
         "11": {
-            "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\6_aqua.png",
+            "file": "\\map_icons\\6_aqua.png",
             "pos_x": 184,
             "pos_y": 504,
             "tag": "icon",
             "id_tag": "icon10"
         },
         "12": {
-            "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\7_sky.png",
+            "file": "\\map_icons\\7_sky.png",
             "pos_x": 1026,
             "pos_y": 36,
             "tag": "icon",
             "id_tag": "icon11"
         },
         "13": {
-            "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\8_blue.png",
+            "file": "\\map_icons\\8_blue.png",
             "pos_x": 880,
             "pos_y": 59,
             "tag": "icon",
             "id_tag": "icon12"
         },
         "14": {
-            "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\9_purple.png",
+            "file": "\\map_icons\\9_purple.png",
             "pos_x": 931,
             "pos_y": 28,
             "tag": "icon",
             "id_tag": "icon13"
         },
         "15": {
-            "file": "D:\\Pan Galactic Engineering\\MapMaster\\map_icons\\10_pink.png",
+            "file": "\\map_icons\\10_pink.png",
             "pos_x": 493,
             "pos_y": 440,
             "tag": "icon",
