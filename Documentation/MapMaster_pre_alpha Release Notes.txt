@@ -1,0 +1,7 @@
+MapMaster_2022_Pre_Alpha_V0.1
+
+All basic functions are now working, software is suitable for importing maps, adding icons and images, and saving game.
+
+Live Map - Functional
+Map Mask - Functional.
+Blackout Window - Functional

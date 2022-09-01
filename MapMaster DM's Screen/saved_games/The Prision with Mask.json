@@ -31,69 +31,55 @@
             "id_tag": "icon4"
         },
         "6": {
-            "file": "\\1_red.png",
-            "pos_x": 682,
-            "pos_y": 205,
-            "tag": "icon",
-            "id_tag": "icon5"
-        },
-        "7": {
             "file": "\\map_icons\\2_orange.png",
             "pos_x": 651,
             "pos_y": 374,
             "tag": "icon",
             "id_tag": "icon6"
         },
-        "8": {
+        "7": {
             "file": "\\map_icons\\3_yellow.png",
             "pos_x": 275,
             "pos_y": 221,
             "tag": "icon",
             "id_tag": "icon7"
         },
-        "9": {
-            "file": "\\MapMaster\\map_icons\\4_lime.png",
-            "pos_x": 747,
-            "pos_y": 424,
-            "tag": "icon",
-            "id_tag": "icon8"
-        },
-        "10": {
+        "8": {
             "file": "\\map_icons\\5_green.png",
             "pos_x": 744,
             "pos_y": 373,
             "tag": "icon",
             "id_tag": "icon9"
         },
-        "11": {
+        "9": {
             "file": "\\map_icons\\6_aqua.png",
             "pos_x": 184,
             "pos_y": 504,
             "tag": "icon",
             "id_tag": "icon10"
         },
-        "12": {
+        "10": {
             "file": "\\map_icons\\7_sky.png",
             "pos_x": 1026,
             "pos_y": 36,
             "tag": "icon",
             "id_tag": "icon11"
         },
-        "13": {
+        "11": {
             "file": "\\map_icons\\8_blue.png",
             "pos_x": 880,
             "pos_y": 59,
             "tag": "icon",
             "id_tag": "icon12"
         },
-        "14": {
+        "12": {
             "file": "\\map_icons\\9_purple.png",
             "pos_x": 931,
             "pos_y": 28,
             "tag": "icon",
             "id_tag": "icon13"
         },
-        "15": {
+        "13": {
             "file": "\\map_icons\\10_pink.png",
             "pos_x": 493,
             "pos_y": 440,
@@ -429,10 +415,6 @@
         [
             8,
             6
-        ],
-        [
-            8,
-            7
         ],
         [
             10,
