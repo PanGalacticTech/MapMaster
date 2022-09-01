@@ -39,10 +39,11 @@ Then select a new image to insert as the background. I use [Inkcarnate](https://
 ### Adding & Deleting Icons & Images
 #### Icons
 Adding new icons using image files is accomplished by selecting `Add Icon` and selecting any image file. Adding an image as an Icon, will reduce its size down to **25x25px**. For this reason it is best to use icons that remain clear at this small size. I included some examples in the default map, using bright colours and large text. I used [draw.io](https://app.diagrams.net/) to create all the icons, then imported them into graphics software to remove the background and export as a transparent PNG. You can also use player character pictures and artwork.
-- TODO: Later I want to include a slider to increase or decrease the size of player Icons.
+- To Be Added: I want to include a slider to increase or decrease the size of player Icons.
 
 #### Images
 Adding images is a similar process to Icons, select `Add Image` and select an image file to insert. Images are NOT resized to fit the window. I wish to add this feature in the future. But for now, either use the python script included in SOURCE `XXXXXX(Coming Soon)` To quickly resize and save images at a suitable size, or resize them using your favourite image editor. I tend to use images to show players artwork, eg of a monster they have just encountered, but then use Icons for combat encounters. I mostly added this to avoid having to drop images into group chat.
+- To Be Added: I want to include a slider to increase or decrease the size of Inserted Images.
 
 ![image](https://user-images.githubusercontent.com/53580358/187944880-311692dc-4197-458a-9181-c292dbcb8e78.png)
 _Insert an image of a large troll to shock your players into running away like cowards_
