@@ -1,12 +1,13 @@
 # MapMaster V0.1
 ## DM's Virtual Tabletop Tool
+DMs Map Manager - Virtual Tabletop Software with DM Screen and Live Map Window. Designed live streaming of battle, world and town maps & combat management.
 
 ![image](https://user-images.githubusercontent.com/53580358/187942315-fe25e3a0-fd7a-435d-83c9-bdf126443dd4.png)
 
+If you use/enjoy this software, consider [buying me a coffee](https://ko-fi.com/imogenwren).
 
+### Virtual Tabletop Functions
 _This **free** and **Open Source** virtual tabletop software currently has the following functions._
-
-### Virtual Tabletop
 - Set Image generated with online or offline mapmaking tools as background
 - Insert Icons and Images for player tokens & meeples
 - Save and Recall progress, allowing combat encounters to easily resume on the next session
@@ -15,15 +16,18 @@ _This **free** and **Open Source** virtual tabletop software currently has the f
 - Designed to make sharing maps over discord or video conferenceing easy and clean using window share
 - Easy intergration into live streaming setups. Clean interface for streaming.
 
-If you use/enjoy this software, consider [buying me a coffee](https://ko-fi.com/imogenwren).
 
-## Use:
+## Installing:
 Download zippled .exe file from releases. It is best to keep this bundled with the folders contained in this folder:
 - Icons
 - logs
 - map_backgrounds
 - map_icons
 - saved_games
+
+You can also compile yourself using `compile_exe.py` in the SOURCE folder. Feel free to adapt and use this software as you wish.
+
+## Using MapMaster
 
 MapMaster opens with default map & icons loaded. <br>
 
