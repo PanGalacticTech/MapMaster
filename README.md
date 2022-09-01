@@ -15,11 +15,11 @@ If you use/enjoy this software, consider [buying me a coffee](https://ko-fi.com/
 
 ## Use:
 Download zippled .exe file from releases. It is best to keep this bundled with the folders contained in this folder:
--Icons
--logs
--map_backgrounds
--map_icons
--saved_games
+- Icons
+- logs
+- map_backgrounds
+- map_icons
+- saved_games
 
 MapMaster opens with default map & icons loaded. <br>
 
