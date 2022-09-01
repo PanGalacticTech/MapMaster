@@ -63,15 +63,15 @@ If your players are trapped in a dungeon, make sure they can only see as far as 
 ### Map Mask
 To set a map mask, click the `Show Mask` button. This will show a grid and the current applied mask on the DM's Screen map. The Current Applied Mask will ALWAYS be visible on the Live Map, letting the DM pre-select a mask, ensuring the players dont get to see a dungeon layout or hidden trap that they shouldnt be able to see yet.
 The live map mask will update when the DM's Screen Map Mask is closed using `Hide Mask` 
-Use the `Add Mask` and `Subtract Mask` buttons to add or remove mask squares. `Clear Mask` will both clear the entire mask, and update the live map, so use with care. I will change the function of this later to avoid mistakes.
-_Have enemies lurking just out of sight for a more realistic reveal of the world around your players_
+Use the `Add Mask` and `Subtract Mask` buttons to add or remove mask squares. `Clear Mask` will both clear the entire mask, and update the live map, so use with care. I will change the function of this later to avoid mistakes. <br>
+_Have enemies lurking just out of sight for a more realistic reveal of the world around your players_ <br>
 __Players View__
 ![image](https://user-images.githubusercontent.com/53580358/187945792-f96c449a-1f56-4ba7-a6c4-3144d002152b.png)
 __DM's View__
 ![image](https://user-images.githubusercontent.com/53580358/187946089-9fb7aeb6-7123-48ab-bb25-e4905859dbae.png)
 
 _The mask can be set on the DM's screen, then applied to the Live Map._
-##### Setting the Mask DM's View
+##### Setting the Mask DM's View 
 ![image](https://user-images.githubusercontent.com/53580358/187763344-93782c36-8850-483e-850b-ba7e16ba25d5.png)
 ##### Applied Mask on Players Window
 ![image](https://user-images.githubusercontent.com/53580358/187764725-d6034b7a-d337-4e55-b162-6a0a41ab41c8.jpg)
