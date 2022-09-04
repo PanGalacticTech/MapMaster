@@ -2,77 +2,77 @@
     "name": "Forest River Crossing",
     "background": "D:/Pan Galactic Engineering/MapMaster/MapMaster DM's Screen/map_backgrounds/Riverside Forest Road Crossing.jpg",
     "icons": {
-        "2": {
+        "1": {
             "file": "\\map_icons\\Meridith.png",
             "pos_x": 646,
             "pos_y": 772,
             "tag": "icon",
             "id_tag": "icon2"
         },
-        "4": {
+        "2": {
             "file": "\\map_icons\\Faen.png",
             "pos_x": 24,
             "pos_y": 308,
             "tag": "icon",
             "id_tag": "icon4"
         },
-        "5": {
+        "3": {
             "file": "\\map_icons\\1_red.png",
             "pos_x": 1011,
             "pos_y": 212,
             "tag": "icon",
             "id_tag": "icon5"
         },
-        "6": {
+        "4": {
             "file": "\\map_icons\\2_orange.png",
             "pos_x": 1007,
             "pos_y": 163,
             "tag": "icon",
             "id_tag": "icon6"
         },
-        "7": {
+        "5": {
             "file": "\\map_icons\\3_yellow.png",
             "pos_x": 1024,
             "pos_y": 211,
             "tag": "icon",
             "id_tag": "icon7"
         },
-        "8": {
+        "6": {
             "file": "\\map_icons\\4_lime.png",
             "pos_x": 1021,
             "pos_y": 160,
             "tag": "icon",
             "id_tag": "icon8"
         },
-        "9": {
+        "7": {
             "file": "\\map_icons\\5_green.png",
-            "pos_x": 1091,
-            "pos_y": 191,
+            "pos_x": 1130,
+            "pos_y": 188,
             "tag": "icon",
             "id_tag": "icon9"
         },
-        "10": {
+        "8": {
             "file": "\\map_icons\\6_aqua.png",
-            "pos_x": 20,
-            "pos_y": 160,
+            "pos_x": 1110,
+            "pos_y": 197,
             "tag": "icon",
             "id_tag": "icon10"
         },
-        "11": {
+        "9": {
             "file": "\\map_icons\\7_sky.png",
-            "pos_x": 1123,
-            "pos_y": 195,
+            "pos_x": 40,
+            "pos_y": 153,
             "tag": "icon",
             "id_tag": "icon11"
         },
-        "12": {
+        "10": {
             "file": "\\map_icons\\8_blue.png",
             "pos_x": 20,
             "pos_y": 200,
             "tag": "icon",
             "id_tag": "icon12"
         },
-        "13": {
+        "11": {
             "file": "\\map_icons\\9_purple.png",
             "pos_x": 20,
             "pos_y": 220,
@@ -80,74 +80,53 @@
             "id_tag": "icon13"
         },
         "14": {
-            "file": "\\map_icons\\10_pink.png",
-            "pos_x": 20,
-            "pos_y": 240,
+            "file": "D:/Pan Galactic Engineering/MapMaster/MapMaster DM's Screen/map_icons/Cart_LEFT-01.png",
+            "pos_x": 1110,
+            "pos_y": 162,
             "tag": "icon",
             "id_tag": "icon14"
         },
+        "15": {
+            "file": "D:/Pan Galactic Engineering/MapMaster/MapMaster DM's Screen/map_icons/Cart_LEFT-01.png",
+            "pos_x": 1063,
+            "pos_y": 194,
+            "tag": "icon",
+            "id_tag": "icon15"
+        },
         "16": {
-            "file": "D:/Pan Galactic Engineering/MapMaster/MapMaster DM's Screen/map_icons/Daphiniana-01.png",
-            "pos_x": 677,
-            "pos_y": 772,
+            "file": "D:/Pan Galactic Engineering/MapMaster/MapMaster DM's Screen/map_icons/Silver.png",
+            "pos_x": 1074,
+            "pos_y": 195,
             "tag": "icon",
             "id_tag": "icon16"
         },
-        "24": {
-            "file": "D:/Pan Galactic Engineering/MapMaster/MapMaster DM's Screen/map_icons/Cart_LEFT-01.png",
-            "pos_x": 1051,
-            "pos_y": 189,
-            "tag": "icon",
-            "id_tag": "icon24"
-        },
-        "26": {
-            "file": "D:/Pan Galactic Engineering/MapMaster/MapMaster DM's Screen/map_icons/Cart_LEFT-01.png",
-            "pos_x": 1105,
-            "pos_y": 164,
-            "tag": "icon",
-            "id_tag": "icon26"
-        },
-        "27": {
-            "file": "D:/Pan Galactic Engineering/MapMaster/MapMaster DM's Screen/map_icons/Horse Left.png",
-            "pos_x": 1069,
-            "pos_y": 164,
-            "tag": "icon",
-            "id_tag": "icon27"
-        },
-        "28": {
-            "file": "D:/Pan Galactic Engineering/MapMaster/MapMaster DM's Screen/map_icons/Horse Left.png",
-            "pos_x": 1015,
-            "pos_y": 189,
-            "tag": "icon",
-            "id_tag": "icon28"
-        },
-        "29": {
+        "17": {
             "file": "D:/Pan Galactic Engineering/MapMaster/MapMaster DM's Screen/map_icons/Coal.png",
-            "pos_x": 1112,
-            "pos_y": 165,
+            "pos_x": 1119,
+            "pos_y": 156,
             "tag": "icon",
-            "id_tag": "icon29"
+            "id_tag": "icon17"
         },
-        "30": {
-            "file": "D:/Pan Galactic Engineering/MapMaster/MapMaster DM's Screen/map_icons/Silver.png",
-            "pos_x": 1060,
-            "pos_y": 190,
+        "18": {
+            "file": "D:/Pan Galactic Engineering/MapMaster/MapMaster DM's Screen/map_icons/Horse Left.png",
+            "pos_x": 1075,
+            "pos_y": 161,
             "tag": "icon",
-            "id_tag": "icon30"
+            "id_tag": "icon18"
         },
-        "1245": {
-            "file": "D:/Pan Galactic Engineering/MapMaster/MapMaster DM's Screen/map_icons/Horse Up.png",
-            "pos_x": 722,
-            "pos_y": 779,
+        "19": {
+            "file": "D:/Pan Galactic Engineering/MapMaster/MapMaster DM's Screen/map_icons/Horse Left.png",
+            "pos_x": 1030,
+            "pos_y": 191,
             "tag": "icon",
-            "id_tag": "icon1245"
+            "id_tag": "icon19"
         },
-        "1246": {
-            "file": "D:/Pan Galactic Engineering/MapMaster/MapMaster DM's Screen/map_icons/Horse Up.png",
-            "pos_x": 746,
-            "pos_y": 777,
+        "20": {
+            "file": "D:/Pan Galactic Engineering/MapMaster/MapMaster DM's Screen/map_icons/Daphiniana-01.png",
+            "pos_x": 681,
+            "pos_y": 771,
             "tag": "icon",
-            "id_tag": "icon1246"
+            "id_tag": "icon20"
         }
     },
     "mask": [
