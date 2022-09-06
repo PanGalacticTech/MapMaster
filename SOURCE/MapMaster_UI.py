@@ -646,13 +646,28 @@ class MapMaster_UI:
             print("ERROR: problems saving file", file=self.log_file)
 
 
+    def make_relative_path(self, substring, absolutepath):
+        sub_length = len(substring)
+        print(f"Searching absolutepath: {absolutepath} for substring: {substring}")
+        index = absolutepath.find(substring)
+        if (index >= 0):
+            relativepath = absolutepath[index+sub_length:]  # Extracts the relative path from the end of the substring to the end of the absolutepath
+            print(f"Relative Path: {relativepath}")
+            output = "\\" + substring + relativepath
+            print(f"Output: {output}")
+            return output
+        else:
+            print(f"Substring Not Found")
+            return 0
+
 
     def create_map_dic(self):
         print("\n\nCreating Map Dictionary\n", file=self.log_file)
         map_dic = {}
         print(f"Saving Map: {self.map_name_text}", file=self.log_file)
         map_dic["name"] = self.map_name_text
-        background_file_relative = self.background_file.replace(self.directory, "")
+        background_file_relative = self.make_relative_path("map_backgrounds", self.background_file)
+        #background_file_relative = self.background_file.replace(self.directory, "")
         print(f"Background File (relative): {background_file_relative}", file=self.log_file)
         map_dic["background"] = background_file_relative
 
@@ -672,6 +687,8 @@ class MapMaster_UI:
                     print(f"Item Dictionary{self.icon_dic[item]}", file=self.log_file)
                     map_dic["icons"][item] = {}
                     file_string = self.icon_dic[item]["file"]
+                    print(f"File String: {file_string}")
+                    print(f"self.directory: {self.directory}")
                     relative_filestring = file_string.replace(self.directory, "")
                     print(f"New Relative String: {relative_filestring }")
                     map_dic["icons"][item]["file"] = relative_filestring
@@ -742,7 +759,7 @@ class MapMaster_UI:
         self.map_name_var.set(self.map_name_text)
         try:
             self.background_file = self.directory + map_dic["background"]
-            print(f"Background File Found: {self.background_file}", file=self.log_file)
+            print(f"Background File Found: {self.background_file}")  #, file=self.log_file
             self.add_background(self.background_file)
         except:
             print("No background found", file=self.log_file)
@@ -770,7 +787,7 @@ class MapMaster_UI:
             print("Problem Recalling Icons from Dictionary", file=self.log_file)
         try:
             for item in map_dic["mask"]:
-                print(f"Map dic Mask Items: {item}, Seperating: item0: {item[0]}, item1: {item[1]}")
+                #print(f"Map dic Mask Items: {item}, Seperating: item0: {item[0]}, item1: {item[1]}")
                 new_tuple = (item[0], item[1])
                 self.mask_list.append(new_tuple)       #This is done like this because recalled item is LIST and needed to be TUPLE
             print(f"self.mask_list: {self.mask_list}")
