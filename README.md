@@ -1,4 +1,4 @@
-# MapMaster V0.1
+# MapMaster V1.0 - Alpha Release
 ## DM's Virtual Tabletop Tool
 DMs Map Manager - Virtual Tabletop Software with DM Screen and Live Map Window. Designed live streaming of battle, world and town maps & combat management.
 
