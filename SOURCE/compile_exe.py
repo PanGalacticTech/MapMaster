@@ -15,9 +15,11 @@ COMMAND_LINE = True
 
 directory = os.getcwd()
 
-icon_file =  "Icons\MapMaster_Icon256.ico"
-splash_file = directory + "\Icons\MapMaster_Icon_Large.jpg"
+icon_file =  "D:\Pan Galactic Engineering\MapMaster\SOURCE\Icons\MapMaster_Icon256.ico"
+splash_file = directory + "/Icons/MapMaster_Icon_Large.jpg"
+print(f"icon file: {icon_file}")
 
+FULL_PATH_TO_MAIN = "D:\Pan Galactic Engineering\MapMaster\SOURCE\main.py"
 
 def compile():
 
@@ -30,10 +32,10 @@ def compile():
 #'-p G:\skyrora\python\safety_distance_calculator\source'
 #    '-i \source\icon.ico'
 
-
+ #   '/main.py',
 
 PyInstaller.__main__.run([
-    'main.py',
+   FULL_PATH_TO_MAIN,
     '--onefile',
     '-windowed',
     '--clean',

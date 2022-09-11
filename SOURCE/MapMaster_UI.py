@@ -10,9 +10,15 @@ import tkinter.simpledialog as sd
 from tkinter import messagebox
 
 import json_savefiles as save
+import print_redirects as PR
+import relative_filepaths as RF
 
 import math
 import os
+
+from datetime import datetime
+
+
 
 #directory = os.getcwd()
 #print(f"Working Directiory: {directory}")
@@ -24,7 +30,8 @@ ROOT_TITLE = "MapMaster DM's Screen"
 #ROOT_ICON_FILE = "D:\Pan Galactic Engineering\MapMaster\Icons\MapMaster_Icon256.ico"
 ROOT_ICON_FILE = "\Icons\MapMaster_Icon256.ico"
 
-
+PRINT_TO_FILE = True   #Send Typical Log to Log File / else print to console
+EXPAND_LOG = False      # Send Additional Prints to Log
 
 MASK_BOARDER = 0
 ICON_SIZE = 25   # pixel val for new icons
@@ -42,7 +49,10 @@ https://stackoverflow.com/questions/42322966/how-to-display-and-move-multiple-im
 class MapMaster_UI:
     def __init__(self):
         self.directory = os.getcwd()
+        self.directory = RF.replace_backslash(self.directory)
         self.open_log()
+        PR.printL("Opening MapMaster DM's Screen Software", self.log_file, PRINT_TO_FILE)
+        PR.printL(f"self.directory: {self.directory}", self.log_file, PRINT_TO_FILE)
         self.root = Tk()
         self.root.geometry(ROOT_GEOMETRY)
         self.root.title(ROOT_TITLE)
@@ -118,24 +128,28 @@ class MapMaster_UI:
     def open_log(self):
         log_filepath = self.directory + "\logs\log.txt"
         self.log_file = open(log_filepath, "w")
+        PR.printL("def open_log", self.log_file, PRINT_TO_FILE)
         #log_file.close()
-        print("MapMaster DM's Screen: Runtime Log\n\n", file=self.log_file)
+        #print("MapMaster DM's Screen: Runtime Log\n\n", file=self.log_file)
+        PR.printL(f"MapMaster DM's Screen: Runtime Log START\n\n", self.log_file, PRINT_TO_FILE)
 
     def on_closing(self):
+        PR.printL("def on_closing", self.log_file, PRINT_TO_FILE)
         if messagebox.askokcancel("Quit", "Do you want to quit?"):
             self.close_live_window()
             self.root.destroy()
-            print("Closing MapMaster Program", file=self.log_file)
+            #print("Closing MapMaster Program", file=self.log_file)
+            PR.printL(f"Closing MapMaster Program\n\n", self.log_file, PRINT_TO_FILE)
             self.log_file.close()
 
 
 
     def create_dm_canvas(self, container):
-        print("Creating DM Canvas")
+        PR.printL("def create_dm_canvas", self.log_file, PRINT_TO_FILE)
+        #PR.printL("Creating DM Canvas", self.log_file, PRINT_TO_FILE)
         self.map_canvas = Canvas(container, width=self.canvas_width, height=self.canvas_height, bg=UE.DARK_GREY)
         # self.map_canvas = mirrorCanvas(self.map_frame, width=self.canvas_width, height=self.canvas_height, bg=UE.DARK_GREY)
         self.map_canvas.grid(padx=10, pady=10, row=0, column=0)
-
         #Also need to re-bind everything to new canvas (of course hehe)
         self.bind_movement_events()
         self.init_x = self.canvas_width // 2
@@ -145,6 +159,7 @@ class MapMaster_UI:
 
 
     def bind_movement_events(self):
+        PR.printL("def bind_movement_events", self.log_file, PRINT_TO_FILE)
         # Also need to re-bind everything to new canvas (of course hehe)
         self.map_canvas.bind("<Button-1>", self.startMovement)
         self.map_canvas.bind("<ButtonRelease-1>", self.stopMovement)
@@ -152,6 +167,7 @@ class MapMaster_UI:
         self.root.bind("<Delete>", self.delete_icon)
 
     def unbind_movement_events(self):
+        PR.printL("\n def unbind_movement_events \n", self.log_file, PRINT_TO_FILE)
         self.map_canvas.unbind("<Button-1>")
         self.map_canvas.unbind("<ButtonRelease-1>")
         self.map_canvas.unbind("<Motion>")
@@ -159,29 +175,33 @@ class MapMaster_UI:
 
 
     def destroy_dm_canvas(self):
-        print("Destroying DM Canvas", file=self.log_file)
+        PR.printL("\n def destroy_dm_canvas \n", self.log_file, PRINT_TO_FILE)
+        PR.printL("Destroying DM Canvas", self.log_file, PRINT_TO_FILE)
         try:
             self.map_canvas.destroy()
             self.map_canvas = None      ## This seems nessissary to clean the object
         except:
-            print("No DM Canvas Found", file=self.log_file)
+            PR.printL("No DM Canvas Found", self.log_file, PRINT_TO_FILE)
 
     def create_live_canvas(self, container):
-        print("Creating Live Canvas")
+        PR.printL("\n def create_live_canvas\n", self.log_file, PRINT_TO_FILE)
+        PR.printL("Creating Live Canvas", self.log_file, PRINT_TO_FILE)
         self.live_map_canvas = Canvas(container, width=self.canvas_width, height=self.canvas_height, bg=UE.DARK_GREY)
         self.live_map_canvas.grid(padx=10, pady=10, sticky="NESW")
 
     def destroy_live_canvas(self):
-        print("Destroying Live Canvas", file=self.log_file)
+        PR.printL("\n def destroy_live_canvas\n", self.log_file, PRINT_TO_FILE)
+        PR.printL("Destroying Live Canvas", self.log_file, PRINT_TO_FILE)
         try:
             self.live_map_canvas.destroy()
             self.live_map_canvas = None
         except:
-            print("No Live Canvas Found", file=self.log_file)
+            PR.printL("No Live Canvas Found", self.log_file, PRINT_TO_FILE)
 
 
 
     def setout_frames(self, root_container):
+        PR.printL("def setout_frames ", self.log_file, PRINT_TO_FILE)
         ## Assuming existance of top_frame
         self.titlebox = UE.darkBorderless(root_container)
         self.titlebox.grid(padx=10, pady=5, sticky="NW", row=0, column=0)
@@ -232,6 +252,7 @@ class MapMaster_UI:
         self.range_frame.grid(padx=10, pady=10, sticky="E", row=4, column=2, columnspan=2)
 
     def placeholder_text(self):
+        PR.printL("def placeholder_text", self.log_file, PRINT_TO_FILE)
         # Button Placeholders
         self.PLACEHOLDER_TEXT3 = UE.darkLabelTitle(self.side_frame, text="[Create Token]")
         self.PLACEHOLDER_TEXT3.grid(padx=10, pady=10, sticky="NSEW", row=7)
@@ -261,6 +282,7 @@ class MapMaster_UI:
 
 
     def live_buttons_wiget(self, container):
+        PR.printL("def live_button_wiget", self.log_file, PRINT_TO_FILE)
         self.livebox = UE.darkBorderless(container)
         self.livebox.grid(padx=10, pady=5, sticky="N")
         self.live_map_button = UE.selectButton(self.livebox, text="Activate Live Map", command=self.open_live_map)
@@ -276,6 +298,7 @@ class MapMaster_UI:
 
 
     def blackout(self):
+        PR.printL("\n def blackout\n", self.log_file, PRINT_TO_FILE)
         if self.blackout_active == True:
             self.blackout_active = False
             self.blackout_button.configure(fg=UE.TEXT_GREY)
@@ -286,6 +309,7 @@ class MapMaster_UI:
 
 
     def apply_blackout(self):
+        PR.printL("\n def apply_blackout\n", self.log_file, PRINT_TO_FILE)
         if self.live_map_active:
             if self.blackout_active == True:
                 self.live_map_canvas.create_rectangle(0, 0, self.canvas_width, self.canvas_height, fill=UE.grey_picker(0.03), tag="blackout")
@@ -293,30 +317,31 @@ class MapMaster_UI:
                 try:
                     self.live_map_canvas.tag_raise("blackout", "icon")
                 except:
-                    print("no icons found", file=self.log_file)
+                    PR.printL("no icons found", self.log_file, PRINT_TO_FILE)
                 try:
                     self.live_map_canvas.tag_raise("blackout", "mask")
                 except:
-                    print("no Mask Objects found", file=self.log_file)
+                    PR.printL("no Mask Objects found", self.log_file, PRINT_TO_FILE)
             else:
                 self.live_map_canvas.delete("blackout")
 
     def show_mask(self):
+        PR.printL("\n def show_mask \n", self.log_file, PRINT_TO_FILE)
         if self.dm_show_mask == True:
             self.dm_show_mask = False
-            print("Hiding DM's Mask", file=self.log_file)
+            PR.printL("Hiding DM's Mask", self.log_file, PRINT_TO_FILE)
             self.show_mask_button.config(text="Show Mask", fg=UE.TEXT_GREY)
             self.add_tomask_button.grid_forget()
             self.subtract_button.grid_forget()
             self.clear_mask_button.grid_forget()
             self.hide_grid()
-            self.delete_items_with_tag("mask")   ##TODO We will need to grab all the coordinates of the mask before deleteing
+            self.delete_items_with_tag("mask")
             self.unbind_drawing_events()
             self.bind_movement_events()
             self.apply_mask_to_live()           ## Mask is applied to live map when mask is cloed on DMs map
         else:
             self.dm_show_mask = True    ## This might not be needed as we are binding and unbinding the correct events now
-            print("Showing DM's Mask", file=self.log_file)
+            PR.printL("Showing DM's Mask", self.log_file, PRINT_TO_FILE)
             self.show_mask_button.config(text="Hide Mask", fg=UE.YELLOW_ORANGE)
             self.add_tomask_button.grid(padx=0, pady=10, row=0, column=0, sticky="S")
             self.subtract_button.grid(padx=0, pady=10, row=1, column=0, sticky="S")
@@ -325,15 +350,16 @@ class MapMaster_UI:
             self.recall_mask_from_matrix()   # HIGHLY EXPERIMENTAL
             self.unbind_movement_events()
             self.bind_drawing_events()
-            #TODO We will need to use the record of the added mask to reapply it when opened
+
 
 
 
 
     def show_grid(self, spacing, colour):
+        PR.printL("\n def show_grid \n", self.log_file, PRINT_TO_FILE)
         quantity_y = int(self.canvas_height/spacing)
         quantity_x = int(self.canvas_width/spacing)
-        print(f"Line Spacing: {spacing}, Quantity_x: {quantity_x}, Quantity_Y: {quantity_y}", file=self.log_file)
+        PR.printL(f"Line Spacing: {spacing}, Quantity_x: {quantity_x}, Quantity_Y: {quantity_y}", self.log_file, PRINT_TO_FILE)
         for n in range(0, quantity_x):
             grid_line = (self.map_canvas.create_line(spacing*n, 0, spacing*n, self.canvas_height, fill=colour, tag="grid"))
             x_axis = self.map_canvas.create_text((spacing*n)+(int(spacing/2)), (self.canvas_height-13), text=n, fill=UE.grey_picker(0.66), tag="grid")
@@ -343,120 +369,131 @@ class MapMaster_UI:
 
 
     def which_grid_square(self, pix_x, pix_y, spacing):
-        print(f"Pix_X: {pix_x}, Pix_Y: {pix_y}")
+        PR.printL("\n def which_grid_square \n", self.log_file, PRINT_TO_FILE)
+        PR.printL(f"Pix_X: {pix_x}, Pix_Y: {pix_y}", self.log_file, PRINT_TO_FILE)
         x = math.floor(pix_x/spacing)
         y = math.floor((self.canvas_height-pix_y)/spacing)
-        print(f" X:{x}, Y: {y}")
+        PR.printL(f" X:{x}, Y: {y}", self.log_file, PRINT_TO_FILE)
         return (x,y)
 
     def pixel_box_from_grid(self, grid_square, spacing):
+        PR.printL("\n def pixel_box_from_grid\n", self.log_file, PRINT_TO_FILE)
         x1 = grid_square[0]*spacing
         y1 = self.canvas_height - ((grid_square[1])*spacing)
         x2 = (grid_square[0]*spacing)+spacing
         y2 = self.canvas_height - ((grid_square[1])*spacing)-spacing
-        print((x1, y1), (x2, y2))
+        PR.printL(((x1, y1), (x2, y2)), self.log_file, EXPAND_LOG)
         self.map_canvas.create_rectangle(x1,y1,x2,y2,fill=UE.grey_picker(0.22),activefill=UE.grey_picker(0.33), tag="mask",activeoutline=UE.ACTIVE_BLUE )
 
 
     def apply_mask_to_live(self):
-        print("Applying Mask to Live Map", file=self.log_file)
+        PR.printL("\n def apply_mask_to_live \n", self.log_file, PRINT_TO_FILE)
+        PR.printL("Applying Mask to Live Map", self.log_file, PRINT_TO_FILE)
         self.delete_live_with_tag("mask")
         for square in self.mask_list:
-            print(f"Mask Found at: {square}")
+            PR.printL(f"Mask Found at: {square}", self.log_file, EXPAND_LOG)
             self.live_mask_from_grid(square, GRID_SPACING_PIX)
 
     def live_mask_from_grid(self, grid_square, spacing):
+        PR.printL("\n def live_mask_from_grid \n", self.log_file, PRINT_TO_FILE)
         if self.live_map_active:
             x1 = grid_square[0] * spacing
             y1 = self.canvas_height - ((grid_square[1]) * spacing)
             x2 = (grid_square[0] * spacing) + spacing
             y2 = self.canvas_height - ((grid_square[1]) * spacing) - spacing
-            print((x1, y1), (x2, y2))
+            PR.printL(((x1, y1), (x2, y2)), self.log_file, EXPAND_LOG)
             try:
                 self.live_map_canvas.create_rectangle(x1, y1, x2, y2, width=MASK_BOARDER,fill=UE.grey_picker(0.11), tag="mask")
             except:
-                print("ERROR: Problem applying mask to live canvas", file=self.log_file)
+                PR.printL("ERROR: Problem applying mask to live canvas", self.log_file, PRINT_TO_FILE)
 
 
 
 
     def add_mask_to_list(self, grid_square):
+        PR.printL("\n def add_mask_to_list \n", self.log_file, PRINT_TO_FILE)
         if grid_square not in self.mask_list:
             self.mask_list.append(grid_square)
-            print(f"{grid_square} Added to Mask List: {self.mask_list}")
+            PR.printL(f"{grid_square} Added to Mask List: {self.mask_list}", self.log_file, PRINT_TO_FILE)
         else:
-            print(f"{grid_square} already found in Mask List")
+            PR.printL(f"{grid_square} already found in Mask List", self.log_file, PRINT_TO_FILE)
 
 
     def delete_mask_from_list(self, grid_square):
-        print(f" Previous Mask List: \n{self.mask_list}")
+        PR.printL("\n def delete_mask_from_list \n", self.log_file, PRINT_TO_FILE)
+        PR.printL(f" Previous Mask List: \n{self.mask_list}", self.log_file, PRINT_TO_FILE)
         try:
             self.mask_list.remove(grid_square)
-            print(f"Removing Mask at {grid_square}")
+            PR.printL(f"Removing Mask at {grid_square}", self.log_file, PRINT_TO_FILE)
         except:
-            print(f"No Mask Found at{grid_square}")
-        print(f"Current Mask List: \n{self.mask_list}")
+            PR.printL(f"No Mask Found at{grid_square}", self.log_file, PRINT_TO_FILE)
+        PR.printL(f"Current Mask List: \n{self.mask_list}", self.log_file, EXPAND_LOG)
 
     def hide_grid(self):
+        PR.printL("\n def hide_grid \n", self.log_file, PRINT_TO_FILE)
         self.delete_items_with_tag("grid")
 
 
     def delete_items_with_tag(self, in_tag):
+        PR.printL("\n def delete_items_with_tag \n", self.log_file, PRINT_TO_FILE)
         items = self.map_canvas.find_all()
-        print(F"Searching Items: \n {items} \n for tag: \n{in_tag}")
+        PR.printL(F"Searching Items: \n {items} \n for tag: \n{in_tag}", self.log_file, PRINT_TO_FILE)
         for item in items:
             for tag in self.map_canvas.gettags(item):  ## Check object isnt the background
-                print(f" Current Tags for Item: {item}: {tag}")
+                PR.printL(f" Current Tags for Item: {item}: {tag}", self.log_file, EXPAND_LOG)
                 if (tag == in_tag):
                     self.map_canvas.delete(item)  ## Delete image in the canvas
                     #if self.live_map_active:
                         #self.live_map_canvas.delete(img_id)
 
     def delete_live_with_tag(self, in_tag):
+        PR.printL("\n def delete_live_with_tag \n", self.log_file, PRINT_TO_FILE)
         if (self.live_map_active):
             try:
                 items = self.live_map_canvas.find_all()
-                print(F"Searching Items: \n {items} \n for tag: \n{in_tag}")
+                PR.printL(F"Searching Items: \n {items} \n for tag: \n{in_tag}", self.log_file, PRINT_TO_FILE)
                 for item in items:
                     for tag in self.live_map_canvas.gettags(item):  ## Check object isnt the background
-                        print(f" Current Tags for Item: {item}: {tag}")
+
+                        PR.printL(f" Current Tags for Item: {item}: {tag}", self.log_file, EXPAND_LOG)
                         if (tag == in_tag):
                             self.live_map_canvas.delete(item)  ## Delete image in the canvas
             except:
-                print("ERROR: Finding items in live_map_canvas", file=self.log_file)
+                PR.printL("ERROR: Finding items in live_map_canvas", self.log_file, PRINT_TO_FILE)
         #else:
             #print("Live Map Inactive")
 
 
 
     def bind_drawing_events(self):
-        print("Binding Drawing Events", file=self.log_file)
+        PR.printL("\n def bind_drawing_events \n", self.log_file, PRINT_TO_FILE)
         self.map_canvas.bind("<Button-1>", self.startDrawing)
         self.map_canvas.bind("<ButtonRelease-1>", self.stopDrawing)
         self.map_canvas.bind("<Motion>", self.do_drawing)
 
 
     def unbind_drawing_events(self):
-        print("Unbinding Drawing Events", file=self.log_file)
+        PR.printL("\n def unbind_drawing_events \n", self.log_file, PRINT_TO_FILE)
         self.map_canvas.unbind("<Button-1>")
         self.map_canvas.unbind("<ButtonRelease-1>")
         self.map_canvas.unbind("<Motion>")
 
     def startDrawing(self, event):
-        print("Starting Drawing")
+        PR.printL("\n def startDrawing \n", self.log_file, EXPAND_LOG)
         self.drawing_active = True
         self.do_drawing(event)
 
 
     def stopDrawing(self, event):
-        print("Stopping Drawing")
+        PR.printL("\n def stopDrawing \n", self.log_file, EXPAND_LOG)
         self.drawing_active = False
 
 
     def do_drawing(self, event):
+        #PR.printL("\n def do_drawing \n", self.log_file, EXPAND_LOG)
         if self.drawing_active == True:
             if self.add_mask == True:
-                print("Drawing Mask")
+                PR.printL("Drawing Mask", self.log_file, EXPAND_LOG)
                 grid_square = self.which_grid_square(event.x, event.y, GRID_SPACING_PIX)
                 # Draw a Circle
                 #circle_icons = self.map_canvas.create_oval(event.x, event.y, event.x+50, event.y+50, width=0, fill=UE.grey_picker(0.1), tag="mask")
@@ -464,7 +501,7 @@ class MapMaster_UI:
                 self.pixel_box_from_grid(grid_square,GRID_SPACING_PIX)
                 self.add_mask_to_list(grid_square)
             else:
-                print("Erasing Mask")
+                PR.printL("Destroying DM Canvas", self.log_file, EXPAND_LOG)
                 self.delete_mask_square(event.x, event.y)
                 grid_square = self.which_grid_square(event.x, event.y, GRID_SPACING_PIX)
                 self.delete_mask_from_list(grid_square)
@@ -473,33 +510,36 @@ class MapMaster_UI:
 
 
     def delete_overlapping_tag(self, x, y, len, by_tag):
+        PR.printL("\n def delete_overlapping_tag \n", self.log_file, EXPAND_LOG)
         len = int(len/2)
         itm_list = self.map_canvas.find_overlapping(x-len, y-len, x+len, y+len)
         for item in itm_list:
             for tag in self.map_canvas.gettags(item):  ## Check object isnt the background
-                print(f" Current Tags in {item}: {tag}")
+                PR.printL(f" Current Tags in {item}: {tag}", self.log_file, PRINT_TO_FILE)
                 if (tag == by_tag):
-                    # img_id = self.map_canvas.find_above(img_id)
                     self.map_canvas.delete(item)
-                    print(f" Deleting Img: {item}")
+                    PR.printL(f" Deleting Img: {item}", self.log_file, PRINT_TO_FILE)
 
 
 
 
     def delete_mask_square(self, x, y):
+        PR.printL("\n def delete_mask_square \n", self.log_file, EXPAND_LOG)
         self.delete_overlapping_tag(x, y, 10, "mask")
         grid_square = self.which_grid_square(x, y,GRID_SPACING_PIX)
 
 
     def recall_mask_from_matrix(self):
-        print("Recalling Mask from Matrix", file=self.log_file)
+        PR.printL("\n def recall_mask_from_matrix \n", self.log_file, EXPAND_LOG)
+        PR.printL("Recalling Mask from Matrix", self.log_file, PRINT_TO_FILE)
         for square in self.mask_list:
-            print(f"Mask Found at: {square}")
+            PR.printL(f"Mask Found at: {square}", self.log_file, PRINT_TO_FILE)
             self.pixel_box_from_grid(square, GRID_SPACING_PIX)
 
 
 
     def mask_wiget(self, container):
+        PR.printL("def mask_wiget ", self.log_file, EXPAND_LOG)
         self.add_tomask_button = UE.selectButton(container, text="Add Mask", command=self.add_to_mask)
         self.subtract_button = UE.selectButton(container, text="Subtract Mask", command=self.subtract_mask)
         self.clear_mask_button = UE.selectButton(container, text="Clear Mask", command=self.clear_mask)
@@ -509,20 +549,21 @@ class MapMaster_UI:
             self.subtract_button.config(fg=UE.YELLOW_ORANGE)
 
     def clear_mask(self):
+        PR.printL("\n def clear_mask \n", self.log_file, EXPAND_LOG)
         self.mask_list = []
-        print(f"Mask List: {self.mask_list}")
+        PR.printL(f"Mask List: {self.mask_list}", self.log_file, PRINT_TO_FILE)
         self.show_mask()
 
 
     def add_to_mask(self):
-        print("Adding to Mask")
+        PR.printL("\n def add_to_mask \n", self.log_file, EXPAND_LOG)
         self.add_mask = True
         self.add_tomask_button.config(fg=UE.YELLOW_ORANGE)
         self.subtract_button.config(fg=UE.TEXT_GREY)
 
 
     def subtract_mask(self):
-        print("Subtracting from Mask")
+        PR.printL("\n def subtract_mask \n", self.log_file, EXPAND_LOG)
         self.add_mask = False
         self.add_tomask_button.config(fg=UE.TEXT_GREY)
         self.subtract_button.config(fg=UE.YELLOW_ORANGE)
@@ -530,20 +571,21 @@ class MapMaster_UI:
 
 
     def apply_mask_live_map(self):
-        print("Applying Mask to Live Map")
+        PR.printL("\n def apply_mask_live_map \n", self.log_file, PRINT_TO_FILE)
 
 
 
 
     def open_live_map(self):
+        PR.printL("\n def open_live_map \n", self.log_file, EXPAND_LOG)
         if self.live_map_active == True:
             self.live_map_active = False
-            print("Live Map Closed", file=self.log_file)
+            PR.printL("Live Map Closed", self.log_file, PRINT_TO_FILE)
             self.live_map_button.config(text="Activate Live Map", bg=UE.DARKER_GREY, fg=UE.ACTIVE_BLUE)
             self.close_live_window()
         else:
             self.live_map_active = True
-            print("Live Map Active", file=self.log_file)
+            PR.printL("Live Map Active", self.log_file, PRINT_TO_FILE)
             self.live_map_button.config(text="Close Live Map", bg=UE.ACTIVE_BLUE, fg=UE.DARKER_GREY )
             self.live_canvas()
 
@@ -552,7 +594,8 @@ class MapMaster_UI:
 
 
     def live_canvas(self):
-        print("Opening Live Canvas", file=self.log_file)
+        PR.printL("\n def live_canvas \n", self.log_file, EXPAND_LOG)
+        PR.printL("Opening Live Canvas", self.log_file, PRINT_TO_FILE)
         self.live_map_win = Toplevel(self.root)
         self.live_map_win.configure(background=UE.DARK_GREY)
         self.create_live_canvas(self.live_map_win)
@@ -560,26 +603,30 @@ class MapMaster_UI:
 
 
     def set_live_canvas(self):
+        PR.printL("\n def set_live_canvas \n", self.log_file, EXPAND_LOG)
         map_dic = self.create_map_dic()  ## Update the map dictionary
         self.load_live_map_from_dic(map_dic)
         self.apply_mask_to_live()
         self.apply_blackout()
-        print(f"Set Live Canvas", file=self.log_file)
+        PR.printL(f"Set Live Canvas", self.log_file, PRINT_TO_FILE)
 
     def update_live_canvas(self):
-        print(f"Update Live Canvas")
+        PR.printL("\n def update_live_canvas \n", self.log_file, EXPAND_LOG)
+        PR.printL(f"Update Live Canvas", self.log_file, PRINT_TO_FILE)
 
 
     def close_live_window(self):
+        PR.printL("\n def close_live_window\n", self.log_file, EXPAND_LOG)
         try:
             self.live_map_canvas.destroy()
             self.live_map_win.destroy()
         except:
-            print("No Live Window Found to Destroy", file=self.log_file)
+            PR.printL("No Live Window Found to Destroy", self.log_file, PRINT_TO_FILE)
 
 
             # Save Buttons
     def save_buttons_widget(self, container, wiget_row, wiget_column):
+        PR.printL("def save_buttons_widget", self.log_file, EXPAND_LOG)
         self.savebox = UE.darkBorderless(container)
         self.savebox.grid(padx=10, pady=5, sticky="N", row=wiget_row, column=wiget_column)
         self.open_button = UE.selectButton(self.savebox, text="Open File", command=self.open_save_game)
@@ -593,9 +640,10 @@ class MapMaster_UI:
 
 
     def rename_map(self):
-        print("Enter Map Title:", file=self.log_file)
+        PR.printL("\n def rename_map \n", self.log_file, EXPAND_LOG)
+        PR.printL("Enter Map Title:", self.log_file, PRINT_TO_FILE)
         new_name = sd.askstring(title='Rename Map', prompt="New Map Name", bg=UE.DARKER_GREY)   ## Worked but could not recolour
-        print(f"New Name: {new_name}", file=self.log_file)
+        PR.printL(f"New Name: {new_name}", self.log_file, PRINT_TO_FILE)
         self.map_name_var.set(new_name)
         self.map_name_text = new_name
 
@@ -605,106 +653,117 @@ class MapMaster_UI:
 
 
     def open_save_game(self):
-        print("Open Save Game", file=self.log_file)
-        print("Opening File Dialog", file=self.log_file)
+        PR.printL("\n def open_save_game \n", self.log_file, EXPAND_LOG)
+        PR.printL("Opening File Dialog", self.log_file, PRINT_TO_FILE)
         try:
-            file_path = filedialog.askopenfilename(initialdir=self.directory + "\saved_games",
+            file_path = filedialog.askopenfilename(initialdir=self.directory + "/saved_games",
                     filetypes = [("Json File", "*.json")],
                     title = "Choose a Saved .json file")
-            recalled_dic = save.recall_json_map(file_path)
-            print(recalled_dic)
-            print("Clearing Canvas", file=self.log_file)
-            self.delete_map()
-            self.delete_all_icons()
-            print("Map Cleared", file=self.log_file)
-            print("Destroying Canvases", file=self.log_file)
-            self.destroy_dm_canvas()
-            self.destroy_live_canvas()
-            print("Creating Canvases", file=self.log_file)
-            self.create_dm_canvas(self.map_frame)
-            self.load_map_from_dic(recalled_dic)
-            if self.live_map_active:
-                self.create_live_canvas(self.live_map_win)
-                self.set_live_canvas()
         except:
-            print("ERROR: Problems recalling saved file", file=self.log_file)
+            PR.printL("User Closed Dialog Box", self.log_file, PRINT_TO_FILE)
+        try:
+            if file_path == "":
+                PR.printL("User Closed Dialog Box", self.log_file, PRINT_TO_FILE)
+                return 0
+            else:
+                recalled_dic = save.recall_json_map(file_path)
+                PR.printL(f"Recalled Dic: \n {recalled_dic}", self.log_file, PRINT_TO_FILE)
+                PR.printL("Clearing Canvas", self.log_file, PRINT_TO_FILE)
+                self.delete_map()
+                self.delete_all_icons()
+                PR.printL("Map Cleared", self.log_file, PRINT_TO_FILE)
+                PR.printL("Destroying Canvases", self.log_file, PRINT_TO_FILE)
+                self.destroy_dm_canvas()
+                self.destroy_live_canvas()
+                PR.printL("Creating Canvases", self.log_file, PRINT_TO_FILE)
+                self.create_dm_canvas(self.map_frame)
+                self.load_map_from_dic(recalled_dic)
+                if self.live_map_active:
+                    self.create_live_canvas(self.live_map_win)
+                    self.set_live_canvas()
+        except:
+            PR.printL("ERROR: Problems recalling saved file", self.log_file, PRINT_TO_FILE)
 
 
     def save_game(self):
-        print("Saving File", file=self.log_file)
+        PR.printL("\n def save_game \n", self.log_file, EXPAND_LOG)
+        PR.printL("Saving File", self.log_file, PRINT_TO_FILE)
         #first we need a dictionary of the current map
         map_dic = self.create_map_dic()
         try:
             json_file = save.return_json_str(map_dic)
-            print(json_file)
+            PR.printL(f"JSON File: \n{json_file}", self.log_file, PRINT_TO_FILE)
             self.save_file(json_file)
             #save.save_json_map()
             #json_file = asksaveasfilename(initialdir="D:\Pan Galactic Engineering\MapMaster\saved_games",
            #        defaultextension=[("Json File", "*.json")],
            #        title = "Save Map as .json File")
         except:
-            print("ERROR: problems saving file", file=self.log_file)
+            PR.printL("ERROR: problems saving file", self.log_file, PRINT_TO_FILE)
 
 
     def make_relative_path(self, substring, absolutepath):
+        PR.printL("\n def make_relative_path \n", self.log_file, EXPAND_LOG)
         sub_length = len(substring)
-        print(f"Searching absolutepath: {absolutepath} for substring: {substring}")
+        PR.printL(f"Searching absolutepath: {absolutepath} for substring: {substring}", self.log_file, PRINT_TO_FILE)
         index = absolutepath.find(substring)
         if (index >= 0):
             relativepath = absolutepath[index+sub_length:]  # Extracts the relative path from the end of the substring to the end of the absolutepath
-            print(f"Relative Path: {relativepath}")
-            output = "\\" + substring + relativepath
-            print(f"Output: {output}")
+            PR.printL(f"Relative Path: {relativepath}", self.log_file, PRINT_TO_FILE)
+            output = "/" + substring + relativepath    #TODO Error showing here
+            PR.printL(f"Output: {output}   #TODO ERROR HERE MAYBE", self.log_file, PRINT_TO_FILE)
             return output
         else:
-            print(f"Substring Not Found")
+            PR.printL(f"Substring Not Found", self.log_file, PRINT_TO_FILE)
             return 0
 
 
     def create_map_dic(self):
-        print("\n\nCreating Map Dictionary\n", file=self.log_file)
+        PR.printL("\ndef create_map_dic\n", self.log_file, PRINT_TO_FILE)
+        PR.printL("\nCreating Map Dictionary\n", self.log_file, PRINT_TO_FILE)
         map_dic = {}
-        print(f"Saving Map: {self.map_name_text}", file=self.log_file)
+        PR.printL(f"Saving Map: {self.map_name_text}", self.log_file, PRINT_TO_FILE)
         map_dic["name"] = self.map_name_text
         background_file_relative = self.make_relative_path("map_backgrounds", self.background_file)
         #background_file_relative = self.background_file.replace(self.directory, "")
-        print(f"Background File (relative): {background_file_relative}", file=self.log_file)
+        PR.printL(f"Background File (relative): {background_file_relative}", self.log_file, PRINT_TO_FILE)
         map_dic["background"] = background_file_relative
-
-        print(f"Icon Dictionary: {self.icon_dic}", file=self.log_file)
+        PR.printL(f"Icon Dictionary: {self.icon_dic}", self.log_file, PRINT_TO_FILE)
         map_dic["icons"] = {}   # Create the empty icon dictionary
         for item in self.icon_dic:
             try:
                 tags = self.map_canvas.gettags(item)
-                print(f"tags: {tags}")
+                PR.printL(f"tags: {tags}", self.log_file, PRINT_TO_FILE)
                 if tags[0] == "icon" or tags[0] == "img":
-                    print("Current Icon ID: ", item)
+                    PR.printL(f"Current Icon ID: {item}", self.log_file, PRINT_TO_FILE)
                     coords_tuple = self.map_canvas.coords(item)
-                    print("coords tuple[0]")
-                    print(f"Coords Tuple: {coords_tuple}")
+                    PR.printL("coords tuple[0]", self.log_file, PRINT_TO_FILE)
+                    PR.printL(f"Coords Tuple: {coords_tuple}", self.log_file, PRINT_TO_FILE)
                     self.icon_dic[item]["pos_x"] = round(coords_tuple[0])    ## Update item dictionaryu
                     self.icon_dic[item]["pos_y"] = round(coords_tuple[1])
-                    print(f"Item Dictionary{self.icon_dic[item]}", file=self.log_file)
+                    PR.printL(f"Item Dictionary{self.icon_dic[item]}", self.log_file, PRINT_TO_FILE)
                     map_dic["icons"][item] = {}
                     file_string = self.icon_dic[item]["file"]
-                    print(f"File String: {file_string}")
-                    print(f"self.directory: {self.directory}")
+                    PR.printL(f"File String: {file_string}", self.log_file, PRINT_TO_FILE)
+                    PR.printL(f"self.directory: {self.directory}", self.log_file, PRINT_TO_FILE)
                     relative_filestring = file_string.replace(self.directory, "")
-                    print(f"New Relative String: {relative_filestring }")
+                    PR.printL(f"New Relative String: {relative_filestring }", self.log_file, PRINT_TO_FILE)
                     map_dic["icons"][item]["file"] = relative_filestring
                     map_dic["icons"][item]["pos_x"] = self.icon_dic[item]["pos_x"]
                     map_dic["icons"][item]["pos_y"] = self.icon_dic[item]["pos_y"]
                     map_dic["icons"][item]["tag"] = self.icon_dic[item]["tag"]
                     map_dic["icons"][item]["id_tag"] = self.icon_dic[item]["id_tag"]
             except:
-                print(f"Error Finding Tags for Object {item}.")
+                print()
+                PR.printL(f"Error Finding Tags for Object {item}.", self.log_file, PRINT_TO_FILE)
         map_dic["mask"] = self.mask_list    #TODO CHECK THIS LINE WORKS
-        print("End of Create Map Dictionary", file=self.log_file)
-        print(f"New Map Dictionary: {map_dic}", file=self.log_file)
+        PR.printL("End of Create Map Dictionary", self.log_file, PRINT_TO_FILE)
+        PR.printL(f"New Map Dictionary: {map_dic}", self.log_file, PRINT_TO_FILE)
         return map_dic
 
     def save_file(self, json_file):
-        f = filedialog.asksaveasfile(mode='w', defaultextension=".json", initialdir="D:\Pan Galactic Engineering\MapMaster\saved_games",)
+        PR.printL("\ndef save_file\n", self.log_file, PRINT_TO_FILE)
+        f = filedialog.asksaveasfile(mode='w', defaultextension=".json", initialdir= self.directory + "/saved_games")
         if f is None:  # asksaveasfile return `None` if dialog closed with "cancel".
             return
         f.write(json_file)
@@ -712,87 +771,91 @@ class MapMaster_UI:
 
 
     def load_live_map_from_dic(self, map_dic):
-        print("\n\nloading Live Map from Dictionary", file=self.log_file)
+        PR.printL("\ndef load_live_map_from_dic\n", self.log_file, PRINT_TO_FILE)
+        PR.printL("\n\nloading Live Map from Dictionary", self.log_file, PRINT_TO_FILE)
         try:
             background_file = self.directory + map_dic["background"]
-            print(f"Background File Found: {background_file}", file=self.log_file)
+            PR.printL(f"Background File Found: {background_file}", self.log_file, PRINT_TO_FILE)
             self.add_bg_live_map(background_file)
         except:
-            print("No background found", file=self.log_file)
+            PR.printL("No background found", self.log_file, PRINT_TO_FILE)
         try:
             temp_dic = map_dic["icons"]
-            print(f" Map Dictionary \"Icons\": \n{temp_dic}")
+            PR.printL(f" Map Dictionary \"Icons\": \n{temp_dic}", self.log_file, PRINT_TO_FILE)
             for icons in map_dic["icons"]:      # Icons just returns a (list?) of the numbers of the dictionarys of items - AS A STRING
-                print(f"Icon in map_dic[\"icons\"]: {icons}")
+                PR.printL(f"Icon in map_dic[\"icons\"]: {icons}", self.log_file, PRINT_TO_FILE)
                 current_file = self.directory + map_dic["icons"][icons]["file"]
-                print(f"Loading File: {current_file}")
+                PR.printL(f"Loading File: {current_file}", self.log_file, PRINT_TO_FILE)
                 icon_x = int(map_dic["icons"][icons]["pos_x"])
                 icon_y = int(map_dic["icons"][icons]["pos_y"])
                 try:
                     id_tag = map_dic["icons"][icons]["id_tag"]
-                    print(f"found id_tag: {id_tag}", file=self.log_file)
+                    PR.printL(f"found id_tag: {id_tag}", self.log_file, PRINT_TO_FILE)
                 except:
-                    id_tag = "oops"
-                    print(f"Can not find id_tag for icon, setting to {id_tag}", file=self.log_file)   # This may not matter, as images without a tag can be found by matching ID, well this probably will matter because the lookup has to change from ID to tag.
+                    id_tag = "oops" # This may not matter, as images without a tag can be found by matching ID, well this probably will matter because the lookup has to change from ID to tag.
+                    PR.printL(f"Can not find id_tag for icon, setting to {id_tag}", self.log_file, PRINT_TO_FILE)
                 try:
                     if map_dic["icons"][icons]["tag"] == "icon":
                         object_id = self.add_place_live_map(icon_x, icon_y, current_file, id_tag)
-                        print(f"Placing Icon at: X[{icon_x}], Y[{icon_y}]")
+                        PR.printL(f"Placing Icon at: X[{icon_x}], Y[{icon_y}]", self.log_file, PRINT_TO_FILE)
                     elif map_dic["icons"][icons]["tag"] == "img":
                         object_id = self.add_place_live_image(icon_x, icon_y, current_file, id_tag)
-                        print(f"Placing Icon at: X[{icon_x}], Y[{icon_y}]")
+                        PR.printL(f"Placing Icon at: X[{icon_x}], Y[{icon_y}]", self.log_file, PRINT_TO_FILE)
                     else:
-                        print("ERROR: No icon or img tag found", file=self.log_file)
+                        PR.printL("ERROR: No icon or img tag found", self.log_file, PRINT_TO_FILE)
                 except:
-                    print("Problem inserting Object into Live Canvas", file=self.log_file)
+                    PR.printL("Problem inserting Object into Live Canvas", self.log_file, PRINT_TO_FILE)
         except:
-            print("Problem Loading Live Map from Dictionary", file=self.log_file)
-        print(f"All Items Added to Live Map", file=self.log_file)
-        print("The following lists should match", file=self.log_file)
+            PR.printL("Problem Loading Live Map from Dictionary", self.log_file, PRINT_TO_FILE)
+        PR.printL(f"All Items Added to Live Map", self.log_file, PRINT_TO_FILE)
+        PR.printL("The following lists should match", self.log_file, PRINT_TO_FILE)
         self.print_all_live_items()
 
 
 
     def load_map_from_dic(self, map_dic):
-        print("Loading Map from Dictionary",file=self.log_file)
+        PR.printL("def load_map_from_dic\n", self.log_file, PRINT_TO_FILE)
+        PR.printL("Loading Map from Dictionary", self.log_file, PRINT_TO_FILE)
         self.map_name_text = map_dic["name"]
         self.map_name_var.set(self.map_name_text)
         try:
             self.background_file = self.directory + map_dic["background"]
-            print(f"Background File Found: {self.background_file}")  #, file=self.log_file
+            PR.printL(f"Background File Found: {self.background_file}", self.log_file, PRINT_TO_FILE)
             self.add_background(self.background_file)
         except:
-            print("No background found", file=self.log_file)
+            PR.printL("No background found", self.log_file, PRINT_TO_FILE)
         try:
-            print(map_dic["icons"])
+            recalled_icon_dic = map_dic["icons"]
+            PR.printL(f"map_dic[\"icons\"]: \n {recalled_icon_dic}", self.log_file, PRINT_TO_FILE)
             for icons in map_dic["icons"]:      # Icons just returns a (list?) of the numbers of the dictionarys of items - AS A STRING
-                print(icons)
+                PR.printL(f"Icons: {icons}", self.log_file, PRINT_TO_FILE)
                 current_file = self.directory + map_dic["icons"][icons]["file"]
-                print(f"Loading File: {current_file}")
+                PR.printL(f"Loading File: {current_file}", self.log_file, PRINT_TO_FILE)
                 icon_x = int(map_dic["icons"][icons]["pos_x"])
                 icon_y = int(map_dic["icons"][icons]["pos_y"])
                 id_tag = map_dic["icons"][icons]["id_tag"]
                 try:
                     if map_dic["icons"][icons]["tag"] == "icon":
                         object_id = self.add_place_icon(icon_x, icon_y, current_file, id_tag)
-                        print(f"Placing Icon at: X[{icon_x}], Y[{icon_y}]", file=self.log_file)
+                        PR.printL(f"Placing Icon at: X[{icon_x}], Y[{icon_y}]", self.log_file, PRINT_TO_FILE)
                     elif map_dic["icons"][icons]["tag"] == "img":
                         object_id = self.add_place_image(icon_x, icon_y, current_file, id_tag)
-                        print(f"Placing Img at: X[{icon_x}], Y[{icon_y}]", file=self.log_file)
+                        PR.printL(f"Placing Img at: X[{icon_x}], Y[{icon_y}]", self.log_file, PRINT_TO_FILE)
                     else:
-                        print("ERROR: No icon or img tag found", file=self.log_file)
+                        PR.printL("ERROR: No icon or img tag found", self.log_file, PRINT_TO_FILE)
                 except:
-                    print("Problem inserting Object into DM Canvas CODE: [0001]", file=self.log_file)
+                    PR.printL("Problem inserting Object into DM Canvas CODE: [0001]", self.log_file, PRINT_TO_FILE)
         except:
-            print("Problem Recalling Icons from Dictionary", file=self.log_file)
+            PR.printL("Problem Recalling Icons from Dictionary", self.log_file, PRINT_TO_FILE)
         try:
             for item in map_dic["mask"]:
                 #print(f"Map dic Mask Items: {item}, Seperating: item0: {item[0]}, item1: {item[1]}")
                 new_tuple = (item[0], item[1])
                 self.mask_list.append(new_tuple)       #This is done like this because recalled item is LIST and needed to be TUPLE
-            print(f"self.mask_list: {self.mask_list}")
+            print()
+            PR.printL(f"self.mask_list: {self.mask_list}", self.log_file, PRINT_TO_FILE)
         except:
-            print("Problem Recalling Mask from Dictionary", file=self.log_file)
+            PR.printL("Problem Recalling Mask from Dictionary", self.log_file, PRINT_TO_FILE)
 
 
 
@@ -804,6 +867,7 @@ class MapMaster_UI:
 
             #Background Images
     def background_image_widget(self, container, item_row, item_column):
+        PR.printL("def background_image_widget", self.log_file, PRINT_TO_FILE)
         self.backgound_button = UE.selectButton(container, text="Open Background Map", command=self.select_bg_dialog)
         self.backgound_button.grid(padx=5, pady=5, row=item_row, column=item_column)
         self.delete_map_button = UE.selectButton(container, text="Delete Background Map", command=self.delete_map)
@@ -814,88 +878,91 @@ class MapMaster_UI:
 
 
     def select_bg_dialog(self):
+        PR.printL("\ndef select_bg_dialog\n", self.log_file, PRINT_TO_FILE)
         try:
-            self.background_file = filedialog.askopenfilename(initialdir=self.directory + "\map_backgrounds")
+            self.background_file = filedialog.askopenfilename(initialdir=self.directory + "/map_backgrounds")
             self.add_background(self.background_file)
             if self.live_map_active:
                 try:
                     self.add_bg_live_map(self.background_file)
                 except:
-                    print("Problem applying background to live map", file=self.log_file)
+                    PR.printL("Problem applying background to live map", self.log_file, PRINT_TO_FILE)
         except:
-            print("User Closed Dialogue Box", file=self.log_file)
+            PR.printL("User Closed Dialogue Box", self.log_file, PRINT_TO_FILE)
 
     def add_background(self, file_path):
+        PR.printL("def add_background\n", self.log_file, PRINT_TO_FILE)
         resized_image = self.resize_map(file_path)
         self.background_file = file_path
         bg_image = ImageTk.PhotoImage(resized_image)
         self.map_canvas.bg_image = bg_image
         bg_id = self.map_canvas.create_image(self.background_center_x, self.background_center_y, image=self.map_canvas.bg_image, tags="background")  # ,anchor="s" # (Numbers specify the CENTER of the image- FFS NOT WELL DOCUMENTED AT ALL WANKERS)
-        print(f"Background ID: {bg_id}")
+        PR.printL(f"Background ID: {bg_id}", self.log_file, PRINT_TO_FILE)
         # This line is not working sometimes, its quitting here and going to except.
         try:
             items =  self.map_canvas.find_all()
-            print(items)
+            PR.printL(f"DM's Map Canvas Items: {items}", self.log_file, PRINT_TO_FILE)
             lowest_item_id = items[0]
-            print(f"Finding Lowest Item ID: {lowest_item_id}")
+            PR.printL(f"Finding Lowest Item ID: {lowest_item_id}", self.log_file, PRINT_TO_FILE)
             self.map_canvas.tag_lower(bg_id, lowest_item_id)
-            print(self.map_canvas.find_all())
+            PR.printL(self.map_canvas.find_all(), self.log_file, PRINT_TO_FILE)
         except:
-            print("Problem tagging background lower", file=self.log_file)
+            PR.printL("Problem tagging background lower", self.log_file, PRINT_TO_FILE)
             return 0
-        print("New Map Background Applied", file=self.log_file)
+        PR.printL("New Map Background Applied", self.log_file, PRINT_TO_FILE)
 
     def add_bg_live_map(self, file_path):
+        PR.printL("\ndef add_bg_live_map\n", self.log_file, PRINT_TO_FILE)
         resized_image = self.resize_map(file_path)
         self.background_file = file_path
         bg_image = ImageTk.PhotoImage(resized_image)
         self.live_map_canvas.bg_image = bg_image
         bg_id = self.live_map_canvas.create_image(self.background_center_x, self.background_center_y, image=self.live_map_canvas.bg_image, tags="background")  # ,anchor="s" # (Numbers specify the CENTER of the image- FFS NOT WELL DOCUMENTED AT ALL WANKERS)
-        print(f"Background ID: {bg_id}")
-        # This line is not working sometimes, its quitting here and going to except.
+        PR.printL(f"Background ID: {bg_id}", self.log_file, PRINT_TO_FILE)
+        #TODO This line is not working sometimes, its quitting here and going to except.
         try:
             items = self.live_map_canvas.find_all()
             print(items)
+            PR.printL(f"Live Map Items:{items}", self.log_file, PRINT_TO_FILE)
             lowest_item_id = items[0]
-            print(f"Finding Lowest Item ID: {lowest_item_id}")
+            print()
+            PR.printL(f"Finding Lowest Item ID: {lowest_item_id}", self.log_file, PRINT_TO_FILE)
             self.live_map_canvas.tag_lower(bg_id, lowest_item_id)
             print(self.live_map_canvas.find_all())
+            PR.printL(self.live_map_canvas.find_all(), self.log_file, PRINT_TO_FILE)
         except:
-            print("Problem tagging Live background lower", file=self.log_file)
+            PR.printL("Problem tagging Live background lower", self.log_file, PRINT_TO_FILE)
             return 0
-        print("New Map Live Background Applied", file=self.log_file)
+        PR.printL("New Map Live Background Applied", self.log_file, PRINT_TO_FILE)
 
 
     # Opens image from passed filepath. Resizes image to fit background area
     def resize_map(self, filepath):
+        PR.printL("def resize_map\n", self.log_file, PRINT_TO_FILE)
         img = Image.open(filepath)
         img.thumbnail((1000,850))    #Needs to be passed type tuple ## This does NOT RETURN IMAGE. it works on img object
-        print("New Image Size")
-        print(img.size[0],img.size[1])
+        PR.printL("New Image Size", self.log_file, PRINT_TO_FILE)
+        PR.printL((img.size[0],img.size[1]), self.log_file, PRINT_TO_FILE)
         return img
 
     def delete_map(self):
-        print("Deleting Map Background", file=self.log_file)
+        PR.printL("def delete_map\n", self.log_file, PRINT_TO_FILE)
+        PR.printL("Deleting Map Background", self.log_file, PRINT_TO_FILE)
         items = self.map_canvas.find_all()
-        #print(f"DM Canvas Items: {items}")
         for item in items:
-            #print(f" current Item: {item}")
             for tag in self.map_canvas.gettags(item):  ## Check object isnt the background
-                #print(f"DM's Map Tag: {tag}")
                 if (tag == "background"):
                     self.map_canvas.delete(item)
                     self.background_file = "" # Also delete the file reference so that does not get saved in our JSON database
-                    #print(f" Map Canvas Findall{self.map_canvas.find_all()}")  # get all canvas objects ID
         if self.live_map_active:
             try:
                 live_items = self.live_map_canvas.find_all()
                 for item in live_items:
                     for tag in self.live_map_canvas.gettags(item):
-                        #print(f"Live Item Tag: {tag}")
                         if (tag == "background"):
                             self.live_map_canvas.delete(item)
             except:
-                print("Problem Finding Background In live Canvas - Does it Exist?", file=self.log_file)
+                PR.printL("Problem Finding Background In live Canvas - Does it Exist?", self.log_file, PRINT_TO_FILE)
 
 
 
@@ -903,6 +970,7 @@ class MapMaster_UI:
     #Adding Icons
 
     def add_icon_widget(self, container, item_row, item_column):
+        PR.printL("def add_icon_widget", self.log_file, PRINT_TO_FILE)
         self.add_icon_button = UE.selectButton(container, text="Add Icon", command=self.add_icon_dialog)
         self.add_icon_button.grid(padx=5, pady=5, row=item_row, column=item_column)
         self.add_image_button = UE.selectButton(container, text="Add Image", command=self.add_image_dialog)
@@ -910,27 +978,29 @@ class MapMaster_UI:
 
     # Same as add icon but does not resize image
     def add_image_dialog(self):
+        PR.printL("def add_image_dialog\n", self.log_file, PRINT_TO_FILE)
         try:
-            filepath = filedialog.askopenfilename(initialdir=self.directory + "\map_icons")
+            filepath = filedialog.askopenfilename(initialdir=self.directory + "/map_icons")
             new_tag = self.add_place_image(self.init_x, self.init_y, filepath, None)
-            print("New Image Added", file=self.log_file)
+            PR.printL("New Image Added", self.log_file, PRINT_TO_FILE)
             if self.live_map_active:
                 self.add_place_live_image(self.init_x, self.init_y, filepath, new_tag)
         except:
-            print("User Closed Dialogue Box", file=self.log_file)
+            PR.printL("User Closed Dialogue Box", self.log_file, PRINT_TO_FILE)
 
 #https://www.digitalocean.com/community/tutorials/python-add-to-dictionary
 
 
 
     def add_place_image(self, x, y, filepath, id_tag):
+        PR.printL("def add_place_image", self.log_file, PRINT_TO_FILE)
         img = Image.open(filepath)
-        print(f"Opening Icon: {filepath}", file=self.log_file)
-        print(f"IconSize: {img.size[0]}, {img.size[1]}")
+        PR.printL(f"Opening Icon: {filepath}", self.log_file, PRINT_TO_FILE)
+        PR.printL(f"IconSize: {img.size[0]}, {img.size[1]}", self.log_file, PRINT_TO_FILE)
         img_ref = ImageTk.PhotoImage(img)
-        print(f"img_ref: {img_ref}")
+        PR.printL(f"img_ref: {img_ref}", self.log_file, PRINT_TO_FILE)
         img_canvas_id = self.map_canvas.create_image(x, y, image=img_ref, tags="img")
-        print(f"img_canvas_id: {img_canvas_id}")
+        PR.printL(f"img_canvas_id: {img_canvas_id}", self.log_file, PRINT_TO_FILE)
         if id_tag == None:
             tag_string = ("img" + str(img_canvas_id))
         else:
@@ -945,59 +1015,61 @@ class MapMaster_UI:
             "id_tag": tag_string,
             "tag": "img",
         })
-        print(f"adding New tags to Item: {img_canvas_id}, Tag:{tag_string}", file=self.log_file)
+        PR.printL(f"adding New tags to Item: {img_canvas_id}, Tag:{tag_string}", self.log_file, PRINT_TO_FILE)
         self.map_canvas.addtag_withtag(tag_string, img_canvas_id)
         check_tags = self.map_canvas.gettags(img_canvas_id)
-        print(f"Checking Tags: {check_tags}", file=self.log_file)
-        print(self.icon_dic, file=self.log_file)
+        PR.printL(f"Checking Tags: {check_tags}", self.log_file, PRINT_TO_FILE)
+        PR.printL(f"Icon Dic: {self.icon_dic}", self.log_file, PRINT_TO_FILE)
         self.lower_img(self.map_canvas, img_canvas_id)
-        print(self.map_canvas.find_all())  # get all canvas objects ID
+        PR.printL(self.map_canvas.find_all(), self.log_file, PRINT_TO_FILE)
         return tag_string
 
     def add_place_live_image(self, x, y, filepath, id_tag):
-        print("Adding img to live map", file=self.log_file)
+        PR.printL("def add_place_live_image\n", self.log_file, PRINT_TO_FILE)
+        PR.printL("Adding img to live map", self.log_file, PRINT_TO_FILE)
         img = Image.open(filepath)
-        print(f"Opening Icon: {filepath}", file=self.log_file)
-        print(f"IconSize: {img.size[0]}, {img.size[1]}")
+        PR.printL(f"Opening Icon: {filepath}", self.log_file, PRINT_TO_FILE)
+        PR.printL(f"IconSize: {img.size[0]}, {img.size[1]}", self.log_file, PRINT_TO_FILE)
         img_ref = ImageTk.PhotoImage(img)  # I think this imageref needs to be saved as a global to avoid garbage collection
         self.live_map_list.append(img_ref)
-        print(f"img_ref: {img_ref}")
+        PR.printL(f"img_ref: {img_ref}", self.log_file, PRINT_TO_FILE)
         img_canvas_id = self.live_map_canvas.create_image(x, y, image=img_ref, tags="img")
         self.live_map_canvas.addtag_withtag(id_tag, img_canvas_id)
-        print(f"img_LIVE_canvas_id: {img_canvas_id}")
+        PR.printL(f"img_LIVE_canvas_id: {img_canvas_id}", self.log_file, PRINT_TO_FILE)
         self.lower_img(self.live_map_canvas, img_canvas_id)
-        print(self.live_map_canvas.find_all())  # get all canvas objects ID):
+        PR.printL(self.live_map_canvas.find_all(), self.log_file, PRINT_TO_FILE)
 
 
     def add_icon_dialog(self):
+        PR.printL("def add_icon_dialog\n", self.log_file, PRINT_TO_FILE)
         try:
-            filepath = filedialog.askopenfilename(initialdir=self.directory + "\map_icons")
+            filepath = filedialog.askopenfilename(initialdir=self.directory + "/map_icons")
             new_tag = self.add_place_icon(self.init_x, self.init_y, filepath, None)
-            print("New Icon Added", file=self.log_file)
+            PR.printL("New Icon Added", self.log_file, PRINT_TO_FILE)
             if self.live_map_active:
                 self.add_place_live_map(self.init_x, self.init_y, filepath, new_tag)
         except:
-            print("User Closed Dialogue Box", file=self.log_file)
+            PR.printL("User Closed Dialogue Box", self.log_file, PRINT_TO_FILE)
 
 
 
     def add_place_icon(self, x, y, filepath, id_tag):
-        print("\n\n Add Place Icon", file=self.log_file)
+        PR.printL("def add_place_icon\n", self.log_file, PRINT_TO_FILE)
         img = Image.open(filepath)
-        print(f"Opening Icon: {filepath}", file=self.log_file)
-        print(f"IconSize: {img.size[0]}, {img.size[1]}")
+        PR.printL(f"Opening Icon: {filepath}", self.log_file, PRINT_TO_FILE)
+        PR.printL(f"IconSize: {img.size[0]}, {img.size[1]}", self.log_file, PRINT_TO_FILE)
         if (img.size[0] > 50) or (img.size[1] > 50):
-            print("Icon Too Large: Resizing Icon", file=self.log_file)
+            PR.printL("Icon Too Large: Resizing Icon", self.log_file, PRINT_TO_FILE)
             img = self.resize_image(filepath, 25, 25)
         img_ref = ImageTk.PhotoImage(img)
-        print(f"img_ref: {img_ref}")
+        PR.printL(f"img_ref: {img_ref}", self.log_file, PRINT_TO_FILE)
         img_canvas_id = self.map_canvas.create_image(x, y, image=img_ref, tags="icon")
-        print(f"img_canvas_id: {img_canvas_id}")
+        PR.printL(f"img_canvas_id: {img_canvas_id}", self.log_file, PRINT_TO_FILE)
         if id_tag == None:
             tag_string = ("icon" + str(img_canvas_id))
         else:
             tag_string = id_tag
-        print(f"Tag String: {tag_string}")
+        PR.printL(f"Tag String: {tag_string}", self.log_file, PRINT_TO_FILE)
         self.icon_dic[img_canvas_id] = {}
         self.icon_dic[img_canvas_id].update({
             "file": filepath,
@@ -1007,173 +1079,175 @@ class MapMaster_UI:
             "id_tag" : tag_string,
             "tag": "icon",
         })
-        print(self.icon_dic, file=self.log_file)
-        print(f"adding New tags to Item: {img_canvas_id}, Tag:{tag_string}")
+        PR.printL(f"Icon Dic: {self.icon_dic}", self.log_file, PRINT_TO_FILE)
+        PR.printL(f"adding New tags to Item: {img_canvas_id}, Tag:{tag_string}", self.log_file, PRINT_TO_FILE)
         self.map_canvas.addtag_withtag(tag_string, img_canvas_id)
         check_tags = self.map_canvas.gettags(img_canvas_id)
-        print(f"Checking Tags: {check_tags}")
+        PR.printL(f"Checking Tags: {check_tags}", self.log_file, PRINT_TO_FILE)
         self.lower_img(self.map_canvas, img_canvas_id)
-        print(self.map_canvas.find_all())  # get all canvas objects ID
+        PR.printL(f"All Map Objects: {self.map_canvas.find_all()}", self.log_file, PRINT_TO_FILE)
         return tag_string
 
     def add_place_live_map(self,  x, y, filepath, id_tag):
-        print("Adding icon to live map", file=self.log_file)
+        PR.printL("def add_place_live_map\n", self.log_file, PRINT_TO_FILE)
         img = Image.open(filepath)
-        print(f"Opening Icon: {filepath}", file=self.log_file)
-        print(f"IconSize: {img.size[0]}, {img.size[1]}")
+        PR.printL(f"Opening Icon: {filepath}", self.log_file, PRINT_TO_FILE)
+        PR.printL(f"IconSize: {img.size[0]}", self.log_file, PRINT_TO_FILE)
         if (img.size[0] > 50) or (img.size[1] > 50):
-            print("Icon Too Large: Resizing Icon", file=self.log_file)
+            PR.printL("Icon Too Large: Resizing Icon", self.log_file, PRINT_TO_FILE)
             img = self.resize_image(filepath, 25, 25)
         img_ref = ImageTk.PhotoImage(img)     # I think this imageref needs to be saved as a global to avoid garbage collection
         self.live_map_list.append(img_ref)
-        print(f"img_ref: {img_ref}")
+        PR.printL(f"img_ref: {img_ref}", self.log_file, PRINT_TO_FILE)
         img_canvas_id = self.live_map_canvas.create_image(x, y, image=img_ref, tags="icon")
         self.live_map_canvas.addtag_withtag(id_tag, img_canvas_id )
-        print(f"img_LIVE_canvas_id: {img_canvas_id}")
+        PR.printL(f"img_LIVE_canvas_id: {img_canvas_id}", self.log_file, PRINT_TO_FILE)
         self.lower_img(self.live_map_canvas, img_canvas_id)
-        print(self.live_map_canvas.find_all())  # get all canvas objects ID):
+        PR.printL(self.live_map_canvas.find_all(), self.log_file, PRINT_TO_FILE)
 
 
     def lower_img(self, canvas, img_id):
-        print(f"Attempting tagging {img_id} lower", file=self.log_file)
+        PR.printL("def lower_img\n", self.log_file, PRINT_TO_FILE)
+        PR.printL(f"Attempting tagging {img_id} lower", self.log_file, PRINT_TO_FILE)
         try:
             canvas.tag_lower(img_id, "mask")
         except:
-            print("No Mask Layer Found", file=self.log_file)
+            PR.printL("No Mask Layer Found", self.log_file, PRINT_TO_FILE)
         try:
             canvas.tag_lower(img_id, "blackout")
         except:
-            print("No Blackout Layer Found", file=self.log_file)
+            PR.printL("No Blackout Layer Found", self.log_file, PRINT_TO_FILE)
 
 
 
     def resize_image(self, filepath, Wmax, Hmax):
+        PR.printL("def resize_image\n", self.log_file, PRINT_TO_FILE)
         img = Image.open(filepath)
-        #print(filepath)
-        #print(img.size[0], ", ", img.size[1])
-        # resize_img = ImageOps.fit(img, (900,900),method=0,bleed=0.0,centering=(0.5,0.5))
         img.thumbnail((Wmax, Hmax))  # Needs to be passed type tuple ## This does NOT RETURN IMAGE. it works on img object
-        print("New Image Size", file=self.log_file)
-        print(img.size[0], img.size[1])
+        PR.printL("New Image Size", self.log_file, PRINT_TO_FILE)
+        PR.printL((img.size[0], img.size[1]), self.log_file, PRINT_TO_FILE)
         return img
 
 
     def save_resize_image(self, filepath, Wmax, Hmax, new_filename):
+        PR.printL("def save_resize_image\n", self.log_file, PRINT_TO_FILE)
         img = Image.open(filepath)
-        print(filepath)
-        print(img.size[0], ", ", img.size[1])
+        PR.printL(f"Filepath: {filepath}", self.log_file, PRINT_TO_FILE)
+        PR.printL((img.size[0], ", ", img.size[1]), self.log_file, PRINT_TO_FILE)
         # resize_img = ImageOps.fit(img, (900,900),method=0,bleed=0.0,centering=(0.5,0.5))
         img.thumbnail((Wmax, Hmax))  # Needs to be passed type tuple ## This does NOT RETURN IMAGE. it works on img object
-        print("New Image Size", file=self.log_file)
-        print(img.size[0], img.size[1])
-        new_filepath = self.directory + "\map_icons" + new_filename + ".png"
-        print(new_filepath, file=self.log_file)
+        PR.printL("New Image Size", self.log_file, PRINT_TO_FILE)
+        PR.printL((img.size[0], img.size[1]), self.log_file, PRINT_TO_FILE)
+        new_filepath = self.directory + "/map_icons" + new_filename + ".png"
+        PR.printL(new_filepath, self.log_file, PRINT_TO_FILE)
         img.save(new_filepath)
         return new_filepath
 
 #Events
     #Delete an Icon - SEMI BROKEN works but only if move Icon to upper corner of canvas
     def delete_icon(self, event):
+        PR.printL("def delete_icon\n", self.log_file, PRINT_TO_FILE)
         img_canvas_id = self.map_canvas.find_closest(self.cursor_x, self.cursor_y, halo=1)  # get canvas object ID of where mouse pointer is  try [0] after this line? seen it on anothe solution
         img_id = img_canvas_id[0]                                                              ## Extract ID from tuple
         tags = self.map_canvas.gettags(img_id)
-        print(f" Deleting Img: {img_id}, with tags: {tags}", file=self.log_file)
+        PR.printL(f" Deleting Img: {img_id}, with tags: {tags}", self.log_file, PRINT_TO_FILE)
         if tags[0] == "icon" or tags[0] == "img":
             self.map_canvas.delete(img_id)
             if self.live_map_active:
                 self.live_map_canvas.delete(tags[1])
-            print(f"Found Match for tag: {tags[0]}, Deleting Item with tag {tags[1]}", file=self.log_file)
-            print(f"Remaining Items: {self.map_canvas.find_all()}", file=self.log_file)  # get all canvas objects ID
-            print("Icon Dictionary Original", file=self.log_file)
+            PR.printL(f"Found Match for tag: {tags[0]}, Deleting Item with tag {tags[1]}", self.log_file, PRINT_TO_FILE)
+            PR.printL(f"Remaining Items: {self.map_canvas.find_all()}", self.log_file, PRINT_TO_FILE)
+            PR.printL("Icon Dictionary Original", self.log_file, PRINT_TO_FILE)
             self.print_dictionary(self.icon_dic[img_id])
             del self.icon_dic[img_id]  ## Also delete from dictionary
-            print("Icon Dictionary Item Removed", file=self.log_file)
+            PR.printL("Icon Dictionary Item Removed", self.log_file, EXPAND_LOG)
             self.print_dictionary(self.icon_dic)
 
 
     def delete_icon_from_dic(self, img_id):
-        print("Icon Dictionary Original", file=self.log_file)
+        PR.printL("\ndef delete_icon_from_dic\n", self.log_file, PRINT_TO_FILE)
+        PR.printL("Icon Dictionary Original", self.log_file, PRINT_TO_FILE)
         self.print_dictionary(self.icon_dic[img_id])
         del self.icon_dic[img_id]  ## Also delete from dictionary
-        print("Icon Dictionary Item Removed", file=self.log_file)
+        PR.printL("Icon Dictionary Item Removed", self.log_file, PRINT_TO_FILE)
         self.print_dictionary(self.icon_dic)
 
 
     def delete_all_icons(self):
-        print("Deleting All Icons & Images", file=self.log_file)
+        PR.printL("\ndef delete_all_icons\n", self.log_file, PRINT_TO_FILE)
+        PR.printL("Deleting All Icons & Images", self.log_file, PRINT_TO_FILE)
         items = self.map_canvas.find_all()
-        print(f"Items, {items}", file=self.log_file)
+        PR.printL(f"Items, {items}", self.log_file, PRINT_TO_FILE)
         for item_id in items:
-            #item_id = item[0]
-            print(f"Deleting Item: {item_id}", file=self.log_file)
+            PR.printL(f"Deleting Item: {item_id}", self.log_file, EXPAND_LOG)
             self.map_canvas.delete(item_id)
             try:
                 del self.icon_dic[item_id]  ## Also delete from dictionary
-                print("Icon Dictionary Item Removed", file=self.log_file)
+                PR.printL("Icon Dictionary Item Removed", self.log_file, PRINT_TO_FILE)
             except:
-                print("Item Not Found In Dictionary", file=self.log_file)
+                PR.printL("Item Not Found In Dictionary", self.log_file, PRINT_TO_FILE)
         try:
             self.print_dictionary(self.icon_dic)
             del self.icon_dic[1]  ## Also Delete entry 1 incase no other item was in dictionary
             self.print_dictionary(self.icon_dic)
         except:
-            print("Problem Deleting Items", file=self.log_file)
-        print("All Items Deleted", file=self.log_file)
+            PR.printL("Problem Deleting Items", self.log_file, PRINT_TO_FILE)
+        PR.printL("All Items Deleted", self.log_file, PRINT_TO_FILE)
 
 
 
 
     def print_dictionary(self, dictionary):
+        PR.printL("\ndef print_dictionary\n", self.log_file, PRINT_TO_FILE)
         try:
             for key, value in dictionary.items():
-                print(key, " : ", value, file=self.log_file)
+                PR.printL((key, " : ", value), self.log_file, PRINT_TO_FILE)
         except:
-            print("Unable to Print Dictionary", file=self.log_file)
+            PR.printL("Unable to Print Dictionary", self.log_file, PRINT_TO_FILE)
 
 
 
     def down(self, event):
-        print("Down arrow pressed", file=self.log_file)
+        PR.printL("\ndef down\n", self.log_file, PRINT_TO_FILE)
+        PR.printL("Down arrow pressed", self.log_file, PRINT_TO_FILE)
 
 # Event Methods for moving icons
     def startMovement(self, event):
+        PR.printL("\ndef startMovement\n", self.log_file, PRINT_TO_FILE)
         self.initi_x = event.x
         self.initi_y = event.y
         item = self.map_canvas.find_closest(self.initi_x, self.initi_y, halo=1)  # get canvas object ID of where mouse pointer is  try [0] after this line? seen it on anothe solution
-        #live_item = self.live_map_canvas.find_closest(self.initi_x, self.initi_y, halo=1)
         tags = self.map_canvas.gettags(item)    # tags should only ever have 3 max, first is general, 2nd is specific
-        print(f"Item Tags: {tags}")
-        #for tag in tags:                                   ## Check object isnt the background
-        #    print(f"Current Tag: {tag}")
+
+        PR.printL(f"Item Tags: {tags}", self.log_file, PRINT_TO_FILE)
         if (tags[0] == "background"):
-            print("Background Selected - exiting")
+            print()
+            PR.printL("Background Selected - exiting", self.log_file, PRINT_TO_FILE)
             self.__move = False
             #break
         else:
             self.__move = True  ## Moving this to avoid errors
             #self.movingimage = item  # get canvas object ID of where mouse pointer is  #TODO MAJOR CHANGE HERE ID TO TAG
             self.movingimage = tags[1]
-            print(f"moving Image: {self.movingimage}")
-                #print(self.map_canvas.find_all())  # get all canvas objects ID Just makes a mess of debug logs
+            print()
+            PR.printL(f"moving Image: {self.movingimage}", self.log_file, PRINT_TO_FILE)
+
 
     def stopMovement(self, event):
+        PR.printL("\ndef stopMovement\n", self.log_file, PRINT_TO_FILE)
         self.__move = False
 
 
     def movement(self, event):
+        #PR.printL("\ndef movement\n", self.log_file, PRINT_TO_FILE)
         if self.__move:
             self.mouse_label.config(text="Mouse: " + str(event.x) + ", " + str(event.y))
-            #end_x = c.canvasx(event.x)  # Translate mouse x screen coordinate to canvas coordinate
-            #end_y = c.canvasy(event.y)  # Translate mouse y screen coordinate to canvas coordinate  // dont think I need this because done already
             end_x = event.x
             end_y = event.y
-            #print('movement end', end_x, end_y)
             deltax = end_x - self.initi_x  # Find the difference
             deltay = end_y - self.initi_y
-            #print('movement delta', deltax, deltay)
             self.initi_x = end_x  # Update previous current with new location
             self.initi_y = end_y
-            #print('movement init', self.initi_x, self.initi_y)
             self.map_canvas.move(self.movingimage, deltax, deltay)  # move object
             if self.live_map_active:
                 self.live_map_canvas.move(self.movingimage, deltax, deltay)
@@ -1183,13 +1257,14 @@ class MapMaster_UI:
 
 
     def print_all_live_items(self):   # Prints all items on both live map and DM map
+        PR.printL("\ndef print_all_live_items\n", self.log_file, PRINT_TO_FILE)
         try:
             map_items = self.map_canvas.find_all()
             live_map_items = self.live_map_canvas.find_all()
-            print(f"DM's Map: \n{map_items}", file=self.log_file)
-            print(f"Live Map: \n{live_map_items}", file=self.log_file)
+            PR.printL(f"DM's Map: \n{map_items}", self.log_file, PRINT_TO_FILE)
+            PR.printL(f"Live Map: \n{live_map_items}", self.log_file, PRINT_TO_FILE)
         except:
-            print("ERROR: Canvas Objects missing or not found", file=self.log_file)
+            PR.printL("ERROR: Canvas Objects missing or not found", self.log_file, PRINT_TO_FILE)
 
 
 
