@@ -25,6 +25,8 @@ Download zippled .exe file from releases. It is best to keep this bundled with t
 - map_icons
 - saved_games
 
+For image file references to work correctly, any icons, images or backgrounds should be located in the folder MapMaster.exeis run from, or a subfolder within this folder. 
+
 You can also compile yourself using `compile_exe.py` in the SOURCE folder. Feel free to adapt and use this software as you wish.
 
 ## Using MapMaster
@@ -106,9 +108,8 @@ _Create player Icons and Meeples with basic graphical shapes and text. To be add
 
 # Known issues
 - On Hiding Mask after using Subtract Mask function, some mask squares occasionally do not clear. Showing the mask and removing them again will clear them from the live map.
-- Sometimes Live map does not update with a newly inserted background map. Reinserting the image usually works the 2nd time.
 - Occasional exception errors. If found- Please save log and [Email Me](emailto:imogen.wren91@gmail.com)
-- Images may not always save with the saved game. This does not seem to affect Icons
+
 
 
 
