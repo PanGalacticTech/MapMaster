@@ -13,4 +13,10 @@ Its totally free, open source and has no advertising. Its still in Alpha testing
 If you think this would be useful for your game, its free to download. This release has a load of icons and a few maps ready to use, but you can add any images you want using the add icon and add image buttons.
 A few of the buttons are placeholder text at the moment, so you can get an idea of the features I would like to add in the future if there is any interest. Eventually I hope to expand it to act as an all in one combat management resource.
 
+<<<<<<< Updated upstream
 Most of the map were made myself using https://inkarnate.com/, however some of them were found on google images.
+=======
+All the maps were either found on google, or made with https://inkarnate.com/
+
+
+>>>>>>> Stashed changes
